@@ -221,4 +221,56 @@ public class StringHandler {
 		}
 		return url;
 	}
+	
+	/**从字符串中提取出整形
+	 * @param in
+	 * @return
+	 */
+	public static int extractIntFromString(String in) {
+		char[] chars = in.toCharArray();
+		String rs = "";
+		for (int i = 0; i < chars.length; i++) {
+			if (chars[i] <= '9' && chars[i] >= '0') {
+				rs += chars[i];
+			}
+		}
+		if ("".equals(rs)) {
+			return 0;
+		}
+		return Integer.valueOf(rs);
+	}
+	
+	/**去除字符串前面的字符串
+	 * @param in
+	 * @param header
+	 * @return
+	 */
+	public static String removeHeader(String in, String header){
+		return StringUtils.substringAfter(in, header);
+	}
+	
+	public static String removeHeaders(String in, String header1, String header2){
+		in = StringHandler.removeHeader(in, header1);
+		in = StringHandler.removeHeader(in, header2);
+		return in;
+	}
+	
+	/**去除字符串后面的字符串
+	 * @param in
+	 * @param tail
+	 * @return
+	 */
+	public static String removeTail(String in, String tail){
+		return StringUtils.substringBefore(in, tail);
+	}
+	
+	/**去除字串串两端
+	 * @param in
+	 * @param header
+	 * @param tail
+	 * @return
+	 */
+	public static String stringBetween(String in, String header, String tail){
+		return StringUtils.substringBetween(in, header, tail);
+	}
 }
