@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.com</groupId>
-	<artifactId>ossean</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<groupId>org.ossean</groupId>
+	<artifactId>osseanextractor</artifactId>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
-	<name>ossean</name>
+	<name>osseanextractor</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
