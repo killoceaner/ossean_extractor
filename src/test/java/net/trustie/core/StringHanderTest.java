@@ -6,9 +6,10 @@ public class StringHanderTest {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String tmp = "23 day";
-		String rs =StringHandler.getUnit(tmp);
+		String tmp = "23 day haha";
+		String rs =StringHandler.removeSpaces(tmp);
 		System.out.println(rs);
+		
 	}
 
 }
