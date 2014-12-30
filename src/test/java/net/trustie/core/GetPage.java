@@ -68,6 +68,7 @@ public class GetPage {
 	 */
 	public static Page getPageFromInternet(String url) {
 		try {
+			System.out.println(url);
 			Document document = Jsoup.connect(url).get();
 			String rawText = document.toString();
 			Page page = GeneratePage.createPage(url, rawText);

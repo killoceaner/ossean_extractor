@@ -38,6 +38,7 @@ public class ConsolePipeline implements Pipeline {
 		try {
 			Method method = clazz.getMethod(fieldName);
 			System.out.println(outPut + method.invoke(object));
+
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
