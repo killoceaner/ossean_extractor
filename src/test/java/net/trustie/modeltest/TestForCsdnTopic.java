@@ -6,12 +6,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.trustie.core.ConsolePipeline;
 import net.trustie.core.GetPage;
 import net.trustie.core.OsseanExtractorTest;
 import net.trustie.model.CsdnTopic_Model;
 import org.junit.Test;
 
+import core.ConsolePipeline;
 import core.Page;
 
 public class TestForCsdnTopic {

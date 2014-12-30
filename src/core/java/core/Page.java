@@ -48,8 +48,32 @@ public class Page {
 	 * @param key
 	 * @param value
 	 */
-	public void setModelSkip(String key, boolean value) {
-		resultItems.putIsSkip(key, value);
+	public void setResultSkip(Object object, boolean value) {
+		resultItems.putFieldSkip(object.getClass().getCanonicalName(), value);
+	}
+
+	/**
+	 * get results is Skiped
+	 */
+	public boolean getResultSkip(Object object) {
+		return resultItems.getFieldSkip(object.getClass().getCanonicalName());
+	}
+	
+	/**
+	 * resultItems is all skip
+	 * @return
+	 */
+	public boolean isAllResultSkip(){
+		return resultItems.isAllFieldSkip();
+	}
+	
+	/**
+	 * resultItems is all skip find by name;
+	 * @param names
+	 * @return
+	 */
+	public boolean isAllResultSkip(String...names){
+		return resultItems.isAllFieldSkip(names);
 	}
 
 	/**

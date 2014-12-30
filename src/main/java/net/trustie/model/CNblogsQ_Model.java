@@ -81,7 +81,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		if (StringUtils.isNotBlank(this.authorUrl)) {
 			this.authorUrl = "http://q.cnblogs.com" + this.authorUrl;
 		} else
-			page.setModelSkip(this.getClass().getCanonicalName(), true);
+			page.setResultSkip(this, true);
 
 		// 处理园豆
 		if (StringUtils.isNotBlank(this.scoreBean))
@@ -93,7 +93,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		this.answerNum = StringHandler
 				.findRigthString(this.answerNum, "(", ")").trim();
 		if (this.answerNum == null)
-			page.setModelSkip(this.getClass().getCanonicalName(), true);
+			page.setResultSkip(this, true);
 
 		if (StringUtils.isNotBlank(this.bestAnswer)) {
 			this.answerNum = String
@@ -121,27 +121,26 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 
 	public void validate(Page page) {
 		// TODO Auto-generated method stub
-		if (!page.getResultItems()
-				.getIsSkip(this.getClass().getCanonicalName())) {
+		if (!page.getResultSkip(this)) {
 			if (!StringHandler.isAllNotBlank(this.questionTitle, this.author)) {
-				page.setModelSkip(this.getClass().getCanonicalName(), true);
+				page.setResultSkip(this, true);
 				return;
 			}
 
 			if (!StringHandler.canFormatterInteger(this.answerNum,
 					this.viewNum, this.voteNum, this.scoreBean)) {
-				page.setModelSkip(this.getClass().getCanonicalName(), true);
+				page.setResultSkip(this, true);
 				return;
 			}
 
 			if (!StringHandler
 					.canFormatterDate(this.postTime, this.extractTime)) {
-				page.setModelSkip(this.getClass().getCanonicalName(), true);
+				page.setResultSkip(this, true);
 				return;
 			}
 
 			if (this.questionId == -1)
-				page.setModelSkip(this.getClass().getCanonicalName(), true);
+				page.setResultSkip(this, true);
 		}
 	}
 

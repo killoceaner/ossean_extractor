@@ -49,7 +49,7 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 	@ExtractBy(value = "//*[@class='wraper']/div[@class='detail_tbox']/div[@class='detail_title']/html()", source = Source.RawHtml)
 	private String topicTitle = "";
 
-	@ExtractBy("//*div[@class='post_body']//allText()")
+	@ExtractBy("//*div[@class='post_body']/allText()")
 	private String topicContent = "";
 
 	@ExtractBy("//dl/dd[@class='username']/a/text()")
@@ -94,6 +94,8 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 		this.tag = StringHandler.combineTags(tags);
 
 		// 处理帖子的内容
+		for(String str:this.tags)
+			this.topicContent=StringHandler.subString(this.topicContent, str.trim());
 		this.topicContent = StringHandler.subString(this.topicContent,
 				"更多 分享到：");
 
@@ -106,8 +108,7 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 		this.extractTime = simpleDateFormat.format(new Date());
 
 		// 处理pageMD5
-		this.pageMD5 = DigestUtils.md5Hex(this.replyNum + this.topicTitle);
-		
+		this.pageMD5 = DigestUtils.md5Hex(this.replyNum + this.topicTitle);		
 	}
 
 	public void validate(Page page) {

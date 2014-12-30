@@ -4,11 +4,9 @@ import javax.annotation.Resource;
 
 import net.trustie.dao.CsdnTopic_Dao;
 import net.trustie.model.CsdnTopic_Model;
-
 import org.springframework.stereotype.Component;
-
+import core.PageModelPipeline;
 import us.codecraft.webmagic.Task;
-import us.codecraft.webmagic.pipeline.PageModelPipeline;
 
 @Component("CsdnDaoPipeline")
 public class CsdnTopic_pipeline implements PageModelPipeline<CsdnTopic_Model> {

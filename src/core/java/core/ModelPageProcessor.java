@@ -34,7 +34,6 @@ public class ModelPageProcessor implements PageProcessor {
 		}
 		if (page.getResultItems().getAll().size() == 0) {
 			page.getResultItems().setSkip(true);
-
 		}
 	}
 }

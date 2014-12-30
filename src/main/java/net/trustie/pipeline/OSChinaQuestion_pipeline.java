@@ -4,15 +4,12 @@ import javax.annotation.Resource;
 
 import net.trustie.dao.OschinaQuestion_Dao;
 import net.trustie.model.OSChinaQuestion_Model;
-
 import org.springframework.stereotype.Component;
-
+import core.PageModelPipeline;
 import us.codecraft.webmagic.Task;
-import us.codecraft.webmagic.pipeline.PageModelPipeline;
 
 @Component("OSChinaQuestionPipeline")
-public class OSChinaQuestion_pipeline implements
-		PageModelPipeline<OSChinaQuestion_Model> {
+public class OSChinaQuestion_pipeline implements PageModelPipeline<OSChinaQuestion_Model> {
 
 	@Resource
 	private OschinaQuestion_Dao oschian_Dao;
