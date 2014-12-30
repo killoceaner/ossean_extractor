@@ -20,12 +20,13 @@ public class ConsolePipeline implements Pipeline {
 	public void process(ResultItems resultItems, Task task) {
 		Set<String> keySet = resultItems.getAll().keySet();
 		for (String key : keySet) {
-			Object object = resultItems.get(key);			
+			Object object = resultItems.get(key);
 			Class clazz = object.getClass();
 			if (AfterExtractor.class.isAssignableFrom(clazz)) {
 				for (Field field : ClassUtils.getFieldsIncludeSuperClass(clazz)) {
 					field.setAccessible(true);
-					prinfField(field,clazz,object);
+					prinfField(field, clazz, object);
+					//System.out.println(field.getName());
 				}
 			} else
 				System.out.println(key + ":\t" + resultItems.get(key));
@@ -34,12 +35,12 @@ public class ConsolePipeline implements Pipeline {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void prinfField(Field field,Class clazz, Object object) {
+	public void prinfField(Field field, Class clazz, Object object) {
 		String fieldName = field.getName();
 		System.out.print(fieldName + ":\t");
 		fieldName = "get" + StringUtils.capitalize(field.getName());
 		try {
-			Method method =clazz.getMethod(fieldName);
+			Method method = clazz.getMethod(fieldName);
 			System.out.print(method.invoke(object));
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block

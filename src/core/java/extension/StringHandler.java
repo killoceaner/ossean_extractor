@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -15,6 +15,10 @@ import java.net.URL;
 import us.codecraft.xsoup.Xsoup;
 
 public class StringHandler {
+	private static String indefiniteArticleA = "a";
+	private static String indefiniteArticleAn = "an";
+	private static String prepositionAbout ="about";
+	private static String prepositionOver="over";
 
 /**
 	 * 合并tags
@@ -205,6 +209,7 @@ public class StringHandler {
 
 	/**
 	 * 作者链接的特殊处理
+	 * 
 	 * @param url
 	 * @param pageUrl
 	 * @return
@@ -221,8 +226,10 @@ public class StringHandler {
 		}
 		return url;
 	}
-	
-	/**从字符串中提取出整形
+
+	/**
+	 * 从字符串中提取出整形
+	 * 
 	 * @param in
 	 * @return
 	 */
@@ -239,38 +246,87 @@ public class StringHandler {
 		}
 		return Integer.valueOf(rs);
 	}
-	
-	/**去除字符串前面的字符串
+
+	/**
+	 * 去除字符串前面的字符串
+	 * 
 	 * @param in
 	 * @param header
 	 * @return
 	 */
-	public static String removeHeader(String in, String header){
+	public static String removeHeader(String in, String header) {
 		return StringUtils.substringAfter(in, header);
 	}
-	
-	public static String removeHeaders(String in, String header1, String header2){
-		in = StringHandler.removeHeader(in, header1);
-		in = StringHandler.removeHeader(in, header2);
+
+	/**移除字符串前面的不定冠词
+	 * @param in
+	 * @return
+	 */
+	public static String removeIndefiniteArticles(String in) {
+		if (in.startsWith(StringHandler.indefiniteArticleAn)) {
+			StringHandler.removeHeader(in, StringHandler.indefiniteArticleAn);
+			System.out.println(in);
+		} else if (in.startsWith(StringHandler.indefiniteArticleA)) {
+			in = StringHandler.removeHeader(in,
+					StringHandler.indefiniteArticleA);
+		}
 		return in;
 	}
 	
-	/**去除字符串后面的字符串
+	/**移除字符串前面的介词
+	 * @param in
+	 * @return
+	 */
+	public static String removePreposition(String in) {
+		if (in.startsWith(StringHandler.prepositionAbout)) {
+			StringHandler.removeHeader(in, StringHandler.prepositionAbout);
+			System.out.println(in);
+		} else if (in.startsWith(StringHandler.prepositionOver)) {
+			in = StringHandler.removeHeader(in,
+					StringHandler.prepositionOver);
+		}
+		return in.trim();
+	}
+	/**
+	 * 去除字符串后面的字符串
+	 * 
 	 * @param in
 	 * @param tail
 	 * @return
 	 */
-	public static String removeTail(String in, String tail){
+	public static String removeTail(String in, String tail) {
 		return StringUtils.substringBefore(in, tail);
 	}
-	
-	/**去除字串串两端
+
+	/**
+	 * 去除字串串两端
+	 * 
 	 * @param in
 	 * @param header
 	 * @param tail
 	 * @return
 	 */
-	public static String stringBetween(String in, String header, String tail){
+	public static String stringBetween(String in, String header, String tail) {
 		return StringUtils.substringBetween(in, header, tail);
+	}
+	
+	/**
+	 * @param in
+	 * @return
+	 */
+	public static String getUnit(String in){
+		char[] chars = in.toCharArray();
+		String rs = "";
+		for (int i = 0; i < chars.length; i++) {
+			if (chars[i] >= '9' || chars[i] <= '0') {
+				rs += chars[i];
+			}
+		}
+		if(StringUtils.endsWith(rs, "s")){
+			rs = StringHandler.removeTail(rs, "s");
+		}
+		
+		
+		return StringUtils.upperCase(rs.trim());
 	}
 }
