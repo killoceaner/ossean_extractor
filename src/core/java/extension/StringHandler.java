@@ -1,9 +1,12 @@
 package extension;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import net.trustie.osseanextractor.utils.Seperator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -265,7 +268,7 @@ public class StringHandler {
 	public static String removeIndefiniteArticles(String in) {
 		if (in.startsWith(StringHandler.indefiniteArticleAn)) {
 			StringHandler.removeHeader(in, StringHandler.indefiniteArticleAn);
-			System.out.println(in);
+			//System.out.println(in);
 		} else if (in.startsWith(StringHandler.indefiniteArticleA)) {
 			in = StringHandler.removeHeader(in,
 					StringHandler.indefiniteArticleA);
@@ -280,7 +283,7 @@ public class StringHandler {
 	public static String removePreposition(String in) {
 		if (in.startsWith(StringHandler.prepositionAbout)) {
 			StringHandler.removeHeader(in, StringHandler.prepositionAbout);
-			System.out.println(in);
+			//System.out.println(in);
 		} else if (in.startsWith(StringHandler.prepositionOver)) {
 			in = StringHandler.removeHeader(in,
 					StringHandler.prepositionOver);
@@ -328,5 +331,19 @@ public class StringHandler {
 		
 		
 		return StringUtils.upperCase(rs.trim());
+	}
+	
+	public static String assemblyOSSEANMap(List<String> keys, List<String> values){
+		String rt = "";
+		if(keys.size() == values.size()){
+			List<String> tmp = new ArrayList<String>();
+			for(int i =0;i<keys.size();i++){
+				tmp.add(keys.get(i)+Seperator.SOURCE_SEPERATOR+values.get(i));
+			}
+			rt = StringUtils.join(tmp, Seperator.OSSEAN_SEPERATOR);
+		}else{
+			
+		}
+		return rt;
 	}
 }
