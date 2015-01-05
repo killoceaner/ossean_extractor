@@ -1,0 +1,202 @@
+package net.trustie.model;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import extension.StringHandler;
+import us.codecraft.webmagic.Page;
+import us.codecraft.webmagic.model.AfterExtractor;
+import us.codecraft.webmagic.model.annotation.ExtractBy;
+import us.codecraft.webmagic.model.annotation.ExtractByUrl;
+
+@ExtractBy("//*body/div[@id='wrap']/div[@class='container']/div[@class='qa_lft top20']")//限定抽取区域
+public class DeWenQ_Model  implements AfterExtractor{
+
+	 private int issueId=0;
+	 private String issueUrl="";
+	@ExtractBy("//*h1[@id='title' ]/text()")
+	 private String issueTitle="";
+   @ExtractBy("//*div[@class='que_con']/p/text()")
+	 private String issueDetail="";
+	 private String issueUrlMD5="";
+	 private String tag;
+   @ExtractBy("//*div[@id='topic']/allText()")
+	 private List<String> tags;
+   @ExtractBy("//*div[@class='stats']/p/b/text()")
+	 private String scanerNum="";
+   @ExtractBy("//*div[@class='follow_questions']/h2/span/text()")
+	 private String attentionNum="";
+   @ExtractBy("//*div[@class='function_items']/a/b/text()")
+	 private String commentNum="";
+   @ExtractBy("//*div[@class='function_items']/span/text()")
+	 private String  postTime="";
+	 private String pageMD5="";
+	@ExtractBy("//*[@id='changebg']/div[1]/ul/li[2]/p[1]/a/text()")
+	 private String author="";
+	@ExtractBy("//*[@id='changebg']/div[1]/ul/li[2]/p[1]/a/@href")
+	 private String author_url;
+	 private int history=0;
+	 private String extractTime;
+	 
+	@Override
+	public void afterProcess(Page page){
+		StringHandler Sh=new StringHandler();
+		//对issueUrl进行处理
+		this.issueUrl= page.getRequest().getUrl();
+		//对issueId进行处理
+		String s1=issueTitle.substring(0, issueTitle.lastIndexOf("/"));
+		String s2=issueTitle.substring(issueTitle.lastIndexOf("/"));
+	    this.issueId=Integer.parseInt(s2);
+		//对issueUrlMD5进行处理
+		this.issueUrlMD5=DigestUtils.md5Hex(issueUrl);
+		//对tags进行处理
+		this.tag=StringHandler.combineTags(tags);
+		//对postTime进行处理
+		this.postTime=postTime+" 00:00:00";
+		//对extractTime进行处理
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss");
+		this.extractTime = simpleDateFormat.format(new Date());
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public String getPostTime() {
+		return postTime;
+	}
+
+	public void setPostTime(String postTime) {
+		this.postTime = postTime;
+	}
+
+	public String getExtractTime() {
+		return extractTime;
+	}
+
+	public void setExtractTime(String extractTime) {
+		this.extractTime = extractTime;
+	}
+
+	public int getIssueId() {
+		return issueId;
+	}
+
+	public void setIssueId(int issueId) {
+		this.issueId = issueId;
+	}
+
+	public String getIssueTitle() {
+		return issueTitle;
+	}
+
+	public void setIssueTitle(String issueTitle) {
+		this.issueTitle = issueTitle;
+	}
+
+	public String getIssueUrl() {
+		return issueUrl;
+	}
+
+	public void setIssueUrl(String issueUrl) {
+		this.issueUrl = issueUrl;
+	}
+
+	public String getIssueDetail() {
+		return issueDetail;
+	}
+
+	public void setIssueDetail(String issueDetail) {
+		this.issueDetail = issueDetail;
+	}
+
+	public String getIssueUrlMD5() {
+		return issueUrlMD5;
+	}
+
+	public void setIssueUrlMD5(String issueUrlMD5) {
+		this.issueUrlMD5 = issueUrlMD5;
+	}
+
+	public List<String>  getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
+	public String getScanerNum() {
+		return scanerNum;
+	}
+
+	public void setScanerNum(String scanerNum) {
+		this.scanerNum = scanerNum;
+	}
+
+	public String getAttentionNum() {
+		return attentionNum;
+	}
+
+	public void setAttentionNum(String attentionNum) {
+		this.attentionNum = attentionNum;
+	}
+
+	public String getCommentNum() {
+		return commentNum;
+	}
+
+	public void setCommentNum(String commentNum) {
+		this.commentNum = commentNum;
+	}
+
+	public String getCrawlerTime() {
+		return postTime;
+	}
+
+	public void setCrawlerTime(String crawlerTime) {
+		this.postTime = crawlerTime;
+	}
+
+	public String getPageMD5() {
+		return pageMD5;
+	}
+
+	public void setPageMD5(String pageMD5) {
+		this.pageMD5 = pageMD5;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getAuthor_url() {
+		return author_url;
+	}
+
+	public void setAuthor_url(String author_url) {
+		this.author_url = author_url;
+	}
+
+	public int getHistory() {
+		return history;
+	}
+
+	public void setHistory(int history) {
+		this.history = history;
+	}
+
+}

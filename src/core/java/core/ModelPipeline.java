@@ -1,13 +1,12 @@
 package core;
 
-import us.codecraft.webmagic.Task;
-import us.codecraft.webmagic.model.annotation.ExtractBy;
-import us.codecraft.webmagic.pipeline.PageModelPipeline;
-
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import us.codecraft.webmagic.Task;
+import us.codecraft.webmagic.model.annotation.ExtractBy;
 
 /**
  * The extension to Pipeline for page model extractor.
@@ -33,11 +32,15 @@ public class ModelPipeline implements Pipeline {
 	public void process(ResultItems resultItems, Task task) {
 		for (Map.Entry<Class, PageModelPipeline> classPageModelPipelineEntry : pageModelPipelines
 				.entrySet()) {
+			boolean isSkip = resultItems
+					.getFieldSkip(classPageModelPipelineEntry.getKey()
+							.getCanonicalName());
+			if (isSkip) {
+				continue;
+			}
 			Object o = resultItems.get(classPageModelPipelineEntry.getKey()
 					.getCanonicalName());
-			boolean isSkip = resultItems.getIsSkip(classPageModelPipelineEntry
-					.getKey().getCanonicalName());
-			if (o != null && !isSkip) {
+			if (o != null) {
 				Annotation annotation = classPageModelPipelineEntry.getKey()
 						.getAnnotation(ExtractBy.class);
 				if (annotation == null || !((ExtractBy) annotation).multi()) {

@@ -193,8 +193,7 @@ public class PageModelExtractor {
 		// TODO Auto-generated method stub
 		Object o = null;
 		try {
-			o = clazz.newInstance();
-			page.setModelSkip(clazz.getCanonicalName(), false);
+			o = clazz.newInstance();			
 			for (FieldExtractor fieldExtractor : fieldExtractors) {
 				if (fieldExtractor.isMulti()) {
 					List<String> value;

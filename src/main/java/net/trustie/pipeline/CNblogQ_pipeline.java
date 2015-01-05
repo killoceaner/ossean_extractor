@@ -4,9 +4,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import us.codecraft.webmagic.Task;
-import us.codecraft.webmagic.pipeline.PageModelPipeline;
+import core.PageModelPipeline;
 
+import us.codecraft.webmagic.Task;
 import net.trustie.dao.CNblogsQ_Dao;
 import net.trustie.model.CNblogsQ_Model;
 

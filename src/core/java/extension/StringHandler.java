@@ -313,7 +313,7 @@ public class StringHandler {
 		return StringUtils.substringBetween(in, header, tail);
 	}
 	
-	/**
+	/**取得不带复数形式的单位
 	 * @param in
 	 * @return
 	 */
@@ -333,6 +333,7 @@ public class StringHandler {
 		return StringUtils.upperCase(rs.trim());
 	}
 	
+
 	public static String assemblyOSSEANMap(List<String> keys, List<String> values){
 		String rt = "";
 		if(keys.size() == values.size()){
@@ -345,5 +346,21 @@ public class StringHandler {
 			
 		}
 		return rt;
+	}
+	/**去除字符串中空格
+	 * @param str
+	 * @return
+	 */
+	public static String removeSpaces(String str) {
+			
+			return StringUtils.remove(str, " ");
+//		int len = str.length(), st = 0;
+//		char[] val = str.toCharArray();
+//		while (st < len && val[len - 1] <= ' ')
+//			len--;
+//		while (st < len && val[st] <= ' ')
+//			st++;
+//
+//		return (st > 0) || (len < str.length()) ? str.substring(st, len) : str;
 	}
 }

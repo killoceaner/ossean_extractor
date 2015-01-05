@@ -1,4 +1,4 @@
-package net.trustie.core;
+package core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -6,10 +6,6 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-
-import core.AfterExtractor;
-import core.Pipeline;
-import core.ResultItems;
 
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.utils.ClassUtils;
@@ -20,13 +16,13 @@ public class ConsolePipeline implements Pipeline {
 	public void process(ResultItems resultItems, Task task) {
 		Set<String> keySet = resultItems.getAll().keySet();
 		for (String key : keySet) {
+
 			Object object = resultItems.get(key);
 			Class clazz = object.getClass();
 			if (AfterExtractor.class.isAssignableFrom(clazz)) {
 				for (Field field : ClassUtils.getFieldsIncludeSuperClass(clazz)) {
 					field.setAccessible(true);
 					prinfField(field, clazz, object);
-					//System.out.println(field.getName());
 				}
 			} else
 				System.out.println(key + ":\t" + resultItems.get(key));
@@ -37,11 +33,12 @@ public class ConsolePipeline implements Pipeline {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void prinfField(Field field, Class clazz, Object object) {
 		String fieldName = field.getName();
-		System.out.print(fieldName + ":\t");
+		String outPut = fieldName + ":\t";
 		fieldName = "get" + StringUtils.capitalize(field.getName());
 		try {
 			Method method = clazz.getMethod(fieldName);
-			System.out.print(method.invoke(object));
+			System.out.println(outPut + method.invoke(object));
+
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -58,6 +55,5 @@ public class ConsolePipeline implements Pipeline {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println();
 	}
 }
