@@ -6,25 +6,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
+import us.codecraft.webmagic.Request;
+import us.codecraft.webmagic.downloader.Downloader;
+import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import core.Page;
 
-
 public class GetPage {
+	static Downloader downloader = new HttpClientDownloader();
+
 	/**
 	 * 从文件读取单个页面
 	 * 
 	 * @param filePath
 	 * @return
 	 */
-	public static Page getPageFromFile(String url,String filePath) {
+	public static Page getPageFromFile(String url, String filePath) {
 
 		InputStreamReader inputReader = null;
 		BufferedReader bufferReader = null;
@@ -67,23 +67,16 @@ public class GetPage {
 	 * @return
 	 */
 	public static Page getPageFromInternet(String url) {
-		try {
-			System.out.println(url);
-			Document document = Jsoup.connect(url).get();
-			String rawText = document.toString();
-			Page page = GeneratePage.createPage(url, rawText);
-			if (page != null)
-				return page;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-		return null;
+		us.codecraft.webmagic.Page page = downloader.download(new Request(url),
+				new ExtractorTask());
+		Page newPage = GeneratePage.createPage(page.getRequest().getUrl(),
+				page.getRawText());
+		return newPage;
 	}
 
 	/**
 	 * 从网上下载多个页面
+	 * 
 	 * @param urls
 	 * @return
 	 */

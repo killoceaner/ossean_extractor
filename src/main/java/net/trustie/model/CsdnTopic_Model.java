@@ -1,23 +1,14 @@
 package net.trustie.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
+import us.codecraft.webmagic.model.annotation.ExtractBy;
+import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-
 import extension.StringHandler;
-
-
-import us.codecraft.webmagic.model.annotation.ExtractBy;
-import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 
 @ExtractBy("//*[@class='wraper']/div[@class='detailed']/table[1]/tbody")
 public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
@@ -33,8 +24,6 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 
 	private int history = 0;
 
-	private String topicScore = "";
-
 	private String extractTime = "";
 
 	@ExtractBy("//*[@class='data']/span[@class='time']/text()")
@@ -46,7 +35,10 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 	@ExtractBy("//*div[@class='control']/span[@class='return_time']/text()")
 	private String replyNum = "0";
 
-	@ExtractBy(value = "//*[@class='wraper']/div[@class='detail_tbox']/div[@class='detail_title']/html()", source = Source.RawHtml)
+	@ExtractBy(value = "//*[@class='wraper']/div[@class='detail_tbox']/div[@class='detail_title']/h1/allText()", source = Source.RawHtml)
+	private String topicScore = "";
+
+	@ExtractBy(value = "//*[@class='wraper']/div[@class='detail_tbox']/div[@class='detail_title']/h1/span[@class='title text_overflow']/text()", source = Source.RawHtml)
 	private String topicTitle = "";
 
 	@ExtractBy("//*div[@class='post_body']/allText()")
@@ -70,22 +62,11 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 		this.topicId = (Integer.parseInt(topicUrl.substring(topicUrl
 				.lastIndexOf("/") + 1)));
 
-		if (this.topicTitle != null) {
-			// 处理帖子分数
-			this.topicScore = StringHandler.extractHtml(this.topicTitle,
-					"//h1/allText()");
-			this.topicScore = StringHandler.matchRightString(this.topicScore,
-					"\\[问题点数：[0-9]+分");
-			this.topicScore = StringHandler.matchRightString(this.topicScore,
-					"[0-9]+").trim();
-
-			// 处理帖子标题
-			Document doc = Jsoup.parse(this.topicTitle);
-			Elements eles = doc.select("h1 span.title")
-					.select(".text_overflow");
-			this.topicTitle = eles.first().text();
-		} else
-			this.topicTitle = null;
+		// 处理帖子的分数
+		this.topicScore = StringHandler.matchRightString(this.topicScore,
+				"问题点数：\\d+分");
+		this.topicScore = StringHandler.matchRightString(this.topicScore,
+				"\\d+");
 
 		// 处理帖子的回复次数
 		this.replyNum = StringHandler.subString(this.replyNum, "回复次数：").trim();
@@ -94,8 +75,9 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 		this.tag = StringHandler.combineTags(tags);
 
 		// 处理帖子的内容
-		for(String str:this.tags)
-			this.topicContent=StringHandler.subString(this.topicContent, str.trim());
+		for (String str : this.tags)
+			this.topicContent = StringHandler.subString(this.topicContent,
+					str.trim());
 		this.topicContent = StringHandler.subString(this.topicContent,
 				"更多 分享到：");
 
@@ -103,33 +85,28 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 		this.postTime = StringHandler.subString(this.postTime, "发表于：").trim();
 
 		// 处理extractorTime
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss");
-		this.extractTime = simpleDateFormat.format(new Date());
+		this.extractTime = StringHandler.getExtractTime();
 
 		// 处理pageMD5
-		this.pageMD5 = DigestUtils.md5Hex(this.replyNum + this.topicTitle);		
+		this.pageMD5 = DigestUtils.md5Hex(this.replyNum + this.topicTitle);
+
 	}
 
 	public void validate(Page page) {
 		// TODO Auto-generated method stub
-		if (StringHandler.isLeastOneBlank(this.topicTitle, this.author,
+		if (StringHandler.isAtLeastOneBlank(this.topicTitle, this.author,
 				this.authorUrl, this.topicUrl)) {
-			page.setSkip(true);
+			page.setResultSkip(this, true);
 			return;
 		}
 
-		if (!page.getResultItems().isSkip()) {
-			if (!StringHandler.canFormatterInteger(this.replyNum,
-					this.topicScore)) {
-				page.setSkip(true);
-				return;
-			}
+		if (!StringHandler.canFormatterInteger(this.replyNum, this.topicScore)) {
+			page.setResultSkip(this, true);
+			return;
+		}
 
-			if (!StringHandler
-					.canFormatterDate(this.postTime, this.extractTime)) {
-				page.setSkip(true);
-			}
+		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime)) {
+			page.setResultSkip(this, true);
 		}
 	}
 

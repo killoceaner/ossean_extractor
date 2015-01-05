@@ -11,9 +11,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
+import core.PageModelPipeline;
 import core.Site;
 import extension.OsseanExtractor;
-import us.codecraft.webmagic.pipeline.PageModelPipeline;
 
 @Component
 public class DeWenQ_Extractor {

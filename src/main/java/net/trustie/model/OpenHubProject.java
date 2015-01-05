@@ -79,7 +79,6 @@ public class OpenHubProject implements AfterExtractor {
 	private String pageMd5;
 	private int history = 0;
 
-	@Override
 	public void afterProcess(Page page) {
 
 		this.urlMd5 = DigestUtils.md5Hex(page.getPageUrl());

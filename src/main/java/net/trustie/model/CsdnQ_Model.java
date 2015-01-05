@@ -1,17 +1,15 @@
 package net.trustie.model;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import extension.StringHandler;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.model.AfterExtractor;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
-import us.codecraft.webmagic.model.annotation.ExtractByUrl;
+import extension.StringHandler;
 
 @ExtractBy("//*[@id='questions-show']/div[3]")
 public class CsdnQ_Model implements AfterExtractor{
@@ -41,7 +39,6 @@ public class CsdnQ_Model implements AfterExtractor{
 	
 
 
-@Override 
 public void afterProcess(Page page){
 	
 	//对extractTime进行处理

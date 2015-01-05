@@ -4,22 +4,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
-
 import org.apache.commons.lang3.StringUtils;
-
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.utils.ClassUtils;
-
 public class ConsolePipeline implements Pipeline {
 
 	@SuppressWarnings("rawtypes")
 	public void process(ResultItems resultItems, Task task) {
 		Set<String> keySet = resultItems.getAll().keySet();
 		for (String key : keySet) {
-
 			Object object = resultItems.get(key);
-			Class clazz = object.getClass();
-			if (AfterExtractor.class.isAssignableFrom(clazz)) {
+			Class clazz = object.getClass();			
+			if (AfterExtractor.class.isAssignableFrom(clazz)) {				
 				for (Field field : ClassUtils.getFieldsIncludeSuperClass(clazz)) {
 					field.setAccessible(true);
 					prinfField(field, clazz, object);

@@ -18,8 +18,7 @@ import us.codecraft.webmagic.model.annotation.ExtractByUrl;
 import us.codecraft.webmagic.model.annotation.HelpUrl;
 import us.codecraft.webmagic.model.annotation.TargetUrl;
 
-//@TargetUrl("http://sourceforge.net/projects/[^/]+/\\?source=directory(-featured)?")
-// @HelpUrl("http://sourceforge.net/directory/\\?page=*")
+
 @ExtractBy("//body[@id='pg_project']/div[@id='page-body']/article[@id='project']")
 public class SFProject implements AfterExtractor {
 	// @ExtractBy("//div[@id='project-header']/section[@id='project-title']/h1/allText() | //div[@id='project-header']/div[@class='content-group']/h1[@class='project-name']/text()")
@@ -55,7 +54,6 @@ public class SFProject implements AfterExtractor {
 	private int history = 0;
 	private String html;
 
-	@Override
 	public void afterProcess(Page page) {
 		//long start = System.currentTimeMillis();
 

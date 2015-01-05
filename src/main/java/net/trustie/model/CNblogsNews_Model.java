@@ -44,7 +44,6 @@ public class CNblogsNews_Model implements AfterExtractor {
 	@ExtractBy("//div[@id='news_more_info']/div[2]/allText()")
 	private String tags;
 
-	@Override
 	public void afterProcess(Page page) {
 		// 对Url进行处理
 		this.url = page.getPageUrl();
@@ -66,9 +65,7 @@ public class CNblogsNews_Model implements AfterExtractor {
 			String s = "<" + tags.trim() + ">";
 			s = s.replace(" ", "><");
 			this.tags = s;
-		}
-
-		// url、urlMD5、tags、extractTime、ralative_time、comment_num、 view_num
+		}		
 	}
 
 }

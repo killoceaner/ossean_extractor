@@ -1,17 +1,14 @@
 package net.trustie.model;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
 
-import extension.StringHandler;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.model.AfterExtractor;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
-import us.codecraft.webmagic.model.annotation.ExtractByUrl;
+import extension.StringHandler;
 
 @ExtractBy("//*body/div[@id='wrap']/div[@class='container']/div[@class='qa_lft top20']")//限定抽取区域
 public class DeWenQ_Model  implements AfterExtractor{
@@ -42,7 +39,6 @@ public class DeWenQ_Model  implements AfterExtractor{
 	 private int history=0;
 	 private String extractTime;
 	 
-	@Override
 	public void afterProcess(Page page){
 		StringHandler Sh=new StringHandler();
 		//对issueUrl进行处理

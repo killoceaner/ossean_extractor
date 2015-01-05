@@ -271,7 +271,7 @@ public class PageModelExtractor {
 				((AfterExtractor) o).afterProcess(page);
 			}
 			if (ValidateExtractor.class.isAssignableFrom(clazz)) {
-				((ValidateExtractor) o).validate(page);
+				((ValidateExtractor) o).validate(page);				
 			}
 		} catch (InstantiationException e) {
 			logger.error("extract fail", e);

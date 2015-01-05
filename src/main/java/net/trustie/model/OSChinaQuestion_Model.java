@@ -1,17 +1,12 @@
 package net.trustie.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.codec.digest.DigestUtils;
-
+import us.codecraft.webmagic.model.annotation.ExtractBy;
+import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-
-import us.codecraft.webmagic.model.annotation.ExtractBy;
-import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import extension.StringHandler;
 
 @ExtractBy("//*[@id='OSC_Content']/div[@class='Question']/div[@class='Body']/div[@class='main']")
@@ -65,54 +60,55 @@ public class OSChinaQuestion_Model implements AfterExtractor, ValidateExtractor 
 	private String questionContent = null;
 
 	public void afterProcess(Page page) {
-		// TODO Auto-generated method stub
-
 		// 处理标签
 		this.tag = StringHandler.combineTags(questionTags);
 
 		// 处理收藏数
 		this.housedNum = StringHandler.findRigthString(housedNum, "(", ")");
 
-		// 处理浏览次数
-		this.viewNum = StringHandler.matchRightString(this.viewNum, "[0-9]+");
+		// 处理帖子的url
+		this.questionUrl = page.getPageUrl();
 
-		// 处理和验证帖子的Id
+		// 处理浏览次数
+		this.viewNum = StringHandler.matchRightString(this.viewNum, "\\d+");
+
+		// 处理帖子的Id
 		this.questionId = StringHandler.matchRightString(this.questionUrl,
-				"[0-9]+_[0-9]+");
+				"\\d+_\\d+");
 
 		// 处理抽取时间
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss");
-		this.extractTime = simpleDateFormat.format(new Date());
+		this.extractTime = StringHandler.getExtractTime();
 
-		// 处理帖子的url、PageMD5和urlDM5
-		this.questionUrl = page.getPageUrl();
+		// 处理帖子的urlMD5
 		this.urlMD5 = DigestUtils.md5Hex(this.questionUrl);
+
+		// 处理帖子的PageMD5
 		this.pageMD5 = DigestUtils.md5Hex(this.questionContent
 				+ this.questionTitle);
 
-		// 处理和验证postime
+		// 处理postime
+		/**
+		 * 还需处理
+		 */
 	}
 
 	public void validate(Page page) {
 		// TODO Auto-generated method stub
-		if (!StringHandler.isAllNotBlank(this.questionTitle, this.questionType,
-				this.author, this.authorUrl, this.questionId)) {
-			page.setSkip(true);
+		if (StringHandler
+				.isAtLeastOneBlank(this.questionTitle, this.questionType,
+						this.author, this.authorUrl, this.questionId)) {
+			page.setResultSkip(this, true);
 			return;
 		}
 
-		if (!page.getResultItems().isSkip()
-				&& !StringHandler.canFormatterInteger(this.replyNum,
-						this.housedNum, this.laudNum, this.viewNum)) {
-			page.setSkip(true);
+		if (!StringHandler.canFormatterInteger(this.replyNum, this.housedNum,
+				this.laudNum, this.viewNum)) {
+			page.setResultSkip(this, true);
 			return;
 		}
 
-		if (!page.getResultItems().isSkip()
-				&& StringHandler.canFormatterDate(this.postTime,
-						this.extractTime))
-			page.setSkip(true);
+		if (StringHandler.canFormatterDate(this.postTime, this.extractTime))
+			page.setResultSkip(this, true);
 	}
 
 	public String getQuestionUrl() {

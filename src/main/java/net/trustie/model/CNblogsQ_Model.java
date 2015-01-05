@@ -1,23 +1,18 @@
 package net.trustie.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-
+import us.codecraft.webmagic.model.annotation.ExtractBy;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-
-import us.codecraft.webmagic.model.annotation.ExtractBy;
 import extension.StringHandler;
 
 @ExtractBy("//*[@id='container']/div[@id='container_content']/div[@id='main']")
 public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 
-	private int questionId = -1;
+	private String questionId;
 
 	private String questionUrl = "";
 
@@ -71,7 +66,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		// 处理浏览次数
 		this.viewNum = StringHandler.matchRightString(this.viewNum,
 				"浏览: [0-9]+次");
-		this.viewNum = StringHandler.matchRightString(this.viewNum, "[0-9]+");
+		this.viewNum = StringHandler.matchRightString(this.viewNum, "\\d+");
 
 		// 处理发帖时间
 		this.postTime = StringHandler.matchRightString(this.postTime,
@@ -91,10 +86,9 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 
 		// 处理答案个数
 		this.answerNum = StringHandler
-				.findRigthString(this.answerNum, "(", ")").trim();
+				.findRigthString(this.answerNum, "(", ")");
 		if (this.answerNum == null)
-			page.setResultSkip(this, true);
-
+			this.answerNum = "0";
 		if (StringUtils.isNotBlank(this.bestAnswer)) {
 			this.answerNum = String
 					.valueOf(Integer.parseInt(this.answerNum) + 1);
@@ -105,50 +99,42 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 
 		// 处理问题Id、url、pageMD5、urlMD5、抽取时间
 		this.questionUrl = page.getPageUrl();
+
 		this.pageMD5 = DigestUtils.md5Hex(this.questionTitle
 				+ this.questionContent);
+
 		this.urlMD5 = DigestUtils.md5Hex(this.questionUrl);
 
-		String id = StringHandler.matchRightString(this.questionUrl, "[0-9]+");
-		if (id != null)
-			this.questionId = Integer.parseInt(id);
+		this.questionId = StringHandler.matchRightString(this.questionUrl,
+				"\\d+");
 
 		// 处理extractorTime
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss");
-		this.extractTime = simpleDateFormat.format(new Date());
+		this.extractTime = StringHandler.getExtractTime();
 	}
 
 	public void validate(Page page) {
-		// TODO Auto-generated method stub
-		if (!page.getResultSkip(this)) {
-			if (!StringHandler.isAllNotBlank(this.questionTitle, this.author)) {
-				page.setResultSkip(this, true);
-				return;
-			}
+		if (!StringHandler.isAllNotBlank(this.questionTitle, this.author)) {
+			page.setResultSkip(this, true);
+			return;
+		}
 
-			if (!StringHandler.canFormatterInteger(this.answerNum,
-					this.viewNum, this.voteNum, this.scoreBean)) {
-				page.setResultSkip(this, true);
-				return;
-			}
+		if (!StringHandler.canFormatterInteger(this.answerNum, this.viewNum,
+				this.voteNum, this.scoreBean)) {
+			page.setResultSkip(this, true);
+			return;
+		}
 
-			if (!StringHandler
-					.canFormatterDate(this.postTime, this.extractTime)) {
-				page.setResultSkip(this, true);
-				return;
-			}
-
-			if (this.questionId == -1)
-				page.setResultSkip(this, true);
+		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime)) {
+			page.setResultSkip(this, true);
+			return;
 		}
 	}
 
-	public int getQuestionId() {
+	public String getQuestionId() {
 		return questionId;
 	}
 
-	public void setQuestionId(int questionId) {
+	public void setQuestionId(String questionId) {
 		this.questionId = questionId;
 	}
 
@@ -280,4 +266,11 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		this.history = history;
 	}
 
+	public String getBestAnswer() {
+		return bestAnswer;
+	}
+
+	public void setBestAnswer(String bestAnswer) {
+		this.bestAnswer = bestAnswer;
+	}
 }

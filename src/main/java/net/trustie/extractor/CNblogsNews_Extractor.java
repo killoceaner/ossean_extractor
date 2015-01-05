@@ -12,10 +12,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
+import core.PageModelPipeline;
 import core.Site;
-import us.codecraft.webmagic.pipeline.PageModelPipeline;
 import extension.OsseanExtractor;
 
+@SuppressWarnings("unused")
 @Component
 public class CNblogsNews_Extractor {
 	@SuppressWarnings("rawtypes")

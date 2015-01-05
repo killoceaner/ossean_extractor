@@ -14,6 +14,7 @@ import java.util.GregorianCalendar;
  *
  */
 public class DateHandler {
+	@SuppressWarnings("deprecation")
 	private static Date origin = new Date(70, 01, 01);
 
 	public static Date getDateBefore(int num, String unit) {

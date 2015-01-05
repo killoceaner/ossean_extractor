@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import core.PageModelPipeline;
 import core.Site;
-import us.codecraft.webmagic.pipeline.PageModelPipeline;
 import extension.OsseanExtractor;
 
 public class CsdnQ_Extractor {

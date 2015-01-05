@@ -1,24 +1,21 @@
 package extension;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import us.codecraft.xsoup.Xsoup;
 
 public class StringHandler {
 	private static String indefiniteArticleA = "a";
 	private static String indefiniteArticleAn = "an";
-	private static String prepositionAbout ="about";
-	private static String prepositionOver="over";
+	private static String prepositionAbout = "about";
+	private static String prepositionOver = "over";
 
 /**
 	 * 合并tags
@@ -60,7 +57,7 @@ public class StringHandler {
 	 *            字符串列表
 	 * @return 如果strings[]中都不为空或者空字符，返回true,否则返回false
 	 */
-	public static boolean isLeastOneBlank(String... strings) {
+	public static boolean isAtLeastOneBlank(String... strings) {
 		for (String str : strings) {
 			if (StringUtils.isBlank(str))
 				return true;
@@ -95,7 +92,7 @@ public class StringHandler {
 			String result = string.substring(string.indexOf(str1) + 1,
 					string.indexOf(str2));
 			if (StringUtils.isNotBlank(result))
-				return result;
+				return result.trim();
 		}
 		return null;
 	}
@@ -115,7 +112,7 @@ public class StringHandler {
 			Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(string);
 			if (matcher.find())
-				return matcher.group();
+				return matcher.group().trim();
 		}
 		return null;
 	}
@@ -129,7 +126,7 @@ public class StringHandler {
 	public static boolean canFormatterInteger(String... strings) {
 		try {
 			for (String s : strings)
-				Integer.parseInt(s);
+				Integer.parseInt(s.trim());
 		} catch (Exception e) {
 			return false;
 		}
@@ -144,7 +141,7 @@ public class StringHandler {
 	 * @return
 	 */
 	public static boolean canFormatterDate(String... strings) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:MM:SS");
 		try {
 			for (String s : strings) {
 				sdf.parse(s);
@@ -208,26 +205,6 @@ public class StringHandler {
 	}
 
 	/**
-	 * 作者链接的特殊处理
-	 * 
-	 * @param url
-	 * @param pageUrl
-	 * @return
-	 */
-	public static String handlerUrl(String url, String pageUrl) {
-		try {
-			URL urlTemp = new URL(pageUrl);
-			String urlhost = urlTemp.getHost();
-			if (!url.contains(urlhost))
-				return urlhost + url;
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			return url;
-		}
-		return url;
-	}
-
-	/**
 	 * 从字符串中提取出整形
 	 * 
 	 * @param in
@@ -258,7 +235,9 @@ public class StringHandler {
 		return StringUtils.substringAfter(in, header);
 	}
 
-	/**移除字符串前面的不定冠词
+	/**
+	 * 移除字符串前面的不定冠词
+	 * 
 	 * @param in
 	 * @return
 	 */
@@ -272,8 +251,10 @@ public class StringHandler {
 		}
 		return in;
 	}
-	
-	/**移除字符串前面的介词
+
+	/**
+	 * 移除字符串前面的介词
+	 * 
 	 * @param in
 	 * @return
 	 */
@@ -282,11 +263,11 @@ public class StringHandler {
 			StringHandler.removeHeader(in, StringHandler.prepositionAbout);
 			System.out.println(in);
 		} else if (in.startsWith(StringHandler.prepositionOver)) {
-			in = StringHandler.removeHeader(in,
-					StringHandler.prepositionOver);
+			in = StringHandler.removeHeader(in, StringHandler.prepositionOver);
 		}
 		return in.trim();
 	}
+
 	/**
 	 * 去除字符串后面的字符串
 	 * 
@@ -309,12 +290,14 @@ public class StringHandler {
 	public static String stringBetween(String in, String header, String tail) {
 		return StringUtils.substringBetween(in, header, tail);
 	}
-	
-	/**取得不带复数形式的单位
+
+	/**
+	 * 取得不带复数形式的单位
+	 * 
 	 * @param in
 	 * @return
 	 */
-	public static String getUnit(String in){
+	public static String getUnit(String in) {
 		char[] chars = in.toCharArray();
 		String rs = "";
 		for (int i = 0; i < chars.length; i++) {
@@ -322,28 +305,59 @@ public class StringHandler {
 				rs += chars[i];
 			}
 		}
-		if(StringUtils.endsWith(rs, "s")){
+		if (StringUtils.endsWith(rs, "s")) {
 			rs = StringHandler.removeTail(rs, "s");
 		}
-		
-		
+
 		return StringUtils.upperCase(rs.trim());
 	}
-	
-	/**去除字符串中空格
+
+	/**
+	 * 去除字符串中空格
+	 * 
 	 * @param str
 	 * @return
 	 */
 	public static String removeSpaces(String str) {
-			
-			return StringUtils.remove(str, " ");
-//		int len = str.length(), st = 0;
-//		char[] val = str.toCharArray();
-//		while (st < len && val[len - 1] <= ' ')
-//			len--;
-//		while (st < len && val[st] <= ' ')
-//			st++;
-//
-//		return (st > 0) || (len < str.length()) ? str.substring(st, len) : str;
+
+		return StringUtils.remove(str, " ");
+		// int len = str.length(), st = 0;
+		// char[] val = str.toCharArray();
+		// while (st < len && val[len - 1] <= ' ')
+		// len--;
+		// while (st < len && val[st] <= ' ')
+		// st++;
+		//
+		// return (st > 0) || (len < str.length()) ? str.substring(st, len) :
+		// str;
 	}
+
+	/**
+	 * 获取抽取时间
+	 * 
+	 * @return
+	 */
+	public static String getExtractTime() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss");
+		return simpleDateFormat.format(new Date());
+	}
+
+	/**
+	 * 在当前时间上加上多少秒
+	 * @param dateTime
+	 * @param second
+	 * @return 操作成功，成功返回，不成功返回空;
+	 */
+	public static String addTimeToDate(String dateTime, int second) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:MM:SS");
+			Calendar c = Calendar.getInstance();
+			c.setTime(sdf.parse(dateTime));
+			c.add(Calendar.SECOND, second);
+			return sdf.format(c.getTime());
+		} catch (Exception e) {
+			return null;
+		}		
+	}	
 }

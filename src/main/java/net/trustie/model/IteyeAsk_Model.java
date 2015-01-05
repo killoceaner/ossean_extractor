@@ -37,9 +37,9 @@ public class IteyeAsk_Model implements AfterExtractor{
      @ExtractBy("//*[@id='main']/div[3]/dl/dd/div[1]/div[3]/span[1]/a/text()") 
         private String author;
      @ExtractBy("//*[@id='main']/div[3]/dl/dd/div[1]/div[3]/span[1]/a/@html()") 
-        private String author_url;
-    @Override
-	public void afterProcess(Page page){
+        private String author_url;     
+     
+    public void afterProcess(Page page){
     	this.setUrl(page.getPageUrl());
     	 this.pageMD5= DigestUtils.md5Hex(this.main);
        //对tags进行处理

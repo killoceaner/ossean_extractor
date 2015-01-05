@@ -1,13 +1,10 @@
 package net.trustie.core;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class DateTest {
 
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Date now = new Date(70, 01, 01);
