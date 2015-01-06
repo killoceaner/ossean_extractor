@@ -32,7 +32,7 @@ public class OpenHubProject implements AfterExtractor {
 	private static String commitStatusTail = "commits";
 	private static String estimateEffortTimeTail = "of effort";
 	private static String firstCommitTimeHeader = "first commit in";
-	private static String lastCommitTimeHeader = "most recent commit about";
+	private static String lastCommitTimeHeader = "most recent commit";
 
 	@ExtractBy("//div[@class='project_title']/h1[@itemprop='name']/a/text()")
 	private String name = "";
@@ -71,6 +71,15 @@ public class OpenHubProject implements AfterExtractor {
 	private String estimateEffortTime = "";
 	private Date firstCommitTime = null;
 	private Date lastCommitTime = null;
+
+	// languages
+	@ExtractBy("//div[@class='span6']/table[@class=table]/tbody/tr[@class='float_left']/td[@style='width: 120px']")
+	private List<String> languages = null;
+	@ExtractBy("//div[@class='span6']/table[@class=table]/tbody/tr[@class='float_left']/td[@style='width: 20px']/span/span[@itemprop='ratingValue']")
+	private List<String> percentages = null;
+	private String languagePercentages ="";
+
+	
 
 	private String collectTime;
 	// @ExtractByUrl()
@@ -124,6 +133,19 @@ public class OpenHubProject implements AfterExtractor {
 		handleNutShell2(nutShell2);
 		String nutShell3 = codeInfos.get(3);
 		handleNutShell3(nutShell3);
+		
+		List<String> eList = new ArrayList<String>();
+		List<String> valueList = new ArrayList<String>();
+		//language
+		for(int i = 0 ;i<languages.size();i++){
+			Element e = Jsoup.parse(languages.get(i));
+			Element eValue = Jsoup.parse(percentages.get(i));
+			//String strE = e.text();
+			eList.add(e.text());
+			//String strValue = eValue.text();
+			valueList.add(eValue.text());
+		}
+		//this.languagePercentages = StringHandler.assemblyOSSEANMap(eList, valueList);
 
 	}
 
@@ -274,7 +296,8 @@ public class OpenHubProject implements AfterExtractor {
 		ele = eles.get(2);
 		String lastCommitAt = StringHandler.removeHeader(ele.text(),
 				OpenHubProject.lastCommitTimeHeader).trim();
-		lastCommitAt =StringHandler.removePreposition(lastCommitAt);
+		System.out.println(lastCommitAt);
+		lastCommitAt = StringHandler.removePreposition(lastCommitAt);
 		this.lastCommitTime = handleDateBefore(lastCommitAt);
 	}
 
@@ -352,11 +375,11 @@ public class OpenHubProject implements AfterExtractor {
 		return rt;
 	}
 
-	private Date handleDateBefore(String strDate){
-		//System.out.println(strDate);
+	private Date handleDateBefore(String strDate) {
+		// System.out.println(strDate);
 		int num = StringHandler.extractIntFromString(strDate);
 		String unit = StringHandler.getUnit(strDate);
-		
+
 		return DateHandler.getDateBefore(num, unit);
 	}
 
@@ -899,6 +922,20 @@ public class OpenHubProject implements AfterExtractor {
 	 */
 	public void setHistory(int history) {
 		this.history = history;
+	}
+	
+	/**
+	 * @return the languagePercentages
+	 */
+	public String getLanguagePercentages() {
+		return languagePercentages;
+	}
+
+	/**
+	 * @param languagePercentages the languagePercentages to set
+	 */
+	public void setLanguagePercentages(String languagePercentages) {
+		this.languagePercentages = languagePercentages;
 	}
 
 }
