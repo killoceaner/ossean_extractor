@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import core.Page;
 
-
 public class RawPage {
 
 	private int id;
@@ -34,12 +33,12 @@ public class RawPage {
 				page.setPageUrl(this.url);
 				page.setSkip(true);
 				logger.info("Warnning:Page{id=" + this.id + ",url=" + this.url
-						+ "} RawText Is Null OR Empty! It Will Be Skiped.");
+						+ "} RawText Is Null OR Empty!");
 			}
 		} else {
 			page.setSkip(true);
 			logger.info("Warnning:Page{id=" + this.id + "url=" + this.url
-					+ "} Url Is　Null OR Empty! It Will Be Skiped.");
+					+ "} Url Is　Null OR Empty!");
 		}
 		isExtracted = false;
 		isStored = false;
@@ -51,27 +50,18 @@ public class RawPage {
 				logger.info("Page{id=" + this.id + ",url=" + this.url
 						+ "} Extracted And Stored Successed!");
 			else {
-				if (page.getResultItems().isSkip())
-					logger.error("Page{id=" + this.id + ",url=" + this.url
-							+ "} Extracted Successed,But Stored Skiped!");
-				else
-					logger.error("Page{id=" + this.id + ",url=" + this.url
-							+ "} Extracted Successed,But Stored Failed!");
+				logger.error("Page{id=" + this.id + ",url=" + this.url
+						+ "} Extracted Successed,But Stored Failed!");
 			}
 		} else {
-			if (page.getResultItems().isSkip())
-				logger.error("Page{id=" + this.id + ",url=" + this.url
-						+ "} Extracted Skiped!");
-			else
-				logger.error("Page{id=" + this.id + ",url=" + this.url
-						+ "} Extracted Failed!");
+			logger.error("Page{id=" + this.id + ",url=" + this.url
+					+ "} Extracted Failed!");
 		}
 	}
 
 	@Override
 	public String toString() {
-		return "Page{id=" + this.id + ",url=" + this.url + ",RawText="
-				+ this.html + "}";
+		return page.toString();
 	}
 
 	public int getId() {

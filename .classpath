@@ -15,6 +15,7 @@
 	<classpathentry kind="src" path="src/resources"/>
 	<classpathentry kind="src" path="cursor"/>
 	<classpathentry kind="src" path="src/core/java"/>
+	<classpathentry kind="src" path="src/main/assembly"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

@@ -38,6 +38,8 @@ public class OsseanExtractor extends TimerTask {
 
 	public List<String> modelName = new ArrayList<String>();
 
+	private int recordId = 0;
+
 	protected OsseanExtractor(ModelPageProcessor modelPageProcessor) {
 		this.modelPageProcessor = modelPageProcessor;
 	}
@@ -94,16 +96,14 @@ public class OsseanExtractor extends TimerTask {
 	@Override
 	public void run() {
 		logger.info("One Extraction Task Started!");
-		int beginId;
-		// 如果配置文件中有记录，从记录几下来的位置开始取数据
+
 		if (readCursor.getValue(uuid) != null)
-			beginId = Integer.parseInt(readCursor.getValue(uuid).trim());
-		// 如果配置文件中没有记录，从数据库中从头开始获取数据
+			recordId = Integer.parseInt(readCursor.getValue(uuid).trim());
 		else
-			beginId = this.downloader.getMinId();
-		// 获取数据库中的url和RawText,但还没生产page对象
-		List<RawPage> rawList = this.downloader.downloadPages(beginId, beginId
-				+ this.site.getResultNum());
+			recordId = downloader.getMinId();
+
+		List<RawPage> rawList = this.downloader.downloadPages(recordId,
+				recordId + this.site.getResultNum());
 		// 生成对应的page对象
 		createPageList(rawList);
 		for (RawPage rawPage : rawList) {
@@ -115,17 +115,22 @@ public class OsseanExtractor extends TimerTask {
 					// 记录该page是否被抽取，但是还没有存储
 					rawPage.setExtracted(true);
 					if (!rawPage.getPage().getResultItems().isSkip()) {
-						for(Pipeline pipeline:pipelines)
-							pipeline.process(rawPage.getPage().getResultItems(), null);
+						for (Pipeline pipeline : pipelines)
+							pipeline.process(
+									rawPage.getPage().getResultItems(), null);
 						// 记录页面被是否保存下来
-						if(rawPage.getPage().isAllResultSkip(modelName.toArray(new String[modelName.size()])));
-						rawPage.setStored(true);
+						if (!rawPage.getPage()
+								.isAllResultSkip(
+										modelName.toArray(new String[modelName
+												.size()])))
+							rawPage.setStored(true);
 					}
 				} catch (Exception e) {
 					// 记录出错页面
-					if (!rawPage.isExtracted()
-							|| rawPage.getPage().getResultItems().isSkip())
-						this.downloader.returnErrorPages(rawPage.getUrl());
+					this.downloader.returnErrorPages(rawPage.getUrl());
+					// 输出出错信息
+					logger.error("Extract And Store Error", e);
+
 				} finally {
 					rawPage.printLogInfo();
 				}

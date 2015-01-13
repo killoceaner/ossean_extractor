@@ -18,9 +18,7 @@ public class CsdnBlogsTest {
 	@Test
 	public void TestForCNblogsQModel() {
 		List<String> urls = new ArrayList<String>(Arrays.asList(
-				"http://blog.csdn.net/guolin_blog/article/details/41722975",
-				"http://blog.csdn.net/itmyhome1990/article/details/42275339",
-				"http://blog.csdn.net/junzaivip/article/details/42285997",
+				"http://blog.csdn.net/helloboat/article/details/42418085",								
 				"http://blog.csdn.net/pistolove/article/details/42290249",
 				"http://blog.csdn.net/u010168160/article/details/42271023",
 				"http://blog.csdn.net/zhaolijing2012/article/details/42276853",
