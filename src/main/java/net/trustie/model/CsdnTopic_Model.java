@@ -12,7 +12,6 @@ import org.jsoup.select.Elements;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-
 import extension.StringHandler;
 
 
@@ -114,20 +113,20 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 		// TODO Auto-generated method stub
 		if (StringHandler.isLeastOneBlank(this.topicTitle, this.author,
 				this.authorUrl, this.topicUrl)) {
-			page.setSkip(true);
+			page.setResultSkip(this, true);
 			return;
 		}
 
 		if (!page.getResultItems().isSkip()) {
 			if (!StringHandler.canFormatterInteger(this.replyNum,
 					this.topicScore)) {
-				page.setSkip(true);
+				page.setResultSkip(this, true);
 				return;
 			}
 
 			if (!StringHandler
 					.canFormatterDate(this.postTime, this.extractTime)) {
-				page.setSkip(true);
+				page.setResultSkip(this,true);
 			}
 		}
 	}

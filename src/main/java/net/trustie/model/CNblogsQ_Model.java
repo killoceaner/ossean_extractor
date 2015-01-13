@@ -1,16 +1,12 @@
 package net.trustie.model;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 import extension.StringHandler;
 
@@ -18,16 +14,11 @@ import extension.StringHandler;
 public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 
 	private int questionId = -1;
-
-	private String questionUrl = "";
-
-	private String urlMD5 = "";
-
-	private String pageMD5 = "";
-
-	private String extractTime;
-
-	private String tag = "";
+    private String questionUrl = "";
+    private String urlMD5 = "";
+    private String pageMD5 = "";
+    private String extractTime;
+    private String tag = "";
 
 	private int history = 0;
 
@@ -68,7 +59,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		// 处理帖子的标签
 		tag = StringHandler.combineTags(this.tags);
 
-		// 处理浏览次数
+		// 处理浏览次数m
 		this.viewNum = StringHandler.matchRightString(this.viewNum,
 				"浏览: [0-9]+次");
 		this.viewNum = StringHandler.matchRightString(this.viewNum, "[0-9]+");
@@ -81,7 +72,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		if (StringUtils.isNotBlank(this.authorUrl)) {
 			this.authorUrl = "http://q.cnblogs.com" + this.authorUrl;
 		} else
-			page.setModelSkip(this.getClass().getCanonicalName(), true);
+			page.setResultSkip(authorUrl, true);
 
 		// 处理园豆
 		if (StringUtils.isNotBlank(this.scoreBean))
@@ -93,7 +84,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		this.answerNum = StringHandler
 				.findRigthString(this.answerNum, "(", ")").trim();
 		if (this.answerNum == null)
-			page.setModelSkip(this.getClass().getCanonicalName(), true);
+		  page.setResultSkip(answerNum, true);/*.setModelSkip(this.getClass().getCanonicalName(), true);*/
 
 		if (StringUtils.isNotBlank(this.bestAnswer)) {
 			this.answerNum = String
@@ -122,26 +113,26 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 	public void validate(Page page) {
 		// TODO Auto-generated method stub
 		if (!page.getResultItems()
-				.getIsSkip(this.getClass().getCanonicalName())) {
+				.getFieldSkip(this.getClass().getCanonicalName())) {
 			if (!StringHandler.isAllNotBlank(this.questionTitle, this.author)) {
-				page.setModelSkip(this.getClass().getCanonicalName(), true);
+				page.setResultSkip(this, true);/*.setModelSkip(this.getClass().getCanonicalName(), true);*/
 				return;
 			}
 
 			if (!StringHandler.canFormatterInteger(this.answerNum,
 					this.viewNum, this.voteNum, this.scoreBean)) {
-				page.setModelSkip(this.getClass().getCanonicalName(), true);
+				page.setResultSkip(this, true);  /*.setModelSkip(this.getClass().getCanonicalName(), true);*/
 				return;
 			}
 
 			if (!StringHandler
 					.canFormatterDate(this.postTime, this.extractTime)) {
-				page.setModelSkip(this.getClass().getCanonicalName(), true);
+				page.setResultSkip(this, true);  /*.setModelSkip(this.getClass().getCanonicalName(), true);*/
 				return;
 			}
 
 			if (this.questionId == -1)
-				page.setModelSkip(this.getClass().getCanonicalName(), true);
+				page.setResultSkip(this, true);  /*.setModelSkip(this.getClass().getCanonicalName(), true);*/
 		}
 	}
 
