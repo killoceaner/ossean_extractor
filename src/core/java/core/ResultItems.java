@@ -2,6 +2,7 @@ package core;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Object contains extract results.<br>
@@ -16,11 +17,11 @@ public class ResultItems {
 
 	private Map<String, Object> fields = new LinkedHashMap<String, Object>();
 
-	private Map<String, Boolean> isFieldSkiped = new LinkedHashMap<String, Boolean>();
+	private Map<String, Boolean> isFieldSkip = new LinkedHashMap<String, Boolean>();
 
 	private boolean skip;
-	
-	private String url;
+
+	private String pageUrl;
 
 	@SuppressWarnings("unchecked")
 	public <T> T get(String key) {
@@ -40,14 +41,14 @@ public class ResultItems {
 		return fields;
 	}
 
-	public boolean getIsSkip(String key) {
-		if (isFieldSkiped.containsKey(key))
-			return isFieldSkiped.get(key);
-		return true;
+	public boolean getFieldSkip(String key) {
+		if (isFieldSkip.containsKey(key))
+			return isFieldSkip.get(key);
+		return false;
 	}
 
-	public ResultItems putIsSkip(String key, boolean value) {
-		isFieldSkiped.put(key, value);
+	public ResultItems putFieldSkip(String key, boolean value) {
+		isFieldSkip.put(key, value);
 		return this;
 	}
 
@@ -72,18 +73,47 @@ public class ResultItems {
 	public ResultItems setSkip(boolean skip) {
 		this.skip = skip;
 		return this;
-	}	
+	}
+
+	/**
+	 * is all field output skiped
+	 * 
+	 * @return
+	 */
+	public boolean isAllFieldSkip() {
+		if (fields.size() > isFieldSkip.size())
+			return false;
+		Set<String> keys = isFieldSkip.keySet();
+		for (String key : keys) {
+			if (!isFieldSkip.get(key))
+				return false;
+		}
+		return true;
+	}
+
+	/**
+	 * is all field output skiped find by name;
+	 * 
+	 * @return
+	 */
+	public boolean isAllFieldSkip(String... fieldName) {
+		for (String name : fieldName)
+			if (!getFieldSkip(name))
+				return false;
+		return true;
+	}
 
 	public String getUrl() {
-		return url;
+		return pageUrl;
 	}
 
 	public void setUrl(String url) {
-		this.url = url;
+		this.pageUrl = url;
 	}
 
 	@Override
 	public String toString() {
-		return "ResultItems{" + "fields=" + fields + ", skip=" + skip + '}';
+		return "ResultItems{" + "fields=" + fields + ",url=" + pageUrl
+				+ ", skip=" + skip + '}';
 	}
 }

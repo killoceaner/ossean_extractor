@@ -193,8 +193,7 @@ public class PageModelExtractor {
 		// TODO Auto-generated method stub
 		Object o = null;
 		try {
-			o = clazz.newInstance();
-			page.setModelSkip(clazz.getCanonicalName(), false);
+			o = clazz.newInstance();			
 			for (FieldExtractor fieldExtractor : fieldExtractors) {
 				if (fieldExtractor.isMulti()) {
 					List<String> value;
@@ -272,7 +271,7 @@ public class PageModelExtractor {
 				((AfterExtractor) o).afterProcess(page);
 			}
 			if (ValidateExtractor.class.isAssignableFrom(clazz)) {
-				((ValidateExtractor) o).validate(page);
+				((ValidateExtractor) o).validate(page);				
 			}
 		} catch (InstantiationException e) {
 			logger.error("extract fail", e);
