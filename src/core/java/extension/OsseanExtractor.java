@@ -1,17 +1,20 @@
 package extension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.trustie.core.ConsolePipeline;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import us.codecraft.webmagic.pipeline.PageModelPipeline;
 import core.ModelPageProcessor;
 import core.ModelPipeline;
+import core.Pipeline;
 import core.Site;
-
-import us.codecraft.webmagic.pipeline.PageModelPipeline;
 
 public class OsseanExtractor extends TimerTask {
 	private Site site;
@@ -28,11 +31,15 @@ public class OsseanExtractor extends TimerTask {
 
 	private ModelPipeline modelPipeline;
 
+	protected List<Pipeline> pipelines = new ArrayList<Pipeline>();
+
 	private ModelPageProcessor modelPageProcessor;
 
 	private String cursorPath;
 
 	public String defaultPath = "./cursor/cursor.txt";
+
+	public List<String> modelName = new ArrayList<String>();
 
 	protected OsseanExtractor(ModelPageProcessor modelPageProcessor) {
 		this.modelPageProcessor = modelPageProcessor;
@@ -43,10 +50,11 @@ public class OsseanExtractor extends TimerTask {
 		this(ModelPageProcessor.create(pageModels));
 		this.site = site;
 		this.modelPipeline = new ModelPipeline();
-
+		this.addPipeline(modelPipeline);
 		for (Class<?> pageModel : pageModels) {
+			modelName.add(pageModel.getCanonicalName());
 			if (pageModelPipeline != null) {
-				this.modelPipeline.put(pageModel, pageModelPipeline);
+				this.modelPipeline.put(pageModel, pageModelPipeline);/*.put(clazz, pageModelPipeline)(pageModel, pageModelPipeline);*/
 			}
 		}
 	}
@@ -68,6 +76,21 @@ public class OsseanExtractor extends TimerTask {
 
 	public OsseanExtractor setCursorPath(String cursorPath) {
 		this.cursorPath = cursorPath;
+		return this;
+	}
+
+	public OsseanExtractor addPipeline(Pipeline pipeline) {
+		this.pipelines.add(pipeline);
+		return this;
+	}
+
+	public OsseanExtractor setPipelines(List<Pipeline> pipelines) {
+		this.pipelines = pipelines;
+		return this;
+	}
+
+	public OsseanExtractor clearPipeline() {
+		pipelines = new ArrayList<Pipeline>();
 		return this;
 	}
 
@@ -95,9 +118,10 @@ public class OsseanExtractor extends TimerTask {
 					// 记录该page是否被抽取，但是还没有存储
 					rawPage.setExtracted(true);
 					if (!rawPage.getPage().getResultItems().isSkip()) {
-						modelPipeline.process(rawPage.getPage()
-								.getResultItems(), null);
+						for(Pipeline pipeline:pipelines)
+							pipeline.process(rawPage.getPage().getResultItems(), null);
 						// 记录页面被是否保存下来
+						if(rawPage.getPage().isAllResultSkip(modelName.toArray(new String[modelName.size()])));
 						rawPage.setStored(true);
 					}
 				} catch (Exception e) {
@@ -135,6 +159,10 @@ public class OsseanExtractor extends TimerTask {
 		}
 		if (readCursor == null) {
 			readCursor = new ReadCursor(cursorPath);
+		}
+
+		if (pipelines.isEmpty()) {
+			pipelines.add((Pipeline) new ConsolePipeline());
 		}
 	}
 

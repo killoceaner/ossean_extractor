@@ -38,7 +38,7 @@ public class TestForCsdnTopic {
 
 	@SuppressWarnings("serial")
 	@Test
-	public void TestForCsdnTopicModel2() {
+	public void TestForCsdnTopicModel2( ) {
 		final String titleFile = "C:/Users/Administrator/Desktop/CsdnModel/page";
 		Map<String, String> files = new LinkedHashMap<String, String>() {
 			{
