@@ -1,12 +1,15 @@
 package net.trustie.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import us.codecraft.webmagic.model.annotation.ExtractBy;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
+import us.codecraft.webmagic.model.annotation.ExtractBy;
+
 import extension.StringHandler;
 
 @ExtractBy("//*[@id='container']/div[@id='container_content']/div[@id='main']")
@@ -23,6 +26,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 	private String extractTime;
 
 	private String tag = "";
+
 
 	private int history = 0;
 
@@ -63,7 +67,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		// 处理帖子的标签
 		tag = StringHandler.combineTags(this.tags);
 
-		// 处理浏览次数
+		// 处理浏览次数m
 		this.viewNum = StringHandler.matchRightString(this.viewNum,
 				"浏览: [0-9]+次");
 		this.viewNum = StringHandler.matchRightString(this.viewNum, "\\d+");
@@ -76,7 +80,9 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		if (StringUtils.isNotBlank(this.authorUrl)) {
 			this.authorUrl = "http://q.cnblogs.com" + this.authorUrl;
 		} else
+
 			page.setResultSkip(this, true);
+
 
 		// 处理园豆
 		if (StringUtils.isNotBlank(this.scoreBean))
@@ -88,7 +94,9 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		this.answerNum = StringHandler
 				.findRigthString(this.answerNum, "(", ")");
 		if (this.answerNum == null)
+
 			this.answerNum = "0";
+
 		if (StringUtils.isNotBlank(this.bestAnswer)) {
 			this.answerNum = String
 					.valueOf(Integer.parseInt(this.answerNum) + 1);
@@ -113,20 +121,29 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 	}
 
 	public void validate(Page page) {
-		if (!StringHandler.isAllNotBlank(this.questionTitle, this.author)) {
-			page.setResultSkip(this, true);
-			return;
-		}
 
-		if (!StringHandler.canFormatterInteger(this.answerNum, this.viewNum,
-				this.voteNum, this.scoreBean)) {
-			page.setResultSkip(this, true);
-			return;
-		}
+		// TODO Auto-generated method stub
+		if (!page.getResultItems()
+				.getFieldSkip(this.getClass().getCanonicalName())) {
+			if (!StringHandler.isAllNotBlank(this.questionTitle, this.author)) {
+				page.setResultSkip(this, true);/*.setModelSkip(this.getClass().getCanonicalName(), true);*/
+				return;
+			}
 
-		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime)) {
-			page.setResultSkip(this, true);
-			return;
+			if (!StringHandler.canFormatterInteger(this.answerNum,
+					this.viewNum, this.voteNum, this.scoreBean)) {
+				page.setResultSkip(this, true);  /*.setModelSkip(this.getClass().getCanonicalName(), true);*/
+				return;
+			}
+
+			if (!StringHandler
+					.canFormatterDate(this.postTime, this.extractTime)) {
+				page.setResultSkip(this, true);  /*.setModelSkip(this.getClass().getCanonicalName(), true);*/
+				return;
+			}
+
+			if (this.questionId == "-1")
+				page.setResultSkip(this, true);  /*.setModelSkip(this.getClass().getCanonicalName(), true);*/
 		}
 	}
 

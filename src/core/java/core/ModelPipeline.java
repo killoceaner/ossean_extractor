@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 
+
+
 /**
  * The extension to Pipeline for page model extractor.
  * 

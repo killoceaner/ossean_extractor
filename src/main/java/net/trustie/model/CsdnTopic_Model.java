@@ -97,16 +97,22 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 		if (StringHandler.isAtLeastOneBlank(this.topicTitle, this.author,
 				this.authorUrl, this.topicUrl)) {
 			page.setResultSkip(this, true);
+
 			return;
 		}
 
-		if (!StringHandler.canFormatterInteger(this.replyNum, this.topicScore)) {
-			page.setResultSkip(this, true);
-			return;
-		}
+		if (!page.getResultItems().isSkip()) {
+			if (!StringHandler.canFormatterInteger(this.replyNum,
+					this.topicScore)) {
+				page.setResultSkip(this, true);
+				return;
+			}
 
-		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime)) {
-			page.setResultSkip(this, true);
+			if (!StringHandler
+					.canFormatterDate(this.postTime, this.extractTime)) {
+				page.setResultSkip(this,true);
+			}
+
 		}
 	}
 

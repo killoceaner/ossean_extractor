@@ -53,7 +53,7 @@ public class OsseanExtractor extends TimerTask {
 		for (Class<?> pageModel : pageModels) {
 			modelName.add(pageModel.getCanonicalName());
 			if (pageModelPipeline != null) {
-				this.modelPipeline.put(pageModel, pageModelPipeline);
+				this.modelPipeline.put(pageModel, pageModelPipeline);/*.put(clazz, pageModelPipeline)(pageModel, pageModelPipeline);*/
 			}
 		}
 	}
@@ -115,6 +115,7 @@ public class OsseanExtractor extends TimerTask {
 					// 记录该page是否被抽取，但是还没有存储
 					rawPage.setExtracted(true);
 					if (!rawPage.getPage().getResultItems().isSkip()) {
+
 						for (Pipeline pipeline : pipelines)
 							pipeline.process(
 									rawPage.getPage().getResultItems(), null);
@@ -124,6 +125,7 @@ public class OsseanExtractor extends TimerTask {
 										modelName.toArray(new String[modelName
 												.size()])))
 							rawPage.setStored(true);
+
 					}
 				} catch (Exception e) {
 					// 记录出错页面

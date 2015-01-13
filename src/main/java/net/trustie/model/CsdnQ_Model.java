@@ -6,32 +6,36 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import us.codecraft.webmagic.Page;
-import us.codecraft.webmagic.model.AfterExtractor;
-import us.codecraft.webmagic.model.annotation.ExtractBy;
-import extension.StringHandler;
 
-@ExtractBy("//*[@id='questions-show']/div[3]")
-public class CsdnQ_Model implements AfterExtractor{
+import core.Page;
+import core.AfterExtractor;
+import core.ValidateExtractor;
+import extension.StringHandler;
+import us.codecraft.webmagic.model.annotation.ExtractBy;
+import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
+
+
+/*@ExtractBy("//*div[@class='main clearfix']/div[@class='persion_section']")*/
+public class CsdnQ_Model implements AfterExtractor,ValidateExtractor{
 	
 
     private int issueId=0;
-    private String issueUrl=" ";
-    @ExtractBy(" //*[@id='questions-show']/div[3]/div[2]/div[1]/div[1]/dl/dt/text()")
+    private String issueUrl="";
+    @ExtractBy("//*div[@class='questions_detail_con']/dl/dt/text()")
     private String issueTitle="";
-    @ExtractBy("//*[@id='cut_intro']/p/text()")
+    @ExtractBy("//*[@id='cut_intro']/allText()")
     private String issueContent="";
-    @ExtractBy("//*[@id='questions-show']/div[3]/div[3]/div[1]/div/div/dl/dt/a/text()")
-    private String author="";
-    @ExtractBy("//*[@id='question_159202_vote']/a/text()")
-    private int voteNum=0;
-    @ExtractBy(value="//*[@id='questions-show']/div[3]/div[2]/div[1]/div[1]/dl/div/allText()")
-    private String tag;
+    @ExtractBy("//*div/a[@class='approve']/text()")
+    private String voteNum;
+    private String  tag;
+    @ExtractBy(value="//*/div[@class='tags']/a/allText()")
     private List<String>  tags;
-    @ExtractBy("//*[@id='questions-show']/div[3]/div[3]/div[1]/div/div/p/text()")
+    @ExtractBy("//*div[@class='persion_article']/div[@class='mod_user_info']/div[@class='user_info']/div[@class='info_box clearfix']/p/text()")
     private String askTime="";
-     @ExtractBy("//*[@id='questions-show']/div[3]/div[3]/div[1]/div/div/dl/dt/a/@href()")
-    private String author_url;
+    @ExtractBy(value="//*div[@class='persion_article']/div[@class='mod_user_info']/div[@class='user_info']/div[@class='info_box clearfix']/dl[@class='person_info']/dt/a/text()",source =Source.RawHtml)
+    private String author="";
+    @ExtractBy(value="//*dl[@class='person_info']/dt/a/@href",source=Source.RawHtml)
+    private String  author_url;
     private int history=0;
     private String urlMD5="";
     private String pageMD5="";
@@ -44,21 +48,16 @@ public void afterProcess(Page page){
 	//对extractTime进行处理
 	 SimpleDateFormat bartDateFormat =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
      this.extractTime = bartDateFormat.format(new Date());
-     this.issueUrl=page.getRequest().getUrl();
-	
+     this.issueUrl=page.getPageUrl();
 	this.urlMD5=this.urlMD5 = DigestUtils.md5Hex(issueUrl);
-	
 	this.pageMD5= DigestUtils.md5Hex(voteNum+issueContent);
-	
 	this.issueId=(Integer.parseInt(issueUrl.substring(issueUrl.lastIndexOf("/")+1)));
 	//对tags进行处理	
- /*StringHandler SH=new StringHandler();
- SH.combineTags(tags);*/
 	this.tag=StringHandler.combineTags(tags);
    
    //对发布时间进行处理
    String time=this.askTime;
-   time =time.replace(".","-")+":00";
+   time =time.replace(".","-").replace("创建自","").trim()+":00";
    this.askTime=time;
 }
 
@@ -68,55 +67,37 @@ public String getTag() {
 	return tag;
 }
 
-
-
 public void setTag(String tag) {
 	this.tag = tag;
 }
-
-
 
 public void setExtractTime(String extractTime) {
 	this.extractTime = extractTime;
 }
 
-
-
 public int getIssueId() {
 	return issueId;
 }
-
-
 
 public void setIssueId(int issueId) {
 	this.issueId = issueId;
 }
 
-
-
 public String getIssueTitle() {
 	return issueTitle;
 }
-
-
 
 public void setIssueTitle(String issueTitle) {
 	this.issueTitle = issueTitle;
 }
 
-
-
 public String getIssueContent() {
 	return issueContent;
 }
 
-
-
 public void setIssueContent(String issueContent) {
 	this.issueContent = issueContent;
 }
-
-
 
 public String getAuthor() {
 	return author;
@@ -130,13 +111,13 @@ public void setAuthor(String author) {
 
 
 
-public int getVoteNum() {
+public String getVoteNum() {
 	return voteNum;
 }
 
 
 
-public void setVoteNum(int voteNum) {
+public void setVoteNum(String voteNum) {
 	this.voteNum = voteNum;
 }
 
@@ -230,4 +211,30 @@ public String getExtractTime() {
 	return extractTime;
 }
 
+
+
+@Override
+public void validate(Page page) {
+	// TODO Auto-generated method stub
+	// TODO Auto-generated method stub
+			if (StringHandler.isAtLeastOneBlank(this.issueTitle, this.author,
+					this.author_url)) {
+				page.setResultSkip(this, true);
+				return;
+			}
+
+			if (!page.getResultItems().isSkip()) {
+				if (!StringHandler.canFormatterInteger(this.voteNum)) {
+					page.setResultSkip(this, true);
+					return;
+				}
+
+				if (!StringHandler
+						.canFormatterDate(this.askTime, this.extractTime)) {
+					page.setResultSkip(this,true);
+				}
+	
+}
+
+}
 }

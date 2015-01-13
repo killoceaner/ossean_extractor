@@ -5,15 +5,18 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import us.codecraft.webmagic.Page;
-import us.codecraft.webmagic.model.AfterExtractor;
-import us.codecraft.webmagic.model.annotation.ExtractBy;
+
+import core.AfterExtractor;
+import core.Page;
+import core.ValidateExtractor;
 import extension.StringHandler;
+import us.codecraft.webmagic.model.annotation.ExtractBy;
+import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 
-@ExtractBy("//*body/div[@id='wrap']/div[@class='container']/div[@class='qa_lft top20']")//限定抽取区域
-public class DeWenQ_Model  implements AfterExtractor{
 
-	 private int issueId=0;
+@ExtractBy("//*div[@class='container']/div[@class='qa_lft top20']") //限定抽取区域
+public class DeWenQ_Model  implements AfterExtractor,ValidateExtractor{
+     private int issueId=0;
 	 private String issueUrl="";
 	@ExtractBy("//*h1[@id='title' ]/text()")
 	 private String issueTitle="";
@@ -23,30 +26,29 @@ public class DeWenQ_Model  implements AfterExtractor{
 	 private String tag;
    @ExtractBy("//*div[@id='topic']/allText()")
 	 private List<String> tags;
-   @ExtractBy("//*div[@class='stats']/p/b/text()")
+   @ExtractBy(value="//*div[@class='stats']/p/b/text()",source=Source.RawHtml)
 	 private String scanerNum="";
-   @ExtractBy("//*div[@class='follow_questions']/h2/span/text()")
-	 private String attentionNum="";
+   @ExtractBy(value="//*div[@class='follow_questions']/h2/span/text()",source=Source.RawHtml)
+	 private String  attentionNum="";
    @ExtractBy("//*div[@class='function_items']/a/b/text()")
 	 private String commentNum="";
    @ExtractBy("//*div[@class='function_items']/span/text()")
 	 private String  postTime="";
 	 private String pageMD5="";
-	@ExtractBy("//*[@id='changebg']/div[1]/ul/li[2]/p[1]/a/text()")
+	@ExtractBy("//*[@id='changebg']/div[1]/ul/li[@class='list_tt']/p[@class='lftp']/a/text()")
 	 private String author="";
-	@ExtractBy("//*[@id='changebg']/div[1]/ul/li[2]/p[1]/a/@href")
+	@ExtractBy("//*[@id='changebg']/div[1]/ul/li[@class='list_tt']/p[@class='lftp']/a/@href")
 	 private String author_url;
 	 private int history=0;
 	 private String extractTime;
 	 
 	public void afterProcess(Page page){
-		StringHandler Sh=new StringHandler();
 		//对issueUrl进行处理
-		this.issueUrl= page.getRequest().getUrl();
+		this.issueUrl= page.getPageUrl();
 		//对issueId进行处理
-		String s1=issueTitle.substring(0, issueTitle.lastIndexOf("/"));
-		String s2=issueTitle.substring(issueTitle.lastIndexOf("/"));
-	    this.issueId=Integer.parseInt(s2);
+	/*	String s1=issueTitle.substring(0, issueTitle.lastIndexOf("/"));*/
+		String s2=issueUrl.substring(issueUrl.lastIndexOf("/")+1);
+	    this.issueId=Integer.parseInt(s2.trim());
 		//对issueUrlMD5进行处理
 		this.issueUrlMD5=DigestUtils.md5Hex(issueUrl);
 		//对tags进行处理
@@ -57,30 +59,9 @@ public class DeWenQ_Model  implements AfterExtractor{
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd HH:mm:ss");
 		this.extractTime = simpleDateFormat.format(new Date());
-	}
-
-	public String getTag() {
-		return tag;
-	}
-
-	public void setTag(String tag) {
-		this.tag = tag;
-	}
-
-	public String getPostTime() {
-		return postTime;
-	}
-
-	public void setPostTime(String postTime) {
-		this.postTime = postTime;
-	}
-
-	public String getExtractTime() {
-		return extractTime;
-	}
-
-	public void setExtractTime(String extractTime) {
-		this.extractTime = extractTime;
+		this.author_url="http://www.dewen.io".trim()+this.author_url.trim();
+		this.scanerNum=this.scanerNum.replace("(", "").replace(")","").trim();
+		this.attentionNum=attentionNum.replace("（", "").replace("）","").replace("人","").trim();
 	}
 
 	public int getIssueId() {
@@ -91,20 +72,20 @@ public class DeWenQ_Model  implements AfterExtractor{
 		this.issueId = issueId;
 	}
 
-	public String getIssueTitle() {
-		return issueTitle;
-	}
-
-	public void setIssueTitle(String issueTitle) {
-		this.issueTitle = issueTitle;
-	}
-
 	public String getIssueUrl() {
 		return issueUrl;
 	}
 
 	public void setIssueUrl(String issueUrl) {
 		this.issueUrl = issueUrl;
+	}
+
+	public String getIssueTitle() {
+		return issueTitle;
+	}
+
+	public void setIssueTitle(String issueTitle) {
+		this.issueTitle = issueTitle;
 	}
 
 	public String getIssueDetail() {
@@ -123,7 +104,15 @@ public class DeWenQ_Model  implements AfterExtractor{
 		this.issueUrlMD5 = issueUrlMD5;
 	}
 
-	public List<String>  getTags() {
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public List<String> getTags() {
 		return tags;
 	}
 
@@ -155,12 +144,12 @@ public class DeWenQ_Model  implements AfterExtractor{
 		this.commentNum = commentNum;
 	}
 
-	public String getCrawlerTime() {
+	public String getPostTime() {
 		return postTime;
 	}
 
-	public void setCrawlerTime(String crawlerTime) {
-		this.postTime = crawlerTime;
+	public void setPostTime(String postTime) {
+		this.postTime = postTime;
 	}
 
 	public String getPageMD5() {
@@ -195,4 +184,38 @@ public class DeWenQ_Model  implements AfterExtractor{
 		this.history = history;
 	}
 
+	public String getExtractTime() {
+		return extractTime;
+	}
+
+	public void setExtractTime(String extractTime) {
+		this.extractTime = extractTime;
+	}
+
+	@Override
+	public void validate(Page page) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+				if (StringHandler.isAtLeastOneBlank(this.issueTitle, this.author,
+						this.author_url)) {
+					page.setResultSkip(this, true);
+					return;
+				}
+
+				if (!page.getResultItems().isSkip()) {
+					if (!StringHandler.canFormatterInteger(this.commentNum,
+							this.scanerNum)) {
+						page.setResultSkip(this, true);
+						return;
+					}
+
+					if (!StringHandler
+							.canFormatterDate(this.extractTime, this.postTime)) {
+						page.setResultSkip(this,true);
+					}
+		
+	}
+	
+
+}
 }
