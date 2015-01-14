@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SITE='csdn_topic'
+
 tmp='./bin/resources'
 tmp='./target/classes':$tmp
 tmp='./target/fetchnetworks-1.0-SNAPSHOT-jar-with-dependencies-without-resources/*':$tmp
