@@ -33,7 +33,7 @@ public class CsdnTopic_Extractor {
 		generateRawPage.setTableName("csdn_topic_html_detail");
 		OsseanExtractor
 				.create(Site.me().setResultNum(1000), modelPipeline,
-						CsdnTopic_Model.class).setUUID("OschinaTopics")
+						CsdnTopic_Model.class).setUUID("csdnTopics")
 				.setDownloader(generateRawPage).start();
 	}
 
