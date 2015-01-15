@@ -2,6 +2,9 @@
 
 SITE='csdn_topic'
 
+find ./target/classes/spring |xargs rm -f -r
+find ./target/classes -name "*.xml"|xargs rm -f
+
 tmp='./bin/resources'
 tmp='./target/classes':$tmp
 tmp='./target/osseanextractor-0.0.1-jar-with-dependencies-without-resources/*':$tmp
