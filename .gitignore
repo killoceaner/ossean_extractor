@@ -1,5 +1,6 @@
-/target/
+/target
 /.settings
-/bin
-/log
+/log/*
+/src/test/*
+/src/main/resources
 /cursor
