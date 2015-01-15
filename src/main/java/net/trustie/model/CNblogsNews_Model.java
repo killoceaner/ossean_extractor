@@ -232,14 +232,12 @@ public class CNblogsNews_Model implements AfterExtractor,ValidateExtractor{
 					page.setResultSkip(this, true);
 					return;
 				}
-
-				/*if (!page.getResultItems().isSkip()) {
+            /*if (!page.getResultItems().isSkip()) {
 					if (!StringHandler.canFormatterInteger(this.,
 							this.topicScore)) {
 						page.setResultSkip(this, true);
 						return;
-					}
-*/
+					}*/
 					if (!StringHandler
 							.canFormatterDate(this.relative_time, this.extractTime)) {
 						page.setResultSkip(this,true);

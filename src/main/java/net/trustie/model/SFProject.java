@@ -1,5 +1,4 @@
 package net.trustie.model;
-
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,15 +10,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import us.codecraft.webmagic.Page;
-import us.codecraft.webmagic.model.AfterExtractor;
+import core.AfterExtractor;
+import core.Page;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
-import us.codecraft.webmagic.model.annotation.ExtractByUrl;
-import us.codecraft.webmagic.model.annotation.HelpUrl;
-import us.codecraft.webmagic.model.annotation.TargetUrl;
 
-
-@ExtractBy("//body[@id='pg_project']/div[@id='page-body']/article[@id='project']")
+@ExtractBy("//body[@id='pg_project']/div[@id='page-body']/article[@id='project']")//限定抽取区域
 public class SFProject implements AfterExtractor {
 	// @ExtractBy("//div[@id='project-header']/section[@id='project-title']/h1/allText() | //div[@id='project-header']/div[@class='content-group']/h1[@class='project-name']/text()")
 	private String name = "";
@@ -52,14 +47,14 @@ public class SFProject implements AfterExtractor {
 	private String urlMd5;
 	private String pageMd5;
 	private int history = 0;
-	private String html;
+	//private String html;
 
 	public void afterProcess(Page page) {
 		//long start = System.currentTimeMillis();
 
 		// justify it's enterprise or bluesteel user
-		this.html = page.getHtml().toString();
-		this.urlMd5 = DigestUtils.md5Hex(page.getRequest().getUrl());
+		//this.html = page.getHtml().toString();
+		this.urlMd5 = DigestUtils.md5Hex(page.getPageUrl());
 		SimpleDateFormat bartDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd HH:mm:ss");
 		this.collectTime = bartDateFormat.format(new Date());
@@ -518,13 +513,13 @@ public class SFProject implements AfterExtractor {
 		this.history = history;
 	}
 
-	public String getHtml() {
-		return html;
-	}
-
-	public void setHtml(String html) {
-		this.html = html;
-	}
+//	public String getHtml() {
+//		return html;
+//	}
+//
+//	public void setHtml(String html) {
+//		this.html = html;
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -543,8 +538,7 @@ public class SFProject implements AfterExtractor {
 				+ ", programmingLanguage=" + programmingLanguage
 				+ ", registeredTime=" + registeredTime + ", collectTime="
 				+ collectTime + ", url=" + url + ", urlMD5=" + urlMd5
-				+ ", pageMD5=" + pageMd5 + ", history=" + history + ", html="
-				+ html + "]";
+				+ ", pageMD5=" + pageMd5 + ", history=" + history  + "]";
 	}
 
 }
