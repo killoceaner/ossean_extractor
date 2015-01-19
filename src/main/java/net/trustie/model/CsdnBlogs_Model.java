@@ -18,7 +18,7 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 
 	private String blogPageMD5;
 
-	private String blogUrlMD5;
+	private String blogUrl;
 
 	private String extractTime;
 
@@ -71,8 +71,12 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 		this.commentNum = StringHandler.findRigthString(this.commentNum, "(",
 				")").trim();
 
+		// 处理blogUrl
+		this.blogUrl = page.getPageUrl();
+
 		// 处理readNum
-		this.readNum = StringHandler.matchRightString(this.readNum, "\\d+").trim();
+		this.readNum = StringHandler.matchRightString(this.readNum, "\\d+")
+				.trim();
 
 		// 处理blogTag
 		this.blogTag = StringHandler.combineTags(this.blogTags);
@@ -80,36 +84,33 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 		// 处理blogCategory
 		this.blogCategory = StringUtils.join(this.blogCategories, ",");
 
-		// 处理blogUrlMD5
-		this.blogUrlMD5 = DigestUtils.md5Hex(page.getPageUrl());
-
 		// 处理blogPageMD5
 		this.blogPageMD5 = DigestUtils.md5Hex(this.commentNum
 				+ this.blogContent);
 
-		//处理抽取extractTime
+		// 处理抽取extractTime
 		this.extractTime = StringHandler.getExtractTime();
-		
-		//处理postTime
-		this.postTime=this.postTime+":00";
+
+		// 处理postTime
+		this.postTime = this.postTime + ":00";
 	}
 
 	@Override
-	public void validate(Page page) {		
+	public void validate(Page page) {
 		if (StringHandler.isAtLeastOneBlank(this.blogTitle, this.author,
 				this.authorUrl)) {
 			page.setResultSkip(this, true);
 			return;
 		}
-		
+
 		if (!StringHandler.canFormatterInteger(this.blogId, this.commentNum,
 				this.readNum, this.supportNum, this.opposeNum)) {
 			page.setResultSkip(this, true);
 			return;
-		}		
+		}
 
 		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime))
-			page.setResultSkip(this, true);			
+			page.setResultSkip(this, true);
 	}
 
 	public String getBlogId() {
@@ -126,14 +127,6 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 
 	public void setBlogPageMD5(String blogPageMD5) {
 		this.blogPageMD5 = blogPageMD5;
-	}
-
-	public String getBlogUrlMD5() {
-		return blogUrlMD5;
-	}
-
-	public void setBlogUrlMD5(String blogUrlMD5) {
-		this.blogUrlMD5 = blogUrlMD5;
 	}
 
 	public String getExtractTime() {
@@ -255,4 +248,13 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 	public void setBlogCategories(List<String> blogCategories) {
 		this.blogCategories = blogCategories;
 	}
+
+	public String getBlogUrl() {
+		return blogUrl;
+	}
+
+	public void setBlogUrl(String blogUrl) {
+		this.blogUrl = blogUrl;
+	}
+
 }
