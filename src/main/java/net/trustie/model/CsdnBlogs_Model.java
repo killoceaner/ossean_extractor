@@ -255,6 +255,5 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 
 	public void setBlogUrl(String blogUrl) {
 		this.blogUrl = blogUrl;
-	}
-
+	}	
 }
