@@ -14,3 +14,5 @@ CLASSPATH=$tmp:$CLASSPATH
 echo $CLASSPATH
 
 java -classpath $CLASSPATH net.trustie.extractor.CsdnBlogs_Extractor >>log/${SITE}.log 2>&1 &
+
+
