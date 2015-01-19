@@ -28,7 +28,7 @@ public class CsdnBlogs_Extractor {
 		generateRawPage.setTableName("csdn_blog_html_detail");
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						CsdnBlogs_Model.class).setUUID("CsdnBlogs")
+						CsdnBlogs_Model.class).setUUID("csdnBlogs")
 				.setDownloader(generateRawPage).start();
 	}
 

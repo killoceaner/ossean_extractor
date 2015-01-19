@@ -69,10 +69,10 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 
 		// commentNum
 		this.commentNum = StringHandler.findRigthString(this.commentNum, "(",
-				")");
+				")").trim();
 
 		// 处理readNum
-		this.readNum = StringHandler.matchRightString(this.readNum, "\\d+");
+		this.readNum = StringHandler.matchRightString(this.readNum, "\\d+").trim();
 
 		// 处理blogTag
 		this.blogTag = StringHandler.combineTags(this.blogTags);
@@ -87,8 +87,11 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 		this.blogPageMD5 = DigestUtils.md5Hex(this.commentNum
 				+ this.blogContent);
 
-		// extractTime
+		//处理抽取extractTime
 		this.extractTime = StringHandler.getExtractTime();
+		
+		//处理postTime
+		this.postTime=this.postTime+":00";
 	}
 
 	@Override
@@ -106,7 +109,7 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 		}		
 
 		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime))
-			page.setResultSkip(this, true);		
+			page.setResultSkip(this, true);			
 	}
 
 	public String getBlogId() {

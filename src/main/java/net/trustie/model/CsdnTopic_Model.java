@@ -38,7 +38,7 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 	@ExtractBy(value = "//*[@class='wraper']/div[@class='detail_tbox']/div[@class='detail_title']/h1/allText()", source = Source.RawHtml)
 	private String topicScore = "";
 
-	@ExtractBy(value = "//*[@class='wraper']/div[@class='detail_tbox']/div[@class='detail_title']/h1/span[@class='title text_overflow']/text()", source = Source.RawHtml)
+	@ExtractBy(value = "//*[@class='wraper']/div[@class='detail_tbox']/div[@class='detail_title']/h1/span[@class='title']/text()", source = Source.RawHtml)
 	private String topicTitle = "";
 
 	@ExtractBy("//*div[@class='post_body']/allText()")
@@ -66,7 +66,7 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 		this.topicScore = StringHandler.matchRightString(this.topicScore,
 				"问题点数：\\d+分");
 		this.topicScore = StringHandler.matchRightString(this.topicScore,
-				"\\d+");
+				"\\d+").trim();
 
 		// 处理帖子的回复次数
 		this.replyNum = StringHandler.subString(this.replyNum, "回复次数：").trim();
