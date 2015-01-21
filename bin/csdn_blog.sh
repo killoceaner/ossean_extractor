@@ -2,7 +2,6 @@
 
 SITE='csdn_blog'
 
-find ./target/classes/spring |xargs rm -f -r
 find ./target/classes -name "*.xml"|xargs rm -f
 
 tmp='./bin/resources'
@@ -11,7 +10,7 @@ tmp='./target/osseanextractor-0.0.1-jar-with-dependencies-without-resources/*':$
 
 CLASSPATH=$tmp:$CLASSPATH
 
-JAVA_OPTS="-ms128m -mx128m -Xmn128m -Djava.awt.headless=true -XX:MaxPermSize=128m" 
+JAVA_OPTS="-ms256m -mx256m -Xmn256m -Djava.awt.headless=true -XX:MaxPermSize=256m" 
 
 echo $CLASSPATH
 
