@@ -69,14 +69,13 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 
 		// commentNum
 		this.commentNum = StringHandler.findRigthString(this.commentNum, "(",
-				")").trim();
+				")");
 
 		// 处理blogUrl
 		this.blogUrl = page.getPageUrl();
 
 		// 处理readNum
-		this.readNum = StringHandler.matchRightString(this.readNum, "\\d+")
-				.trim();
+		this.readNum = StringHandler.matchRightString(this.readNum, "\\d+");
 
 		// 处理blogTag
 		this.blogTag = StringHandler.combineTags(this.blogTags);
@@ -255,5 +254,5 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 
 	public void setBlogUrl(String blogUrl) {
 		this.blogUrl = blogUrl;
-	}	
+	}
 }

@@ -1,15 +1,14 @@
 package net.trustie.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import us.codecraft.webmagic.model.annotation.ExtractBy;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-import us.codecraft.webmagic.model.annotation.ExtractBy;
-
 import extension.StringHandler;
 
 @ExtractBy("//*[@id='container']/div[@id='container_content']/div[@id='main']")

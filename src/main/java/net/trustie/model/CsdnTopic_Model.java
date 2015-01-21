@@ -50,8 +50,7 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 	@ExtractBy("//dl/dd[@class='username']/a/@href")
 	private String authorUrl = "";
 
-	public void afterProcess(Page page) {
-		// TODO Auto-generated method stub
+	public void afterProcess(Page page) {		
 		// 处理帖子的url
 		this.topicUrl = page.getPageUrl();
 
@@ -66,10 +65,10 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 		this.topicScore = StringHandler.matchRightString(this.topicScore,
 				"问题点数：\\d+分");
 		this.topicScore = StringHandler.matchRightString(this.topicScore,
-				"\\d+").trim();
+				"\\d+");
 
 		// 处理帖子的回复次数
-		this.replyNum = StringHandler.subString(this.replyNum, "回复次数：").trim();
+		this.replyNum = StringHandler.subString(this.replyNum, "回复次数：");
 
 		// 处理帖子的标签
 		this.tag = StringHandler.combineTags(tags);
@@ -92,8 +91,7 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 
 	}
 
-	public void validate(Page page) {
-		// TODO Auto-generated method stub
+	public void validate(Page page) {		
 		if (StringHandler.isAtLeastOneBlank(this.topicTitle, this.author,
 				this.authorUrl, this.topicUrl)) {
 			page.setResultSkip(this, true);
@@ -112,7 +110,6 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 					.canFormatterDate(this.postTime, this.extractTime)) {
 				page.setResultSkip(this,true);
 			}
-
 		}
 	}
 
