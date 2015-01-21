@@ -11,6 +11,8 @@ import extension.StringHandler;
 
 @ExtractBy("//*div[@id='main_wrapper']/div[@id='sideleft']/div[@id='news_main']")
 public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
+	private int newsId;
+	
 	private String newsUrl;
 
 	private String pageMD5;
@@ -49,6 +51,9 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 	private String newsCategorie;
 
 	public void afterProcess(Page page) {
+		//处理newsId
+		this.newsId=Integer.parseInt(StringHandler.matchRightString(page.getPageUrl(), "\\d+"));
+		
 		// 处理newsUrl
 		this.newsUrl = page.getPageUrl();
 
@@ -188,5 +193,13 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 
 	public void setNewsCategorie(String newsCategorie) {
 		this.newsCategorie = newsCategorie;
-	}	
+	}
+
+	public int getNewsId() {
+		return newsId;
+	}
+
+	public void setNewsId(int newsId) {
+		this.newsId = newsId;
+	}		
 }

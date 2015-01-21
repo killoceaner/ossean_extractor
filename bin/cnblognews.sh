@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SITE='csdn_topic'
+SITE='cnblog_news'
 
 find ./target/classes/spring |xargs rm -f -r
 find ./target/classes -name "*.xml"|xargs rm -f
@@ -16,6 +16,4 @@ JAVA_OPTS="-ms128m -mx128m -Xmn128m -Djava.awt.headless=true -XX:MaxPermSize=128
 
 echo $CLASSPATH
 
-java $JAVA_OPTS -classpath $CLASSPATH net.trustie.extractor.CsdnTopic_Extractor >>log/${SITE}.log 2>&1 &
-
-
+java $JAVA_OPTS -classpath $CLASSPATH net.trustie.extractor.CNblogNews_Extractor >>log/${SITE}.log 2>&1 &

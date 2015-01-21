@@ -11,8 +11,10 @@ tmp='./target/osseanextractor-0.0.1-jar-with-dependencies-without-resources/*':$
 
 CLASSPATH=$tmp:$CLASSPATH
 
+JAVA_OPTS="-ms128m -mx128m -Xmn128m -Djava.awt.headless=true -XX:MaxPermSize=128m" 
+
 echo $CLASSPATH
 
-java -classpath $CLASSPATH net.trustie.extractor.CsdnBlogs_Extractor >>log/${SITE}.log 2>&1 &
+java $JAVA_OPTS -classpath $CLASSPATH net.trustie.extractor.CsdnBlogs_Extractor >>log/${SITE}.log 2>&1 &
 
 
