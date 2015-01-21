@@ -72,8 +72,11 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 				.findRigthString(this.scanerNum, "(", ")");
 
 		// 处理attentionNum
-		this.attentionNum = StringHandler.matchRightString(this.attentionNum,
-				"\\d+");
+		if (answerNum != null)
+			this.attentionNum = StringHandler.matchRightString(
+					this.attentionNum, "\\d+");
+		else
+			this.attentionNum = "0";
 
 		// 处理postTime
 		this.postTime = this.postTime.trim() + " 00:00:00";
