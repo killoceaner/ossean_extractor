@@ -10,7 +10,7 @@ tmp='./target/osseanextractor-0.0.1-jar-with-dependencies-without-resources/*':$
 
 CLASSPATH=$tmp:$CLASSPATH
 
-JAVA_OPTS="-ms256m -mx256m -Xmn256m -Djava.awt.headless=true -XX:MaxPermSize=256m" 
+JAVA_OPTS="-Xms128m -Xmx128m -Xmn80m" 
 
 echo $CLASSPATH
 
