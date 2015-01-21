@@ -8,6 +8,6 @@ public interface CNblogNews_Dao {
 
 	@Insert("insert into csdnblog_news"
 			+ "(`newsId`,`newsUrl`,`newsTitle`,`tag`,`newsCategorie`,`newsContent`,`comeFrom`,`originFrom`,`relativeTime`,`extractTime`,`newsAuthor`,`newsAuthorUrl`,`pageMD5`,`history`)"
-			+ "values (#{newsId},#{newsUrl},#{newsTitle},#{tag},#{newsCategorie},#{newsContent},#{comeFrom},#{originFrom},#{relativeTime},#{extractTime},#{newsAuthor},#{newsAuthorUrl},#{pageMD5},#{history})")
+			+ " values (#{newsId},#{newsUrl},#{newsTitle},#{tag},#{newsCategorie},#{newsContent},#{comeFrom},#{originFrom},#{relativeTime},#{extractTime},#{newsAuthor},#{newsAuthorUrl},#{pageMD5},#{history})")
 	public int add(CNblogsNews_Model cNews_Model);
 }

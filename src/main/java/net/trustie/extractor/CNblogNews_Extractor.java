@@ -25,7 +25,7 @@ public class CNblogNews_Extractor {
 	private GenerateRawPage generateRawPage;
 
 	public void begin() {
-		generateRawPage.setTableName("");
+		generateRawPage.setTableName("cnblogs_news_html_detail");
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
 						CNblogsNews_Model.class).setUUID("cnBlogNews")
