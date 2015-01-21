@@ -1,74 +1,124 @@
 package net.trustie.model;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-
+import us.codecraft.webmagic.model.annotation.ExtractBy;
+import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
 import extension.StringHandler;
-import us.codecraft.webmagic.model.annotation.ExtractBy;
-import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 
+@ExtractBy("//*[@id='wrap']/div[@class='container']/div[@class='qa_lft']")
+public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
+	private String issueId;
 
-@ExtractBy("//*div[@class='container']/div[@class='qa_lft top20']") //限定抽取区域
-public class DeWenQ_Model  implements AfterExtractor,ValidateExtractor{
-     private int issueId=0;
-	 private String issueUrl="";
-	@ExtractBy("//*h1[@id='title' ]/text()")
-	 private String issueTitle="";
-   @ExtractBy("//*div[@class='que_con']/p/text()")
-	 private String issueDetail="";
-	 private String issueUrlMD5="";
-	 private String tag;
-   @ExtractBy("//*div[@id='topic']/allText()")
-	 private List<String> tags;
-   @ExtractBy(value="//*div[@class='stats']/p/b/text()",source=Source.RawHtml)
-	 private String scanerNum="";
-   @ExtractBy(value="//*div[@class='follow_questions']/h2/span/text()",source=Source.RawHtml)
-	 private String  attentionNum="";
-   @ExtractBy("//*div[@class='function_items']/a/b/text()")
-	 private String commentNum="";
-   @ExtractBy("//*div[@class='function_items']/span/text()")
-	 private String  postTime="";
-	 private String pageMD5="";
-	@ExtractBy("//*[@id='changebg']/div[1]/ul/li[@class='list_tt']/p[@class='lftp']/a/text()")
-	 private String author="";
-	@ExtractBy("//*[@id='changebg']/div[1]/ul/li[@class='list_tt']/p[@class='lftp']/a/@href")
-	 private String author_url;
-	 private int history=0;
-	 private String extractTime;
-	 
-	public void afterProcess(Page page){
-		//对issueUrl进行处理
-		this.issueUrl= page.getPageUrl();
-		//对issueId进行处理
-	/*	String s1=issueTitle.substring(0, issueTitle.lastIndexOf("/"));*/
-		String s2=issueUrl.substring(issueUrl.lastIndexOf("/")+1);
-	    this.issueId=Integer.parseInt(s2.trim());
-		//对issueUrlMD5进行处理
-		this.issueUrlMD5=DigestUtils.md5Hex(issueUrl);
-		//对tags进行处理
-		this.tag=StringHandler.combineTags(tags);
-		//对postTime进行处理
-		this.postTime=postTime+" 00:00:00";
-		//对extractTime进行处理
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss");
-		this.extractTime = simpleDateFormat.format(new Date());
-		this.author_url="http://www.dewen.io".trim()+this.author_url.trim();
-		this.scanerNum=this.scanerNum.replace("(", "").replace(")","").trim();
-		this.attentionNum=attentionNum.replace("（", "").replace("）","").replace("人","").trim();
+	private String tag;
+
+	private String issueUrl = "";
+
+	private int history = 0;
+
+	private String extractTime;
+
+	private String pageMD5 = "";
+
+	@ExtractBy("//div[@id='edit1']/h1[@id='title' ]/text()")
+	private String issueTitle = "";
+
+	@ExtractBy("//*[@id='qst_content']/div[@class='codetitle']/div[@class='que_con']/allText()")
+	private String issueDetail = "";
+
+	@ExtractBy("//div[@id='edit1']/div[@id='topic']/allText()")
+	private List<String> tags;
+
+	@ExtractBy(value = "//*[@class='qa_rgt']/div[@class='question_stats']/div[@class='stats']/p/b/text()", source = Source.RawHtml)
+	private String scanerNum = "";
+
+	@ExtractBy(value = "//*[@class='qa_rgt']/div[@class='follow_questions']/h2/span/text()", source = Source.RawHtml)
+	private String attentionNum = "";
+
+	@ExtractBy("//*[@class='microbar']/div[@class='function_items']/a[@class='qcmtNum']/b[@class='cmtNum']/text()")
+	private String commentNum = "";
+
+	@ExtractBy("//*[@class='microbar']/div[@class='function_items']/span/text()")
+	private String postTime = "";
+
+	@ExtractBy("//div[@id='edit1']/[@id='changebg']/div[@class='pad6']/ul/li[@class='list_tt']/p[@class='lftp']/a/text()")
+	private String author = "";
+
+	@ExtractBy("//div[@id='edit1']/[@id='changebg']/div[@class='pad6']/ul/li[@class='list_tt']/p[@class='lftp']/a/@href")
+	private String authorUrl;
+
+	@ExtractBy("//div[@class='answers_num']/span/text()")
+	private String answerNum;
+
+	public void afterProcess(Page page) {
+		// 处理issueUrl
+		this.issueUrl = page.getPageUrl();
+
+		// 处理issueId
+		this.issueId = StringHandler.matchRightString(page.getPageUrl(),
+				"q/\\d+/");
+		this.issueId = StringHandler.matchRightString(this.issueId, "\\d+");
+
+		// 处理tag
+		this.tag = StringHandler.combineTags(tags);
+
+		// 处理scanerNum
+		this.scanerNum = StringHandler
+				.findRigthString(this.scanerNum, "(", ")");
+
+		// 处理attentionNum
+		this.attentionNum = StringHandler.matchRightString(this.attentionNum,
+				"\\d+");
+
+		// 处理postTime
+		this.postTime = this.postTime.trim() + " 00:00:00";
+
+		// 处理authorUrl
+		this.authorUrl = "http://www.dewen.io" + this.authorUrl;
+
+		// 处理answerNum
+		if (this.answerNum != null)
+			this.answerNum = StringHandler.matchRightString(this.answerNum,
+					"\\d+");
+		else
+			this.answerNum = "0";
+
+		// 处理extractTime
+		this.extractTime = StringHandler.getExtractTime();
+
+		// 处理pageMD5
+		this.pageMD5 = DigestUtils.md5Hex(this.issueTitle + this.scanerNum
+				+ this.answerNum + this.commentNum + this.answerNum);
 	}
 
-	public int getIssueId() {
+	@Override
+	public void validate(Page page) {
+		if (StringHandler.isAtLeastOneBlank(this.issueTitle, this.author,
+				this.authorUrl)) {
+			page.setResultSkip(this, true);
+			return;
+		}
+
+		if (!StringHandler.canFormatterInteger(this.issueId, this.scanerNum,
+				this.attentionNum, this.commentNum, this.answerNum)) {
+			page.setResultSkip(this, true);
+			return;
+		}
+
+		if (!StringHandler.canFormatterDate(this.extractTime, this.postTime))
+			page.setResultSkip(this, true);
+	}
+
+	public String getIssueId() {
 		return issueId;
 	}
 
-	public void setIssueId(int issueId) {
+	public void setIssueId(String issueId) {
 		this.issueId = issueId;
 	}
 
@@ -94,14 +144,6 @@ public class DeWenQ_Model  implements AfterExtractor,ValidateExtractor{
 
 	public void setIssueDetail(String issueDetail) {
 		this.issueDetail = issueDetail;
-	}
-
-	public String getIssueUrlMD5() {
-		return issueUrlMD5;
-	}
-
-	public void setIssueUrlMD5(String issueUrlMD5) {
-		this.issueUrlMD5 = issueUrlMD5;
 	}
 
 	public String getTag() {
@@ -168,14 +210,6 @@ public class DeWenQ_Model  implements AfterExtractor,ValidateExtractor{
 		this.author = author;
 	}
 
-	public String getAuthor_url() {
-		return author_url;
-	}
-
-	public void setAuthor_url(String author_url) {
-		this.author_url = author_url;
-	}
-
 	public int getHistory() {
 		return history;
 	}
@@ -192,30 +226,20 @@ public class DeWenQ_Model  implements AfterExtractor,ValidateExtractor{
 		this.extractTime = extractTime;
 	}
 
-	@Override
-	public void validate(Page page) {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-				if (StringHandler.isAtLeastOneBlank(this.issueTitle, this.author,
-						this.author_url)) {
-					page.setResultSkip(this, true);
-					return;
-				}
-
-				if (!page.getResultItems().isSkip()) {
-					if (!StringHandler.canFormatterInteger(this.commentNum,
-							this.scanerNum)) {
-						page.setResultSkip(this, true);
-						return;
-					}
-
-					if (!StringHandler
-							.canFormatterDate(this.extractTime, this.postTime)) {
-						page.setResultSkip(this,true);
-					}
-		
+	public String getAnswerNum() {
+		return answerNum;
 	}
-	
 
-}
+	public void setAnswerNum(String answerNum) {
+		this.answerNum = answerNum;
+	}
+
+	public String getAuthorUrl() {
+		return authorUrl;
+	}
+
+	public void setAuthorUrl(String authorUrl) {
+		this.authorUrl = authorUrl;
+	}
+
 }

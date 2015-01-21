@@ -3,10 +3,7 @@ package net.trustie.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.codec.digest.DigestUtils;
-
-
 import core.Page;
 import core.AfterExtractor;
 import core.ValidateExtractor;
@@ -14,16 +11,13 @@ import extension.StringHandler;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 
-
-/*@ExtractBy("//*div[@class='main clearfix']/div[@class='persion_section']")*/
 public class CsdnQ_Model implements AfterExtractor,ValidateExtractor{
-	
-
     private int issueId=0;
+    
     private String issueUrl="";
-    @ExtractBy("//*div[@class='questions_detail_con']/dl/dt/text()")
+    @ExtractBy("//*div[@class='questions_detail_con']/dl/dt/text()")    
     private String issueTitle="";
-    @ExtractBy("//*[@id='cut_intro']/allText()")
+    @ExtractBy("//*[@id='cut_intro']/allText()")    
     private String issueContent="";
     @ExtractBy("//*div/a[@class='approve']/text()")
     private String voteNum;
