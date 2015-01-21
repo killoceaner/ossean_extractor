@@ -65,22 +65,22 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 
 		// 处理relativeTime
 		this.relativeTime = StringHandler.subString(this.relativeTime, "发布于");
+		this.relativeTime=this.relativeTime+":00";
 
 		// 处理pageMD5
 		this.pageMD5 = DigestUtils.md5Hex(this.newsTitle);
 	}
 
-	@Override
-	public void validate(Page page) {
-		if (!StringHandler.isAtLeastOneBlank(this.newsTitle, this.newsAuthor,
+	public void validate(Page page) {		
+		if (StringHandler.isAtLeastOneBlank(this.newsTitle, this.newsAuthor,
 				this.newsAuthorUrl, this.comeFrom,this.originFrom)) {
 			page.setResultSkip(this, true);
 			return;
 		}
-
+		
 		if (!StringHandler
 				.canFormatterDate(this.relativeTime, this.extractTime))
-			page.setResultSkip(this, true);
+			page.setResultSkip(this, true);		
 	}
 
 	public String getNewsUrl() {
