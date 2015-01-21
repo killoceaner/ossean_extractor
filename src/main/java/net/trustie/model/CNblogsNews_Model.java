@@ -80,7 +80,7 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 		
 		if (!StringHandler
 				.canFormatterDate(this.relativeTime, this.extractTime))
-			page.setResultSkip(this, true);		
+			page.setResultSkip(this, true);			
 	}
 
 	public String getNewsUrl() {
