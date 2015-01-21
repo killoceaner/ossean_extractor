@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Insert;
 
 public interface DeWenQ_Dao {
 	
-	@Insert("")
+	@Insert("insert into dewen_question"
+			+ "(`issueId`,`issueUrl`,`issueTitle`,`tag`,`issueDetail`,`scanerNum`,`attentionNum`,`commentNum`,`answerNum`,`extractTime`,`postTime`,`author`,`authorUrl`,`pageMD5`,`history`)"
+			+ " values (#{issueId},#{issueUrl},#{issueTitle},#{tag},#{issueDetail},#{scanerNum},#{attentionNum},#{commentNum},#{answerNum},#{extractTime},#{postTime},#{author},#{authorUrl},#{pageMD5},#{history})")
 	public int add(DeWenQ_Model deWenQ_Model);
 
 }

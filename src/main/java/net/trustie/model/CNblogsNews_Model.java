@@ -76,7 +76,7 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 
 	public void validate(Page page) {		
 		if (StringHandler.isAtLeastOneBlank(this.newsTitle, this.newsAuthor,
-				this.newsAuthorUrl, this.comeFrom)) {
+				this.newsAuthorUrl)) {
 			page.setResultSkip(this, true);
 			return;
 		}
