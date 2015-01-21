@@ -38,7 +38,7 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 	@ExtractBy("//div[@id='news_info']/span[@class='time']/text()")
 	private String relativeTime;
 
-	@ExtractBy("//*[@id='news_content']/div[@id='news_otherinfo']/div[@id='come_from']/a/text()")
+	@ExtractBy("//*[@id='news_content']/div[@id='news_otherinfo']/div[@id='come_from']/allText()")
 	private String comeFrom;
 
 	@ExtractBy("//div[@id='news_more_info']/div[@class='news_tags']/a/text()")
@@ -59,6 +59,9 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 
 		// tag
 		this.tag = StringHandler.combineTags(tags);
+		
+		//处理comeFrom
+		this.comeFrom=StringHandler.subString(this.comeFrom,"来自:");
 
 		// 处理extractTime;
 		this.extractTime = StringHandler.getExtractTime();
@@ -73,7 +76,7 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 
 	public void validate(Page page) {		
 		if (StringHandler.isAtLeastOneBlank(this.newsTitle, this.newsAuthor,
-				this.newsAuthorUrl, this.comeFrom,this.originFrom)) {
+				this.newsAuthorUrl, this.comeFrom)) {
 			page.setResultSkip(this, true);
 			return;
 		}
