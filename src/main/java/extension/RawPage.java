@@ -32,36 +32,32 @@ public class RawPage {
 			} else {
 				page.setPageUrl(this.url);
 				page.setSkip(true);
-				logger.info("Warnning:Page{id=" + this.id + ",url=" + this.url
-						+ "} RawText Is Null OR Empty!");
+				logger.info("Warnning:" + this.toString()
+						+ " RawText Is Null OR Empty!");
 			}
 		} else {
 			page.setSkip(true);
-			logger.info("Warnning:Page{id=" + this.id + "url=" + this.url
-					+ "} Url Is　Null OR Empty!");
+			logger.info("Warnning:+" + this.toString()
+					+ " Url Is　Null OR Empty!");
 		}
 		isExtracted = false;
 		isStored = false;
 	}
 
 	public void printLogInfo() {
-		if (isExtracted) {
-			if (isStored)
-				logger.info("Page{id=" + this.id + ",url=" + this.url
-						+ "} Extracted And Stored Successed!");
-			else {
-				logger.error("Page{id=" + this.id + ",url=" + this.url
-						+ "} Extracted Successed,But Stored Failed!");
-			}
-		} else {
-			logger.error("Page{id=" + this.id + ",url=" + this.url
-					+ "} Extracted Failed!");
+		if (!isExtracted) {
+			logger.info(this.toString() + "\t" + " Extracted Failed!");
+			return;
 		}
+
+		if (!isStored)
+			logger.info(this.toString() + "\t"
+					+ " Extracted Successed,Stored Failed!");
 	}
 
 	@Override
 	public String toString() {
-		return page.toString();
+		return "Page{id=" + this.id + ",url=" + this.url + "}";
 	}
 
 	public int getId() {

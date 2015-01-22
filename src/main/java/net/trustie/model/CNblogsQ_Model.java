@@ -18,14 +18,11 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 
 	private String questionUrl = "";
 
-	private String urlMD5 = "";
-
 	private String pageMD5 = "";
 
 	private String extractTime;
 
 	private String tag = "";
-
 
 	private int history = 0;
 
@@ -62,6 +59,9 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 	@ExtractBy("//*[@id='panelBestAnswer']/div[@id='title_red']/text()")
 	private String bestAnswer;
 
+	@ExtractBy("//div[@class='qitem_question']/div[@class='qitem_item']/div[@class='qitem_publisher']/allText()")
+	private String questionType;
+
 	public void afterProcess(Page page) {
 		// 处理帖子的标签
 		tag = StringHandler.combineTags(this.tags);
@@ -79,9 +79,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		if (StringUtils.isNotBlank(this.authorUrl)) {
 			this.authorUrl = "http://q.cnblogs.com" + this.authorUrl;
 		} else
-
 			page.setResultSkip(this, true);
-
 
 		// 处理园豆
 		if (StringUtils.isNotBlank(this.scoreBean))
@@ -93,7 +91,6 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		this.answerNum = StringHandler
 				.findRigthString(this.answerNum, "(", ")");
 		if (this.answerNum == null)
-
 			this.answerNum = "0";
 
 		if (StringUtils.isNotBlank(this.bestAnswer)) {
@@ -101,17 +98,24 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 					.valueOf(Integer.parseInt(this.answerNum) + 1);
 		}
 
+		// 处理qType
+		this.questionType = StringHandler.findRigthString(this.questionType,
+				"[", "]");
+
 		// 处理voteNum
 		this.voteNum = this.voteNum.trim();
 
-		// 处理问题Id、url、pageMD5、urlMD5、抽取时间
+		// 处理questionUrl
 		this.questionUrl = page.getPageUrl();
 
-		this.pageMD5 = DigestUtils.md5Hex(this.questionTitle
-				+ this.questionContent);
+		// 处理pageMD5
+		this.pageMD5 = DigestUtils.md5Hex(this.questionTitle + this.viewNum
+				+ this.voteNum + this.answerNum);
 
-		this.urlMD5 = DigestUtils.md5Hex(this.questionUrl);
+		// 处理postTime
+		this.postTime = this.postTime + ":00";
 
+		// 处理questionId
 		this.questionId = StringHandler.matchRightString(this.questionUrl,
 				"\\d+");
 
@@ -120,30 +124,25 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 	}
 
 	public void validate(Page page) {
+		if (page.getResultSkip(this))
+			return;
 
-		// TODO Auto-generated method stub
-		if (!page.getResultItems()
-				.getFieldSkip(this.getClass().getCanonicalName())) {
-			if (!StringHandler.isAllNotBlank(this.questionTitle, this.author)) {
-				page.setResultSkip(this, true);/*.setModelSkip(this.getClass().getCanonicalName(), true);*/
-				return;
-			}
-
-			if (!StringHandler.canFormatterInteger(this.answerNum,
-					this.viewNum, this.voteNum, this.scoreBean)) {
-				page.setResultSkip(this, true);  /*.setModelSkip(this.getClass().getCanonicalName(), true);*/
-				return;
-			}
-
-			if (!StringHandler
-					.canFormatterDate(this.postTime, this.extractTime)) {
-				page.setResultSkip(this, true);  /*.setModelSkip(this.getClass().getCanonicalName(), true);*/
-				return;
-			}
-
-			if (this.questionId == "-1")
-				page.setResultSkip(this, true);  /*.setModelSkip(this.getClass().getCanonicalName(), true);*/
+		if (StringHandler.isAtLeastOneBlank(this.questionTitle, this.author,
+				this.questionType)) {
+			page.setResultSkip(this, true);
+			return;
 		}
+
+		if (!StringHandler.canFormatterInteger(this.answerNum, this.viewNum,
+				this.voteNum, this.scoreBean, this.questionId)) {
+			page.setResultSkip(this, true);
+			return;
+		}
+
+		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime)) {
+			page.setResultSkip(this, true);
+			return;
+		}		
 	}
 
 	public String getQuestionId() {
@@ -152,14 +151,6 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 
 	public void setQuestionId(String questionId) {
 		this.questionId = questionId;
-	}
-
-	public String getUrlMD5() {
-		return urlMD5;
-	}
-
-	public void setUrlMD5(String urlMD5) {
-		this.urlMD5 = urlMD5;
 	}
 
 	public String getPageMD5() {
@@ -288,5 +279,13 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 
 	public void setBestAnswer(String bestAnswer) {
 		this.bestAnswer = bestAnswer;
+	}
+
+	public String getQuestionType() {
+		return questionType;
+	}
+
+	public void setQuestionType(String questionType) {
+		this.questionType = questionType;
 	}
 }

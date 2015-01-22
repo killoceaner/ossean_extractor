@@ -1,6 +1,8 @@
 package net.trustie.extractor;
 
 import java.sql.SQLException;
+
+import net.trustie.downloader.DataBasePageErrorOutPut;
 import net.trustie.downloader.GenerateRawPage;
 import net.trustie.model.CsdnBlogs_Model;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,7 @@ import extension.OsseanExtractor;
 
 @Component
 public class CsdnBlogs_Extractor {
-	
+
 	@SuppressWarnings("rawtypes")
 	@Qualifier("csdnBlogPipeline")
 	@Autowired
@@ -24,12 +26,19 @@ public class CsdnBlogs_Extractor {
 	@Autowired
 	private GenerateRawPage generateRawPage;
 
+	@Qualifier("errorPageToDB")
+	@Autowired
+	private DataBasePageErrorOutPut dbPageErrorOutPut;
+
 	public void begin() {
-		generateRawPage.setTableName("csdn_blog_html_detail");
+		generateRawPage.setTable("csdn_blog_html_detail");
+		dbPageErrorOutPut.setTableName("");
+
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
 						CsdnBlogs_Model.class).setUUID("csdnBlogs")
-				.setDownloader(generateRawPage).start();
+				.setDownloader(generateRawPage)
+				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}
 
 	public static void main(String[] args) throws SQLException {

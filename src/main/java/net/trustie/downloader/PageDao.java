@@ -1,11 +1,8 @@
 package net.trustie.downloader;
 
 import java.util.List;
-
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-
 import extension.RawPage;
 
 public interface PageDao {
@@ -15,10 +12,5 @@ public interface PageDao {
 			@Param("begin_id") int begin_id, @Param("end_id") int end_id);
 
 	@Select("select Min(id) from ${table_name}")
-	public int getMinId(@Param("table_name") String table_name);
-
-	@Insert("insert into ${table}(`url`) values(#{url})")
-	public void insertErrorPage(@Param("table") String table,
-			@Param("url") String url);
-
+	public int getMinId(@Param("table_name") String table_name);	
 }

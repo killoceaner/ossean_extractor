@@ -4,21 +4,20 @@ import java.sql.SQLException;
 
 import net.trustie.downloader.DataBasePageErrorOutPut;
 import net.trustie.downloader.GenerateRawPage;
-import net.trustie.model.CNblogsNews_Model;
+import net.trustie.model.CNblogsQ_Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
-
 import core.PageModelPipeline;
 import core.Site;
 import extension.OsseanExtractor;
 
 @Component
-public class CNblogNews_Extractor {
+public class CNblogQSolve_Extractor {
 	@SuppressWarnings("rawtypes")
-	@Qualifier("cnBlogNewsPipeline")
+	@Qualifier("cnblogsQPipeline")
 	@Autowired
 	private PageModelPipeline modelPipeline;
 
@@ -31,12 +30,12 @@ public class CNblogNews_Extractor {
 	private DataBasePageErrorOutPut dbPageErrorOutPut;
 
 	public void begin() {
-		generateRawPage.setTable("cnblogs_news_html_detail");
+		generateRawPage.setTable("cnblogs_q_solved_html_detail");
 		dbPageErrorOutPut.setTableName("");
-		
+
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						CNblogsNews_Model.class).setUUID("cnBlogNews")
+						CNblogsQ_Model.class).setUUID("cnBlogQSolve")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}
@@ -45,8 +44,8 @@ public class CNblogNews_Extractor {
 		ApplicationContext aContext = new ClassPathXmlApplicationContext(
 				"classpath:/spring/applicationContext*.xml");
 
-		final CNblogNews_Extractor extractor = aContext
-				.getBean(CNblogNews_Extractor.class);
+		final CNblogQSolve_Extractor extractor = aContext
+				.getBean(CNblogQSolve_Extractor.class);
 
 		extractor.begin();
 	}

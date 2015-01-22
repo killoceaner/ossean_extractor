@@ -2,6 +2,7 @@ package net.trustie.extractor;
 
 import java.sql.SQLException;
 
+import net.trustie.downloader.DataBasePageErrorOutPut;
 import net.trustie.downloader.GenerateRawPage;
 import net.trustie.model.DeWenQ_Model;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +20,24 @@ public class DeWenQ_Extractor {
 	@Qualifier("deWenQPipeline")
 	@Autowired
 	private PageModelPipeline modelPipeline;
-	
+
 	@Qualifier("generateRawPage")
 	@Autowired
 	private GenerateRawPage generateRawPage;
 
+	@Qualifier("errorPageToDB")
+	@Autowired
+	private DataBasePageErrorOutPut dbPageErrorOutPut;
+
 	public void begin() {
-		generateRawPage.setTableName("dewen_question_html_detail");
+		generateRawPage.setTable("dewen_question_html_detail");
+		dbPageErrorOutPut.setTableName("");
+
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
 						DeWenQ_Model.class).setUUID("deWenQ")
-				.setDownloader(generateRawPage).start();
+				.setDownloader(generateRawPage)
+				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}
 
 	public static void main(String[] args) throws SQLException {

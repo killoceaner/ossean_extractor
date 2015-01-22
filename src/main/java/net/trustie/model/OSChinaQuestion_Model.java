@@ -18,9 +18,7 @@ public class OSChinaQuestion_Model implements AfterExtractor, ValidateExtractor 
 
 	private String extractTime = null;
 
-	private String pageMD5 = "";
-
-	private String urlMD5 = "";
+	private String pageMD5 = "";	
 
 	private int history = 0;
 
@@ -79,17 +77,12 @@ public class OSChinaQuestion_Model implements AfterExtractor, ValidateExtractor 
 		// 处理抽取时间
 		this.extractTime = StringHandler.getExtractTime();
 
-		// 处理帖子的urlMD5
-		this.urlMD5 = DigestUtils.md5Hex(this.questionUrl);
-
 		// 处理帖子的PageMD5
 		this.pageMD5 = DigestUtils.md5Hex(this.questionContent
 				+ this.questionTitle);
 
 		// 处理postime
-		/**
-		 * 还需处理
-		 */
+		
 	}
 
 	public void validate(Page page) {
@@ -163,10 +156,6 @@ public class OSChinaQuestion_Model implements AfterExtractor, ValidateExtractor 
 		return pageMD5;
 	}
 
-	public String getUrlMD5() {
-		return urlMD5;
-	}
-
 	public int getHistory() {
 		return history;
 	}
@@ -225,10 +214,6 @@ public class OSChinaQuestion_Model implements AfterExtractor, ValidateExtractor 
 
 	public void setPageMD5(String pageMD5) {
 		this.pageMD5 = pageMD5;
-	}
-
-	public void setUrlMD5(String urlMD5) {
-		this.urlMD5 = urlMD5;
 	}
 
 	public void setHistory(int history) {

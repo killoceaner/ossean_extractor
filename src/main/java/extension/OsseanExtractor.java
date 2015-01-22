@@ -38,6 +38,8 @@ public class OsseanExtractor extends TimerTask {
 
 	public List<String> modelName = new ArrayList<String>();
 
+	private PageErrorOutPut pageErrorOutPut;
+
 	private int recordId = 0;
 
 	protected OsseanExtractor(ModelPageProcessor modelPageProcessor) {
@@ -53,7 +55,7 @@ public class OsseanExtractor extends TimerTask {
 		for (Class<?> pageModel : pageModels) {
 			modelName.add(pageModel.getCanonicalName());
 			if (pageModelPipeline != null) {
-				this.modelPipeline.put(pageModel, pageModelPipeline);/*.put(clazz, pageModelPipeline)(pageModel, pageModelPipeline);*/
+				this.modelPipeline.put(pageModel, pageModelPipeline);
 			}
 		}
 	}
@@ -64,12 +66,17 @@ public class OsseanExtractor extends TimerTask {
 	}
 
 	public OsseanExtractor setDownloader(PageDownloader downloader) {
-		this.downloader = downloader;
+		this.downloader = downloader;		
 		return this;
 	}
 
 	public OsseanExtractor setUUID(String uuid) {
 		this.uuid = uuid;
+		return this;
+	}
+
+	public OsseanExtractor setPageErrorOutPut(PageErrorOutPut errorOutPut) {
+		this.pageErrorOutPut = errorOutPut;
 		return this;
 	}
 
@@ -104,44 +111,41 @@ public class OsseanExtractor extends TimerTask {
 
 		List<RawPage> rawList = this.downloader.downloadPages(recordId,
 				recordId + this.site.getResultNum());
-		// 生成对应的page对象
+
 		createPageList(rawList);
 		for (RawPage rawPage : rawList) {
 			if (rawPage.getPage() != null
 					&& !rawPage.getPage().getResultItems().isSkip()) {
 				try {
-					// 抽取page
 					modelPageProcessor.process(rawPage.getPage());
-					// 记录该page是否被抽取，但是还没有存储
 					rawPage.setExtracted(true);
+
 					if (!rawPage.getPage().getResultItems().isSkip()) {
 
 						for (Pipeline pipeline : pipelines)
 							pipeline.process(
 									rawPage.getPage().getResultItems(), null);
-						// 记录页面被是否保存下来
+
 						if (!rawPage.getPage()
 								.isAllResultSkip(
 										modelName.toArray(new String[modelName
-												.size()])))
+												.size()]))) {
+							logger.info(rawPage.toString() + "\t"
+									+ " Extracted And Stored Successed!");
 							rawPage.setStored(true);
-
+						}
 					}
 				} catch (Exception e) {
-					// 记录出错页面
-					this.downloader.returnErrorPages(rawPage.getUrl());
-					// 输出出错信息
-					logger.error("Extract And Store Error", e);
+					logger.error(rawPage.toString() + "\t" + e);
 
 				} finally {
-					rawPage.printLogInfo();
+					if (!rawPage.isExtracted() || !rawPage.isStored())
+						pageErrorOutPut.returnErrorPage(rawPage);
 				}
 			}
-			// 记录上次抽取的位置
-			readCursor
-					.setValue(uuid, String.valueOf(rawList.get(
-							rawList.size() - 1).getId() + 1));
 		}
+		readCursor.setValue(uuid,
+				String.valueOf(rawList.get(rawList.size() - 1).getId() + 1));
 	}
 
 	public void start() {
@@ -167,6 +171,10 @@ public class OsseanExtractor extends TimerTask {
 
 		if (pipelines.isEmpty()) {
 			pipelines.add((Pipeline) new ConsolePipeline());
+		}
+
+		if (pageErrorOutPut == null) {
+			pageErrorOutPut = new DefaultPageErrorOutPut();
 		}
 	}
 
