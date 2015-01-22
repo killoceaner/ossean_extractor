@@ -32,7 +32,7 @@ public class CsdnTopic_Extractor {
 
 	public void begin() {
 		generateRawPage.setTable("csdn_topic_html_detail");
-		dbPageErrorOutPut.setTableName("");
+		dbPageErrorOutPut.setTableName("csdn_topic_error_page");
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,

@@ -31,7 +31,7 @@ public class DeWenQ_Extractor {
 
 	public void begin() {
 		generateRawPage.setTable("dewen_question_html_detail");
-		dbPageErrorOutPut.setTableName("");
+		dbPageErrorOutPut.setTableName("dewen_question_error_page");
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
