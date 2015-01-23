@@ -32,12 +32,12 @@ public class RawPage {
 			} else {
 				page.setPageUrl(this.url);
 				page.setSkip(true);
-				logger.info("Warnning:" + this.toString()
+				logger.warn("Warnning:" + this.toString()
 						+ " RawText Is Null OR Empty!");
 			}
 		} else {
 			page.setSkip(true);
-			logger.info("Warnning:+" + this.toString()
+			logger.warn("Warnning:+" + this.toString()
 					+ " Url Is　Null OR Empty!");
 		}
 		isExtracted = false;
@@ -46,13 +46,12 @@ public class RawPage {
 
 	public void printLogInfo() {
 		if (!isExtracted) {
-			logger.info(this.toString() + "\t" + " Extracted Failed!");
+			logger.warn(this.toString() + " Extracted Failed!");
 			return;
 		}
 
 		if (!isStored)
-			logger.info(this.toString() + "\t"
-					+ " Extracted Successed,Stored Failed!");
+			logger.warn(this.toString() + " Extracted Successed,Stored Failed!");
 	}
 
 	@Override

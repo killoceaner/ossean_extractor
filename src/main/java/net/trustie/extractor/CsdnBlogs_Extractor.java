@@ -32,7 +32,7 @@ public class CsdnBlogs_Extractor {
 
 	public void begin() {
 		generateRawPage.setTable("csdn_blog_html_detail");
-		dbPageErrorOutPut.setTableName("");
+		dbPageErrorOutPut.setTableName("csdn_blog_error_page");
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,

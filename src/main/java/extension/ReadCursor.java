@@ -37,14 +37,12 @@ public class ReadCursor {
 	public void setValue(String key, String value) {
 		try {
 			FileOutputStream out_file = new FileOutputStream(
-					new File(file_path));
+					new File(file_path));			
 			this.properties.setProperty(key, value);
 			this.properties.store(out_file, "update key-value");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -31,7 +31,7 @@ public class CNblogQUnSolve_Extractor {
 
 	public void begin() {
 		generateRawPage.setTable("cnblogs_q_unsolved_html_detail");
-		dbPageErrorOutPut.setTableName("");
+		dbPageErrorOutPut.setTableName("cnblogs_q_unsolved_error_page");
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,

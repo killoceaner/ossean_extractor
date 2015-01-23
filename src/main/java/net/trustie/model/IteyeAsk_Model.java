@@ -1,181 +1,261 @@
 package net.trustie.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import us.codecraft.webmagic.model.annotation.ExtractBy;
+import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
 import core.Page;
+import core.ValidateExtractor;
 import extension.StringHandler;
 
+@ExtractBy("//*[@id='page']/div[@id='content']//div[@id='main']/div[@class='problem']/dl")
+public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
+	private int questionId;
 
+	private String questionUrl;
 
-public class IteyeAsk_Model implements AfterExtractor{
-	 @ExtractBy("//div[@class='sproblem_right']/h3/a/text()")
-	    private String problem_title="";
-	    @ExtractBy("//div[@class='new_content']/allText()")
-	    private String problem_content="";
-	    @ExtractBy("//span[@class='user_blog']/a/text()")
-	    private String user="";
-	    private String url="";
-	    private String urlMD5="";
-	    @ExtractBy("//div[@class='ask_label']/span/text()")
-	    private String release_time="";
-	    private String extract_time="";
-	    private String tag;
-	    @ExtractBy("//div[@class='tags']/allText1()")
-	    private List<String>  tags;
-	    @ExtractBy("//div[@id='main']")
-	    private String main;
-	    private String pageMD5="";
-	    @ExtractBy("//h3[@id='num']/text()")
-	    private String answer_count="0";
-        private int history=0;
-     @ExtractBy("//*[@id='main']/div[3]/dl/dd/div[1]/div[3]/span[1]/a/text()") 
-        private String author;
-     @ExtractBy("//*[@id='main']/div[3]/dl/dd/div[1]/div[3]/span[1]/a/@html()") 
-        private String author_url;     
-     
-    public void afterProcess(Page page){
-    	this.setUrl(page.getPageUrl());
-    	 this.pageMD5= DigestUtils.md5Hex(this.main);
-       //对tags进行处理
-    
-         this.tag=StringHandler.combineTags(tags);
-         
-         
-         if (!this.answer_count.equals("目前还没有答案"))
-         {
-        	 String count="0";
-             this.answer_count= count.toString();
-         }
-         //对extract_Time进行处理
-         SimpleDateFormat bartDateFormat =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-         this.extract_time=bartDateFormat.format(new Date());
+	private String pageMD5;
 
-    }
+	private String history = "0";
 
+	private String extractTime;
 
-	public String getUrl() {
-		return url;
+	private String tag;
+
+	@ExtractBy("//*div[@class='sproblem_right']/h3[@class='close']/span[@class='score']/text()")
+	private String questionScore;
+
+	@ExtractBy(value = "//*div[@class='sproblem_right']/h3[@class='close']/a/text()")
+	private String questionTitle = "";
+
+	@ExtractBy("//*div[@class='sproblem_right']/div[@class='new_content']/allText()")
+	private String questionContent = "";
+
+	@ExtractBy(value = "//*[@id='content']/div[@id='main']/div[@class='crumbs']/a[2]/text()", source = Source.RawHtml)
+	private String categories;
+
+	@ExtractBy("//*div[@class='sproblem_right']/div[@class='ask_label']/span/text()")
+	private String postTime = "";
+
+	@ExtractBy("//*div[@class='sproblem_right']/div[@class='ask_label']/div[@class='tags']/a/allText()")
+	private List<String> tags;
+
+	@ExtractBy(value = "//*div[@id='content']/div[@id='main']/div[@id='solutions']/h3[@id='num']/text()", source = Source.RawHtml)
+	private String answerNum = "0";
+
+	@ExtractBy("//*div[@class='sproblem_right']/div[@class='user_info']/span[@class='user_blog']/a/text()")
+	private String author;
+
+	@ExtractBy("//*div[@class='sproblem_right']/div[@class='user_info']/span[@class='user_blog']/a/@href")
+	private String authorUrl;
+
+	@ExtractBy("//*div[@id='problem_action']/ul/li[2]/a/text()")
+	private String interestNum;
+
+	@ExtractBy("//dt/div[@class='vote']/span[1]/text()")
+	private String voteUp;
+
+	@ExtractBy("//dt/div[@class='vote']/span[2]/text()")
+	private String voteDown;
+
+	public void afterProcess(Page page) {
+		// 处理questionUrl
+		this.questionUrl = page.getPageUrl();
+
+		// 处理tag
+		this.tag = StringHandler.combineTags(tags);
+
+		// 处理questionId
+		this.questionId = Integer.parseInt(page.getPageUrl().substring(
+				page.getPageUrl().lastIndexOf("/") + 1));
+
+		// 处理answerNum
+		if (StringUtils.isNotBlank(this.answerNum)) {
+			this.answerNum = StringHandler.matchRightString(this.answerNum,
+					"\\d+");
+		} else
+			this.answerNum = "0";
+
+		// interestNum
+		this.interestNum = StringHandler.matchRightString(this.interestNum,
+				"\\d+");
+
+		// 处理抽取时间
+		this.extractTime = StringHandler.getExtractTime();
+
+		// 处理pageMD5
+		this.pageMD5 = DigestUtils.md5Hex(this.questionTitle + this.answerNum
+				+ this.interestNum + this.voteUp + this.voteDown);
+
+		// 处理postTime
+		this.postTime = this.postTime.replace("年", "-").replace("月", "-")
+				.replace("日", "")
+				+ ":00";
 	}
 
+	@Override
+	public void validate(Page page) {
+		if (StringHandler.isAtLeastOneBlank(this.questionTitle, this.author,
+				this.authorUrl)) {
+			page.setResultSkip(this, true);
+			return;
+		}
 
-	public void setUrl(String url) {
-		this.url = url;
+		if (!StringHandler.canFormatterInteger(this.questionScore,
+				this.answerNum, this.interestNum, this.voteUp, this.voteDown)) {
+			page.setResultSkip(this, true);
+		}
+
+		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime))
+			page.setResultSkip(this, true);
 	}
 
-
-	public String getProblem_title() {
-		return problem_title;
+	public int getQuestionId() {
+		return questionId;
 	}
 
-
-	public void setProblem_title(String problem_title) {
-		this.problem_title = problem_title;
+	public String getQuestionUrl() {
+		return questionUrl;
 	}
-
-
-	public String getProblem_content() {
-		return problem_content;
-	}
-
-
-	public void setProblem_content(String problem_content) {
-		this.problem_content = problem_content;
-	}
-
-
-	public String getUser() {
-		return user;
-	}
-
-
-	public void setUser(String user) {
-		this.user = user;
-	}
-
-
-	public String getUrlMD5() {
-		return urlMD5;
-	}
-
-
-	public void setUrlMD5(String urlMD5) {
-		this.urlMD5 = urlMD5;
-	}
-
-
-	public String getRelease_time() {
-		return release_time;
-	}
-
-
-	public void setRelease_time(String release_time) {
-		this.release_time = release_time;
-	}
-
-
-	public String getExtract_time() {
-		return extract_time;
-	}
-
-
-	public void setExtract_time(String extract_time) {
-		this.extract_time = extract_time;
-	}
-
-
-	public List<String> getTags() {
-		return tags;
-	}
-
-
-	public void setTags(List<String> tags) {
-		this.tags = tags;
-	}
-
-
-	public String getMain() {
-		return main;
-	}
-
-
-	public void setMain(String main) {
-		this.main = main;
-	}
-
 
 	public String getPageMD5() {
 		return pageMD5;
 	}
 
+	public String getHistory() {
+		return history;
+	}
+
+	public String getExtractTime() {
+		return extractTime;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public String getQuestionScore() {
+		return questionScore;
+	}
+
+	public String getCategories() {
+		return categories;
+	}
+
+	public String getPostTime() {
+		return postTime;
+	}
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public String getAnswerNum() {
+		return answerNum;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public String getAuthorUrl() {
+		return authorUrl;
+	}
+
+	public String getInterestNum() {
+		return interestNum;
+	}
+
+	public String getVoteUp() {
+		return voteUp;
+	}
+
+	public String getVoteDown() {
+		return voteDown;
+	}
+
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
+
+	public void setQuestionUrl(String questionUrl) {
+		this.questionUrl = questionUrl;
+	}
 
 	public void setPageMD5(String pageMD5) {
 		this.pageMD5 = pageMD5;
 	}
 
-
-	public String getAnswer_count() {
-		return answer_count;
-	}
-
-
-	public void setAnswer_count(String answer_count) {
-		this.answer_count = answer_count;
-	}
-
-
-	public int getHistory() {
-		return history;
-	}
-
-
-	public void setHistory(int history) {
+	public void setHistory(String history) {
 		this.history = history;
 	}
-	
+
+	public void setExtractTime(String extractTime) {
+		this.extractTime = extractTime;
 	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public void setQuestionScore(String questionScore) {
+		this.questionScore = questionScore;
+	}
+
+	public void setCategories(String categories) {
+		this.categories = categories;
+	}
+
+	public void setPostTime(String postTime) {
+		this.postTime = postTime;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
+	public void setAnswerNum(String answerNum) {
+		this.answerNum = answerNum;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public void setAuthorUrl(String authorUrl) {
+		this.authorUrl = authorUrl;
+	}
+
+	public void setInterestNum(String interestNum) {
+		this.interestNum = interestNum;
+	}
+
+	public void setVoteUp(String voteUp) {
+		this.voteUp = voteUp;
+	}
+
+	public void setVoteDown(String voteDown) {
+		this.voteDown = voteDown;
+	}
+
+	public String getQuestionTitle() {
+		return questionTitle;
+	}
+
+	public String getQuestionContent() {
+		return questionContent;
+	}
+
+	public void setQuestionTitle(String questionTitle) {
+		this.questionTitle = questionTitle;
+	}
+
+	public void setQuestionContent(String questionContent) {
+		this.questionContent = questionContent;
+	}
+
+}

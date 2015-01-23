@@ -22,7 +22,8 @@ public class DataBasePageErrorOutPut implements PageErrorOutPut {
 	public void returnErrorPage(RawPage rawPage) {
 		rawPage.printLogInfo();
 		if (StringUtils.isNotBlank(tableName)) {
-			errPageDao.insertErrorPage(tableName, rawPage.getUrl(), errorInfo);
+			errPageDao.insertErrorPage(tableName, rawPage.getUrl(),
+					rawPage.getRawText(), errorInfo);
 		}
 	}
 

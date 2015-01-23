@@ -92,12 +92,15 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 
 		// 处理postTime
 		this.postTime = this.postTime + ":00";
+
+		// 处理作者
+		if (StringUtils.isBlank(this.author))
+			this.authorUrl = null;
 	}
 
 	@Override
 	public void validate(Page page) {
-		if (StringHandler.isAtLeastOneBlank(this.blogTitle, this.author,
-				this.authorUrl)) {
+		if (StringHandler.isAtLeastOneBlank(this.blogTitle)) {
 			page.setResultSkip(this, true);
 			return;
 		}

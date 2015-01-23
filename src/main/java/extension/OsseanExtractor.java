@@ -61,7 +61,7 @@ public class OsseanExtractor extends TimerTask {
 	}
 
 	public static OsseanExtractor create(Site site,
-			PageModelPipeline<?> modelPipeline, Class<?>... pageModels) {
+			PageModelPipeline<?> modelPipeline, Class<?>... pageModels) {		
 		return new OsseanExtractor(site, modelPipeline, pageModels);
 	}
 
@@ -71,6 +71,7 @@ public class OsseanExtractor extends TimerTask {
 	}
 
 	public OsseanExtractor setUUID(String uuid) {
+		System.setProperty("logFilePath", uuid);
 		this.uuid = uuid;
 		return this;
 	}
@@ -130,13 +131,13 @@ public class OsseanExtractor extends TimerTask {
 								.isAllResultSkip(
 										modelName.toArray(new String[modelName
 												.size()]))) {
-							logger.info(rawPage.toString() + "\t"
+							logger.info(rawPage.toString()
 									+ " Extracted And Stored Successed!");
 							rawPage.setStored(true);
 						}
 					}
 				} catch (Exception e) {
-					logger.error(rawPage.toString() + "\t" + e);
+					logger.error(rawPage.toString() + " error info:" + e);
 
 				} finally {
 					if (!rawPage.isExtracted() || !rawPage.isStored())
@@ -175,7 +176,7 @@ public class OsseanExtractor extends TimerTask {
 
 		if (pageErrorOutPut == null) {
 			pageErrorOutPut = new DefaultPageErrorOutPut();
-		}
+		}		
 	}
 
 	protected void createPageList(List<RawPage> rawPages) {

@@ -1,4 +1,4 @@
- package extension;
+package extension;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ public class StringHandler {
 	 */
 	public static String matchRightString(String string, String regex) {
 		if (string != null && string.length() > 0 && regex != null
-				&& regex.length() > 0 && (regex.length() <= string.length())) {
+				&& regex.length() > 0) {
 			Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(string);
 			if (matcher.find())
@@ -248,7 +248,7 @@ public class StringHandler {
 	public static String removeIndefiniteArticles(String in) {
 		if (in.startsWith(StringHandler.indefiniteArticleAn)) {
 			StringHandler.removeHeader(in, StringHandler.indefiniteArticleAn);
-			//System.out.println(in);
+			// System.out.println(in);
 		} else if (in.startsWith(StringHandler.indefiniteArticleA)) {
 			in = StringHandler.removeHeader(in,
 					StringHandler.indefiniteArticleA);
@@ -265,7 +265,7 @@ public class StringHandler {
 	public static String removePreposition(String in) {
 		if (in.startsWith(StringHandler.prepositionAbout)) {
 			StringHandler.removeHeader(in, StringHandler.prepositionAbout);
-			//System.out.println(in);
+			// System.out.println(in);
 		} else if (in.startsWith(StringHandler.prepositionOver)) {
 			in = StringHandler.removeHeader(in, StringHandler.prepositionOver);
 		}
@@ -316,27 +316,29 @@ public class StringHandler {
 		return StringUtils.upperCase(rs.trim());
 	}
 
-
 	/**
 	 * 去除字符串中空格
 	 */
-    
-	
 
-	public static String assemblyOSSEANMap(List<String> keys, List<String> values){
+	public static String assemblyOSSEANMap(List<String> keys,
+			List<String> values) {
 		String rt = "";
-		if(keys.size() == values.size()){
+		if (keys.size() == values.size()) {
 			List<String> tmp = new ArrayList<String>();
-			for(int i =0;i<keys.size();i++){
-				tmp.add(keys.get(i)+Seperator.SOURCE_SEPERATOR+values.get(i));
+			for (int i = 0; i < keys.size(); i++) {
+				tmp.add(keys.get(i) + Seperator.SOURCE_SEPERATOR
+						+ values.get(i));
 			}
 			rt = StringUtils.join(tmp, Seperator.OSSEAN_SEPERATOR);
-		}else{
-			
+		} else {
+
 		}
 		return rt;
 	}
-	/**去除字符串中空格
+
+	/**
+	 * 去除字符串中空格
+	 * 
 	 * @param str
 	 * @return
 	 */
@@ -367,6 +369,7 @@ public class StringHandler {
 
 	/**
 	 * 在当前时间上加上多少秒
+	 * 
 	 * @param dateTime
 	 * @param second
 	 * @return 操作成功，成功返回，不成功返回空;
@@ -380,6 +383,6 @@ public class StringHandler {
 			return sdf.format(c.getTime());
 		} catch (Exception e) {
 			return null;
-		}		
-	}	
+		}
+	}
 }

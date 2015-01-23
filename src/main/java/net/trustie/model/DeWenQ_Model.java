@@ -3,6 +3,7 @@ package net.trustie.model;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
@@ -97,6 +98,10 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 		// 处理pageMD5
 		this.pageMD5 = DigestUtils.md5Hex(this.issueTitle + this.scanerNum
 				+ this.answerNum + this.commentNum + this.answerNum);
+		
+		//处理attentionNum
+		if(StringUtils.isBlank(this.attentionNum))
+			this.attentionNum="0";		
 	}
 
 	@Override
@@ -114,7 +119,8 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 		}
 
 		if (!StringHandler.canFormatterDate(this.extractTime, this.postTime))
-			page.setResultSkip(this, true);
+			page.setResultSkip(this, true);	
+		System.out.println(page.getResultSkip(this));
 	}
 
 	public String getIssueId() {
@@ -243,6 +249,6 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 
 	public void setAuthorUrl(String authorUrl) {
 		this.authorUrl = authorUrl;
-	}
+	}	
 
 }
