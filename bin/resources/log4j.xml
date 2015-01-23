@@ -10,14 +10,14 @@
 	</appender>
 
 <appender name="railyFile" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="./error/${logFilePath}.log"></param>
+		<param name="File" value="./error/${logFilePath}/.log"></param>
 		<param name="ImmediateFlush" value="true" />
 		<param name="Threshold" value="warn"></param>
 		<param name="Append" value="true"></param>
 		<param name="MaxFileSize" value="1024KB"></param>
 		<param name="MaxBackupIndex" value="100"></param>
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] [%t] {%c:%L}-%m%n"></param>
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] {%c:%L}#%m%n"></param>
 		</layout>
 	</appender>
 

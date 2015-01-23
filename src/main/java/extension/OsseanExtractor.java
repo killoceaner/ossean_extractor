@@ -70,8 +70,7 @@ public class OsseanExtractor extends TimerTask {
 		return this;
 	}
 
-	public OsseanExtractor setUUID(String uuid) {
-		System.setProperty("logFilePath", uuid);
+	public OsseanExtractor setUUID(String uuid) {		
 		this.uuid = uuid;
 		return this;
 	}

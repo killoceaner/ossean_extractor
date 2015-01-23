@@ -1,0 +1,5 @@
+[2015-01-23 18:31:21 WARN ] {net.trustie.modeltest.TestForLog:19} ## hello wm
+[2015-01-23 18:35:28 WARN ] {extension.RawPage:49} ## Page{id=0,url=http://asdasd.com} Extracted Failed!
+[2015-01-23 18:35:28 WARN ] {net.trustie.modeltest.TestForLog:18} ## hello wm
+[2015-01-23 18:37:05 WARN ] {net.trustie.extractor.TestForLog:18} ## hello wm
+[2015-01-23 18:37:05 WARN ] {extension.RawPage:49} ## Page{id=0,url=http://asdasd.com} Extracted Failed!
