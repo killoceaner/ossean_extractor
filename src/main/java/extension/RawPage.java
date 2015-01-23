@@ -44,14 +44,14 @@ public class RawPage {
 		isStored = false;
 	}
 
-	public void printLogInfo() {
+	public void printLogInfo(String message) {
 		if (!isExtracted) {
-			logger.warn(this.toString() + " Extracted Failed!");
+			logger.warn(this.toString() + " Extracted Failed! #"+message);
 			return;
 		}
 
 		if (!isStored)
-			logger.warn(this.toString() + " Extracted Successed,Stored Failed!");
+			logger.warn(this.toString() + " Extracted Successed,Stored Failed! #"+message);
 	}
 
 	@Override

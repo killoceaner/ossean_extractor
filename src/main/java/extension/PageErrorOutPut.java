@@ -2,6 +2,6 @@ package extension;
 
 public interface PageErrorOutPut {
 	
-	public void returnErrorPage(RawPage rawPage);
+	public void returnErrorPage(RawPage rawPage,String message);
 
 }

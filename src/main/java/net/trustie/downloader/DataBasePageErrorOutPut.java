@@ -19,8 +19,9 @@ public class DataBasePageErrorOutPut implements PageErrorOutPut {
 	private String errorInfo = "Detail";
 
 	@Override
-	public void returnErrorPage(RawPage rawPage) {
-		rawPage.printLogInfo();
+	public void returnErrorPage(RawPage rawPage,String message) {
+		rawPage.printLogInfo(message);
+		
 		if (StringUtils.isNotBlank(tableName)) {
 			errPageDao.insertErrorPage(tableName, rawPage.getUrl(),
 					rawPage.getRawText(), errorInfo);

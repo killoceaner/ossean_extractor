@@ -61,16 +61,16 @@ public class OsseanExtractor extends TimerTask {
 	}
 
 	public static OsseanExtractor create(Site site,
-			PageModelPipeline<?> modelPipeline, Class<?>... pageModels) {		
+			PageModelPipeline<?> modelPipeline, Class<?>... pageModels) {
 		return new OsseanExtractor(site, modelPipeline, pageModels);
 	}
 
 	public OsseanExtractor setDownloader(PageDownloader downloader) {
-		this.downloader = downloader;		
+		this.downloader = downloader;
 		return this;
 	}
 
-	public OsseanExtractor setUUID(String uuid) {		
+	public OsseanExtractor setUUID(String uuid) {
 		this.uuid = uuid;
 		return this;
 	}
@@ -135,12 +135,12 @@ public class OsseanExtractor extends TimerTask {
 							rawPage.setStored(true);
 						}
 					}
-				} catch (Exception e) {
-					logger.error(rawPage.toString() + " error info:" + e);
-
-				} finally {
 					if (!rawPage.isExtracted() || !rawPage.isStored())
-						pageErrorOutPut.returnErrorPage(rawPage);
+						pageErrorOutPut.returnErrorPage(rawPage,
+								"May Caused By Model Problem!");
+
+				} catch (Exception e) {
+					pageErrorOutPut.returnErrorPage(rawPage, "#" + e);
 				}
 			}
 		}
@@ -175,7 +175,7 @@ public class OsseanExtractor extends TimerTask {
 
 		if (pageErrorOutPut == null) {
 			pageErrorOutPut = new DefaultPageErrorOutPut();
-		}		
+		}
 	}
 
 	protected void createPageList(List<RawPage> rawPages) {
