@@ -10,7 +10,7 @@
 	</appender>
 
 <appender name="railyFile" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="./error/${logFilePath}/.log"></param>
+		<param name="File" value="./error/${logFilePath}/error.log"></param>
 		<param name="ImmediateFlush" value="true" />
 		<param name="Threshold" value="warn"></param>
 		<param name="Append" value="true"></param>

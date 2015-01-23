@@ -106,8 +106,6 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime)) {
 			page.setResultSkip(this, true);
 		}
-		
-		System.out.println(page.getResultSkip(this));
 	}
 
 	public int getTopicId() {

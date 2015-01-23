@@ -32,7 +32,7 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 	@ExtractBy("//*[@id='qst_content']/div[@class='codetitle']/div[@class='que_con']/allText()")
 	private String issueDetail = "";
 
-	@ExtractBy("//div[@id='edit1']/div[@id='topic']/allText()")
+	@ExtractBy("//div[@id='edit1']/div[@id='topic']/a/allText()")
 	private List<String> tags;
 
 	@ExtractBy(value = "//*[@class='qa_rgt']/div[@class='question_stats']/div[@class='stats']/p/b/text()", source = Source.RawHtml)
@@ -98,16 +98,15 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 		// 处理pageMD5
 		this.pageMD5 = DigestUtils.md5Hex(this.issueTitle + this.scanerNum
 				+ this.answerNum + this.commentNum + this.answerNum);
-		
-		//处理attentionNum
-		if(StringUtils.isBlank(this.attentionNum))
-			this.attentionNum="0";		
+
+		// 处理attentionNum
+		if (StringUtils.isBlank(this.attentionNum))
+			this.attentionNum = "0";
 	}
 
 	@Override
 	public void validate(Page page) {
-		if (StringHandler.isAtLeastOneBlank(this.issueTitle, this.author,
-				this.authorUrl)) {
+		if (StringHandler.isAtLeastOneBlank(this.issueTitle, this.authorUrl)) {
 			page.setResultSkip(this, true);
 			return;
 		}
@@ -119,8 +118,7 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 		}
 
 		if (!StringHandler.canFormatterDate(this.extractTime, this.postTime))
-			page.setResultSkip(this, true);	
-		System.out.println(page.getResultSkip(this));
+			page.setResultSkip(this, true);
 	}
 
 	public String getIssueId() {
@@ -249,6 +247,6 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 
 	public void setAuthorUrl(String authorUrl) {
 		this.authorUrl = authorUrl;
-	}	
+	}
 
 }

@@ -141,8 +141,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 
 		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime)) {
 			page.setResultSkip(this, true);
-			return;
-		}		
+		}
 	}
 
 	public String getQuestionId() {

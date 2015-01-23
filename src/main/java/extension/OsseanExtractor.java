@@ -137,10 +137,10 @@ public class OsseanExtractor extends TimerTask {
 					}
 					if (!rawPage.isExtracted() || !rawPage.isStored())
 						pageErrorOutPut.returnErrorPage(rawPage,
-								"May Caused By Model Problem!");
+								"May Caused By Model Problem! Or Page Error!");
 
 				} catch (Exception e) {
-					pageErrorOutPut.returnErrorPage(rawPage, "#" + e);
+					pageErrorOutPut.returnErrorPage(rawPage, e);
 				}
 			}
 		}

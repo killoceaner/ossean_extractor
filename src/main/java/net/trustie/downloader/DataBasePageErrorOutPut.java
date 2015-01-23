@@ -19,9 +19,18 @@ public class DataBasePageErrorOutPut implements PageErrorOutPut {
 	private String errorInfo = "Detail";
 
 	@Override
-	public void returnErrorPage(RawPage rawPage,String message) {
+	public void returnErrorPage(RawPage rawPage, String message) {
 		rawPage.printLogInfo(message);
-		
+		handerErrorPage(rawPage);
+	}
+
+	@Override
+	public void returnErrorPage(RawPage rawPage, Throwable throwable) {
+		rawPage.printLogInfo(throwable);
+		handerErrorPage(rawPage);
+	}
+
+	public void handerErrorPage(RawPage rawPage) {
 		if (StringUtils.isNotBlank(tableName)) {
 			errPageDao.insertErrorPage(tableName, rawPage.getUrl(),
 					rawPage.getRawText(), errorInfo);
@@ -45,5 +54,4 @@ public class DataBasePageErrorOutPut implements PageErrorOutPut {
 		this.errorInfo = errorInfo;
 		return this;
 	}
-
 }

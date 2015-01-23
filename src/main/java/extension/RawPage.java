@@ -1,5 +1,7 @@
 package extension;
 
+import java.io.UnsupportedEncodingException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,11 @@ public class RawPage {
 
 	public void generatPage() {
 		this.page = new Page();
+		try {
+			this.html = new String(this.html.getBytes("UTF-8"), "ISO8859-1");
+		} catch (UnsupportedEncodingException e) {
+			logger.warn(page.toString(), e);
+		}
 		if (StringUtils.isNotBlank(this.url)) {
 			if (this.html != null && this.html.length() > 0) {
 				page.setPageUrl(this.url);
@@ -46,12 +53,24 @@ public class RawPage {
 
 	public void printLogInfo(String message) {
 		if (!isExtracted) {
-			logger.warn(this.toString() + " Extracted Failed! #"+message);
+			logger.warn(this.toString() + " Extracted Failed ## " + message);
 			return;
 		}
 
 		if (!isStored)
-			logger.warn(this.toString() + " Extracted Successed,Stored Failed! #"+message);
+			logger.warn(this.toString()
+					+ " Extracted Successed,Stored Failed! ## " + message);
+	}
+
+	public void printLogInfo(Throwable e) {
+		if (!isExtracted) {
+			logger.warn(this.toString() + " Extracted Failed!", e);
+			return;
+		}
+
+		if (!isStored)
+			logger.warn(
+					this.toString() + " Extracted Successed,Stored Failed!", e);
 	}
 
 	@Override
