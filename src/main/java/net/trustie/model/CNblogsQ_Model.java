@@ -2,14 +2,14 @@ package net.trustie.model;
 
 import java.util.List;
 
+import net.trustie.utils.DateHandler;
+import net.trustie.utils.StringHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-import extension.StringHandler;
 
 @ExtractBy("//*[@id='container']/div[@id='container_content']/div[@id='main']")
 public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
@@ -120,7 +120,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 				"\\d+");
 
 		// 处理extractorTime
-		this.extractTime = StringHandler.getExtractTime();
+		this.extractTime = DateHandler.getExtractTime();
 	}
 
 	public void validate(Page page) {
@@ -139,7 +139,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 			return;
 		}
 
-		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime)) {
+		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime)) {
 			page.setResultSkip(this, true);
 		}
 	}

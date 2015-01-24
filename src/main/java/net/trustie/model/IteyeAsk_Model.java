@@ -2,15 +2,15 @@ package net.trustie.model;
 
 import java.util.List;
 
+import net.trustie.utils.DateHandler;
+import net.trustie.utils.StringHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-import extension.StringHandler;
 
 @ExtractBy("//*[@id='page']/div[@id='content']//div[@id='main']/div[@class='problem']/dl")
 public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
@@ -85,7 +85,7 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 				"\\d+");
 
 		// 处理抽取时间
-		this.extractTime = StringHandler.getExtractTime();
+		this.extractTime = DateHandler.getExtractTime();
 
 		// 处理pageMD5
 		this.pageMD5 = DigestUtils.md5Hex(this.questionTitle + this.answerNum
@@ -110,7 +110,7 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 			page.setResultSkip(this, true);
 		}
 
-		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime))
+		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime))
 			page.setResultSkip(this, true);
 	}
 

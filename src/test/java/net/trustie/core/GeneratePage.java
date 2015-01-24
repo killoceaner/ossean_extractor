@@ -1,7 +1,7 @@
 package net.trustie.core;
 
+import net.trustie.utils.StringHandler;
 import core.Page;
-import extension.StringHandler;
 
 public class GeneratePage {
 	public static Page createPage(String url, String rawText) {

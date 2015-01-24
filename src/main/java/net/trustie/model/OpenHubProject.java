@@ -5,20 +5,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import net.trustie.osseanextractor.utils.Seperator;
-
+import net.trustie.utils.Seperator;
+import net.trustie.utils.StringHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import core.AfterExtractor;
 import core.Page;
-import extension.DateHandler;
-import extension.StringHandler;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 
 @ExtractBy("//div[@id='projects_show_page']")
@@ -249,11 +245,7 @@ public class OpenHubProject implements AfterExtractor {
 		Elements eles = getAElements(nutshell);
 		Element ele = null;
 		ele = eles.get(0);
-		this.commitNum = getInt(ele.text());
-		ele = eles.get(1);
-		this.contributorNum = getInt(ele.text());
-		ele = eles.get(2);
-		this.codeLinesNum = getInt(ele.text());
+		
 	}
 
 	private void handleNutShell1(String nutshell) {
@@ -298,12 +290,10 @@ public class OpenHubProject implements AfterExtractor {
 				OpenHubProject.lastCommitTimeHeader).trim();
 		System.out.println(lastCommitAt);
 		lastCommitAt = StringHandler.removePreposition(lastCommitAt);
-		this.lastCommitTime = handleDateBefore(lastCommitAt);
+		
 	}
 
-	private int getInt(String in) {
-		return StringHandler.extractIntFromString(in);
-	}
+	
 
 	private Date handleDateAt(String strDate) {
 		String[] date = strDate.split(",");
@@ -375,13 +365,6 @@ public class OpenHubProject implements AfterExtractor {
 		return rt;
 	}
 
-	private Date handleDateBefore(String strDate) {
-		// System.out.println(strDate);
-		int num = StringHandler.extractIntFromString(strDate);
-		String unit = StringHandler.getUnit(strDate);
-
-		return DateHandler.getDateBefore(num, unit);
-	}
 
 	/**
 	 * @return the mostWrittenHeader

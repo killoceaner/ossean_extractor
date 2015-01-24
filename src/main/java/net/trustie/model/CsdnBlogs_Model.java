@@ -2,13 +2,13 @@ package net.trustie.model;
 
 import java.util.List;
 
+import net.trustie.utils.DateHandler;
+import net.trustie.utils.StringHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-import extension.StringHandler;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 
@@ -88,7 +88,7 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 				+ this.blogContent);
 
 		// 处理抽取extractTime
-		this.extractTime = StringHandler.getExtractTime();
+		this.extractTime = DateHandler.getExtractTime();
 
 		// 处理postTime
 		this.postTime = this.postTime + ":00";
@@ -111,7 +111,7 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 			return;
 		}
 
-		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime))
+		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime))
 			page.setResultSkip(this, true);
 	}
 

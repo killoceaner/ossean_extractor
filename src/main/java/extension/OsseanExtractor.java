@@ -144,8 +144,10 @@ public class OsseanExtractor extends TimerTask {
 				}
 			}
 		}
-		readCursor.setValue(uuid,
-				String.valueOf(rawList.get(rawList.size() - 1).getId() + 1));
+		if (rawList.size() > 0)
+			readCursor
+					.setValue(uuid, String.valueOf(rawList.get(
+							rawList.size() - 1).getId() + 1));
 	}
 
 	public void start() {

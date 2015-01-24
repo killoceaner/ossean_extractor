@@ -1,4 +1,4 @@
-package net.trustie.osseanextractor.utils;
+package net.trustie.utils;
 
 public class Seperator {
 	public static String OSSEAN_SEPERATOR = "|,|";

@@ -2,15 +2,15 @@ package net.trustie.model;
 
 import java.util.List;
 
+import net.trustie.utils.DateHandler;
+import net.trustie.utils.StringHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-import extension.StringHandler;
 
 @ExtractBy("//*[@id='wrap']/div[@class='container']/div[@class='qa_lft']")
 public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
@@ -80,7 +80,7 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 			this.attentionNum = "0";
 
 		// 处理postTime
-		this.postTime = this.postTime.trim() + " 00:00:00";
+		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
 
 		// 处理authorUrl
 		this.authorUrl = "http://www.dewen.io" + this.authorUrl;
@@ -93,7 +93,7 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 			this.answerNum = "0";
 
 		// 处理extractTime
-		this.extractTime = StringHandler.getExtractTime();
+		this.extractTime = DateHandler.getExtractTime();
 
 		// 处理pageMD5
 		this.pageMD5 = DigestUtils.md5Hex(this.issueTitle + this.scanerNum
@@ -117,8 +117,10 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 			return;
 		}
 
-		if (!StringHandler.canFormatterDate(this.extractTime, this.postTime))
+		if (!DateHandler.canFormatToDate(this.extractTime, this.postTime))
 			page.setResultSkip(this, true);
+
+		System.out.println(page.getResultSkip(this));
 	}
 
 	public String getIssueId() {

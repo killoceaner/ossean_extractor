@@ -3,7 +3,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import net.trustie.osseanextractor.utils.VanishTime;
+import net.trustie.utils.VanishTime;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jsoup.nodes.Document;

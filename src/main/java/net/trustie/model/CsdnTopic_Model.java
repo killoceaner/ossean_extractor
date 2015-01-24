@@ -2,13 +2,14 @@ package net.trustie.model;
 
 import java.util.List;
 
+import net.trustie.utils.DateHandler;
+import net.trustie.utils.StringHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-import extension.StringHandler;
 
 @ExtractBy("//*[@class='wraper']/div[@class='detailed']/table[1]/tbody")
 public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
@@ -84,7 +85,7 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 		this.postTime = StringHandler.subString(this.postTime, "发表于：").trim();
 
 		// 处理extractorTime
-		this.extractTime = StringHandler.getExtractTime();
+		this.extractTime = DateHandler.getExtractTime();
 
 		// 处理pageMD5
 		this.pageMD5 = DigestUtils.md5Hex(this.replyNum + this.topicTitle);
@@ -103,7 +104,7 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 			return;
 		}
 
-		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime)) {
+		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime)) {
 			page.setResultSkip(this, true);
 		}
 	}

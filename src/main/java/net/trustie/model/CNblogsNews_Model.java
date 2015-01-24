@@ -1,18 +1,20 @@
 package net.trustie.model;
 
 import java.util.List;
+
+import net.trustie.utils.DateHandler;
+import net.trustie.utils.StringHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-import extension.StringHandler;
 
 @ExtractBy("//*div[@id='main_wrapper']/div[@id='sideleft']/div[@id='news_main']")
 public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 	private int newsId;
-	
+
 	private String newsUrl;
 
 	private String pageMD5;
@@ -43,47 +45,47 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 
 	@ExtractBy("//div[@id='news_more_info']/div[@class='news_tags']/a/text()")
 	private List<String> tags;
-	
+
 	@ExtractBy("//div[@id='news_info']/a[@id='link_source1']/@href")
 	private String originFrom;
-	
-	@ExtractBy(value="//*[@id='sideleft']/div[@id='guide']/h3/a[3]/text()",source=Source.RawHtml)
+
+	@ExtractBy(value = "//*[@id='sideleft']/div[@id='guide']/h3/a[3]/text()", source = Source.RawHtml)
 	private String newsCategorie;
 
 	public void afterProcess(Page page) {
-		//处理newsId
-		this.newsId=Integer.parseInt(StringHandler.matchRightString(page.getPageUrl(), "\\d+"));
-		
+		// 处理newsId
+		this.newsId = Integer.parseInt(StringHandler.matchRightString(
+				page.getPageUrl(), "\\d+"));
+
 		// 处理newsUrl
 		this.newsUrl = page.getPageUrl();
 
 		// tag
 		this.tag = StringHandler.combineTags(tags);
-		
-		//处理comeFrom
-		this.comeFrom=StringHandler.subString(this.comeFrom,"来自:");
+
+		// 处理comeFrom
+		this.comeFrom = StringHandler.subString(this.comeFrom, "来自:");
 
 		// 处理extractTime;
-		this.extractTime = StringHandler.getExtractTime();
+		this.extractTime = DateHandler.getExtractTime();
 
 		// 处理relativeTime
 		this.relativeTime = StringHandler.subString(this.relativeTime, "发布于");
-		this.relativeTime=this.relativeTime+":00";
+		this.relativeTime = this.relativeTime + ":00";
 
 		// 处理pageMD5
 		this.pageMD5 = DigestUtils.md5Hex(this.newsTitle);
 	}
 
-	public void validate(Page page) {		
+	public void validate(Page page) {
 		if (StringHandler.isAtLeastOneBlank(this.newsTitle, this.newsAuthor,
 				this.newsAuthorUrl)) {
 			page.setResultSkip(this, true);
 			return;
 		}
-		
-		if (!StringHandler
-				.canFormatterDate(this.relativeTime, this.extractTime))
-			page.setResultSkip(this, true);			
+
+		if (!DateHandler.canFormatToDate(this.relativeTime, this.extractTime))
+			page.setResultSkip(this, true);
 	}
 
 	public String getNewsUrl() {
@@ -204,5 +206,5 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 
 	public void setNewsId(int newsId) {
 		this.newsId = newsId;
-	}		
+	}
 }

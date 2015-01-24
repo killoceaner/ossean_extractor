@@ -1,15 +1,9 @@
-package extension;
+package net.trustie.utils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import net.trustie.osseanextractor.utils.Seperator;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,10 +15,12 @@ public class StringHandler {
 	private static String prepositionAbout = "about";
 	private static String prepositionOver = "over";
 
-/**
-	 * 合并tags
-	 * @param tags 标签集合
-	 * @return tag,以默认'<'tag1'>','<'tag2'>','<'tag3'>'...形式返回
+	/**
+	 * 默认形式合并tags
+	 * 
+	 * @param tags
+	 *            标签集合
+	 * @return tag,以默认<tag1>,<tag2>,<tag3>...形式返回
 	 */
 	public static String combineTags(List<String> tags) {
 		if (tags != null && tags.size() > 0) {
@@ -37,11 +33,14 @@ public class StringHandler {
 		return null;
 	}
 
-/**
+	/**
 	 * 以用户定义的形式合并tags
-	 * @param tags 标签集合
-	 * @param varchar 用户定义
-	 * @return tag,以'<'tag1'>'varchar'<'tag2'>'varchar'<'tag3'>'...形式返回
+	 * 
+	 * @param tags
+	 *            标签集合
+	 * @param varchar
+	 *            用户定义
+	 * @return tag,以<tag1>varchar<tag2>varchar<tag3>...形式返回
 	 */
 	public static String combineTags(List<String> tags, char varchar) {
 		if (tags != null && tags.size() > 0) {
@@ -59,7 +58,7 @@ public class StringHandler {
 	 * 
 	 * @param strings
 	 *            字符串列表
-	 * @return 如果strings[]中都不为空或者空字符，返回true,否则返回false
+	 * @return 如果strings中都不为空或者空字符，返回false,否则返回true
 	 */
 	public static boolean isAtLeastOneBlank(String... strings) {
 		for (String str : strings) {
@@ -138,25 +137,6 @@ public class StringHandler {
 	}
 
 	/**
-	 * 检查字符数组是否全部可以转换为日期型,支持用户自定义型,默认 YYYY-MM-DD hh:mm:ss
-	 * 
-	 * @param format
-	 * @param strings
-	 * @return
-	 */
-	public static boolean canFormatterDate(String... strings) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:MM:SS");
-		try {
-			for (String s : strings) {
-				sdf.parse(s);
-			}
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
 	 * 过滤掉一些字符串
 	 * 
 	 * @param string
@@ -206,26 +186,6 @@ public class StringHandler {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * 从字符串中提取出整形
-	 * 
-	 * @param in
-	 * @return
-	 */
-	public static int extractIntFromString(String in) {
-		char[] chars = in.toCharArray();
-		String rs = "";
-		for (int i = 0; i < chars.length; i++) {
-			if (chars[i] <= '9' && chars[i] >= '0') {
-				rs += chars[i];
-			}
-		}
-		if ("".equals(rs)) {
-			return 0;
-		}
-		return Integer.valueOf(rs);
 	}
 
 	/**
@@ -337,52 +297,35 @@ public class StringHandler {
 	}
 
 	/**
-	 * 去除字符串中空格
+	 * String字符串中是否能匹配到相应的字符串
 	 * 
-	 * @param str
+	 * @param string
+	 * @param regex
 	 * @return
 	 */
-	public static String removeSpaces(String str) {
-
-		return StringUtils.remove(str, " ");
-		// int len = str.length(), st = 0;
-		// char[] val = str.toCharArray();
-		// while (st < len && val[len - 1] <= ' ')
-		// len--;
-		// while (st < len && val[st] <= ' ')
-		// st++;
-		//
-		// return (st > 0) || (len < str.length()) ? str.substring(st, len) :
-		// str;
-	}
-
-	/**
-	 * 获取抽取时间
-	 * 
-	 * @return
-	 */
-	public static String getExtractTime() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss");
-		return simpleDateFormat.format(new Date());
-	}
-
-	/**
-	 * 在当前时间上加上多少秒
-	 * 
-	 * @param dateTime
-	 * @param second
-	 * @return 操作成功，成功返回，不成功返回空;
-	 */
-	public static String addTimeToDate(String dateTime, int second) {
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:MM:SS");
-			Calendar c = Calendar.getInstance();
-			c.setTime(sdf.parse(dateTime));
-			c.add(Calendar.SECOND, second);
-			return sdf.format(c.getTime());
-		} catch (Exception e) {
-			return null;
+	public static boolean canMatchRightString(String string, String regex) {
+		if (string != null && string.length() > 0 && regex != null
+				&& regex.length() > 0) {
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(string);
+			if (matcher.find())
+				return true;
 		}
+		return false;
 	}
+
+	/**
+	 * 
+	 * @param string
+	 * @param regexs
+	 * @return
+	 */
+	public static boolean canMatchRightStrings(String string, String... regexs) {
+		for (String regex : regexs) {
+			if (!canMatchRightString(string, regex))
+				return false;
+		}
+		return true;
+	}
+
 }

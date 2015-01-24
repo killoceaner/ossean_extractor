@@ -1,6 +1,8 @@
 package net.trustie.model;
 
 import java.util.List;
+import net.trustie.utils.DateHandler;
+import net.trustie.utils.StringHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
@@ -8,7 +10,6 @@ import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-import extension.StringHandler;
 
 @ExtractBy("//*[@class='container']/div[@id='content']/div/div[@id='mainbar']/div[@id='question']/table")
 public class StackOverflow implements AfterExtractor, ValidateExtractor {
@@ -79,11 +80,11 @@ public class StackOverflow implements AfterExtractor, ValidateExtractor {
 
 		// 处理postTime
 		this.postTime = this.postTime.substring(0, this.postTime.length() - 1);
-		this.postTime=StringHandler.addTimeToDate(this.postTime, 8*60*60);
+		this.postTime=DateHandler.addTimeToDate(this.postTime, 8*60*60);
 
 		// 处理active
 		this.active = this.active.substring(0, this.active.length() - 1);
-		this.active=StringHandler.addTimeToDate(this.active, 8*60*60);
+		this.active=DateHandler.addTimeToDate(this.active, 8*60*60);
 
 		// 处理urlMD5
 		this.urlMD5 = DigestUtils.md5Hex(this.url);
@@ -92,7 +93,7 @@ public class StackOverflow implements AfterExtractor, ValidateExtractor {
 		this.pageMD5 = DigestUtils.md5Hex(this.questionTitle + this.viewNum);
 
 		// 处理extractorTime
-		this.extractTime = StringHandler.getExtractTime();
+		this.extractTime = DateHandler.getExtractTime();
 		
 		//处理帖子的ID
 		this.questionId=StringHandler.matchRightString(this.url, "questions/\\d+/");
@@ -116,7 +117,7 @@ public class StackOverflow implements AfterExtractor, ValidateExtractor {
 			return;
 		}
 
-		if (!StringHandler.canFormatterDate(this.postTime, this.extractTime))
+		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime))
 			page.setResultSkip(this, true);
 	}
 

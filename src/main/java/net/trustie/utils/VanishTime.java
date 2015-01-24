@@ -1,4 +1,4 @@
-package net.trustie.osseanextractor.utils;
+package net.trustie.utils;
 
 public class VanishTime {	
 	public final static long SECOND=1000;
