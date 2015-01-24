@@ -84,7 +84,7 @@ public class OSChinaQuestion_Model implements AfterExtractor, ValidateExtractor 
 				+ this.questionTitle);
 
 		// 处理postime
-		
+		this.postTime=DateHandler.formatAllTypeDate(this.postTime);
 	}
 
 	public void validate(Page page) {

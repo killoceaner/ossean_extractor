@@ -1,11 +1,9 @@
 package net.trustie.model;
 
 import java.util.List;
-
 import net.trustie.utils.DateHandler;
 import net.trustie.utils.StringHandler;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
@@ -73,10 +71,10 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 				.findRigthString(this.scanerNum, "(", ")");
 
 		// 处理attentionNum
-		if (answerNum != null)
+		if (this.attentionNum != null)
 			this.attentionNum = StringHandler.matchRightString(
 					this.attentionNum, "\\d+");
-		else
+		if (this.attentionNum == null)
 			this.attentionNum = "0";
 
 		// 处理postTime
@@ -89,19 +87,15 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 		if (this.answerNum != null)
 			this.answerNum = StringHandler.matchRightString(this.answerNum,
 					"\\d+");
-		else
+		if (this.answerNum == null)
 			this.answerNum = "0";
 
 		// 处理extractTime
-		this.extractTime = DateHandler.getExtractTime();
+		this.extractTime = DateHandler.getExtractTime();	
 
 		// 处理pageMD5
 		this.pageMD5 = DigestUtils.md5Hex(this.issueTitle + this.scanerNum
-				+ this.answerNum + this.commentNum + this.answerNum);
-
-		// 处理attentionNum
-		if (StringUtils.isBlank(this.attentionNum))
-			this.attentionNum = "0";
+				+ this.attentionNum + this.commentNum + this.answerNum);
 	}
 
 	@Override

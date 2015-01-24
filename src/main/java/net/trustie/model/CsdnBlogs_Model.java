@@ -1,16 +1,15 @@
 package net.trustie.model;
 
 import java.util.List;
-
 import net.trustie.utils.DateHandler;
 import net.trustie.utils.StringHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import us.codecraft.webmagic.model.annotation.ExtractBy;
+import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
-import us.codecraft.webmagic.model.annotation.ExtractBy;
-import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 
 @ExtractBy("//*[@id='main']/div[@class='main']/div[@id='article_details']")
 public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
@@ -91,7 +90,7 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 		this.extractTime = DateHandler.getExtractTime();
 
 		// 处理postTime
-		this.postTime = this.postTime + ":00";
+		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
 
 		// 处理作者
 		if (StringUtils.isBlank(this.author))

@@ -70,8 +70,7 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 		this.extractTime = DateHandler.getExtractTime();
 
 		// 处理relativeTime
-		this.relativeTime = StringHandler.subString(this.relativeTime, "发布于");
-		this.relativeTime = this.relativeTime + ":00";
+		this.relativeTime = DateHandler.formatAllTypeDate(this.relativeTime);
 
 		// 处理pageMD5
 		this.pageMD5 = DigestUtils.md5Hex(this.newsTitle);

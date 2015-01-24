@@ -72,8 +72,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		this.viewNum = StringHandler.matchRightString(this.viewNum, "\\d+");
 
 		// 处理发帖时间
-		this.postTime = StringHandler.matchRightString(this.postTime,
-				"[0-9]{4,}-.*");
+		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
 
 		// 处理作者的url
 		if (StringUtils.isNotBlank(this.authorUrl)) {
@@ -113,7 +112,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 				+ this.voteNum + this.answerNum);
 
 		// 处理postTime
-		this.postTime = this.postTime + ":00";
+		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
 
 		// 处理questionId
 		this.questionId = StringHandler.matchRightString(this.questionUrl,
