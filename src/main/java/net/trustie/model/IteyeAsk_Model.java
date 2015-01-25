@@ -111,7 +111,7 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 		}
 
 		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime))
-			page.setResultSkip(this, true);		
+			page.setResultSkip(this, true);			
 	}
 
 	public int getQuestionId() {

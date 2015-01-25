@@ -102,8 +102,9 @@ public class OSChinaQuestion_Model implements AfterExtractor, ValidateExtractor 
 			return;
 		}
 
-		if (DateHandler.canFormatToDate(this.postTime, this.extractTime))
+		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime))
 			page.setResultSkip(this, true);
+		
 	}
 
 	public String getQuestionUrl() {
