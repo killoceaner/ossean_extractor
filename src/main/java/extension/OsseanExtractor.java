@@ -34,7 +34,7 @@ public class OsseanExtractor extends TimerTask {
 
 	private String cursorPath;
 
-	public String defaultPath = "./cursor/cursor.txt";
+	public String defaultPath = "./cursor/";
 
 	public List<String> modelName = new ArrayList<String>();
 
@@ -165,7 +165,7 @@ public class OsseanExtractor extends TimerTask {
 			timer = new Timer();
 		}
 		if (cursorPath == null) {
-			this.cursorPath = defaultPath;
+			this.cursorPath = defaultPath+uuid+".txt";
 		}
 		if (readCursor == null) {
 			readCursor = new ReadCursor(cursorPath);
