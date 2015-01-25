@@ -77,14 +77,13 @@ public class CNblogsNews_Model implements AfterExtractor, ValidateExtractor {
 	}
 
 	public void validate(Page page) {
-		if (StringHandler.isAtLeastOneBlank(this.newsTitle, this.newsAuthor,
-				this.newsAuthorUrl)) {
+		if (StringHandler.isAtLeastOneBlank(this.newsTitle, this.newsAuthorUrl)) {
 			page.setResultSkip(this, true);
 			return;
 		}
 
 		if (!DateHandler.canFormatToDate(this.relativeTime, this.extractTime))
-			page.setResultSkip(this, true);
+			page.setResultSkip(this, true);	
 	}
 
 	public String getNewsUrl() {

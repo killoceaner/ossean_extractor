@@ -119,6 +119,8 @@ public class StackOverflow implements AfterExtractor, ValidateExtractor {
 
 		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime))
 			page.setResultSkip(this, true);
+		
+		System.out.println(page.getResultSkip(this));
 	}
 
 	public String getQuestionTitle() {

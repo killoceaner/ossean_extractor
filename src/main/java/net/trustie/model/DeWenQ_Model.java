@@ -112,9 +112,7 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 		}
 
 		if (!DateHandler.canFormatToDate(this.extractTime, this.postTime))
-			page.setResultSkip(this, true);
-
-		System.out.println(page.getResultSkip(this));
+			page.setResultSkip(this, true);	
 	}
 
 	public String getIssueId() {

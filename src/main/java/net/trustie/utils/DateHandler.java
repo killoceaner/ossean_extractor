@@ -3,6 +3,8 @@ package net.trustie.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,9 +35,12 @@ public class DateHandler {
 	public static boolean canFormatToDate(String... strings) {
 		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
 		for (String s : strings) {
+			if (StringUtils.isBlank(s))
+				return false;
 			try {
 				sdf.parse(s);
 			} catch (ParseException e) {
+				logger.error("String　[" + s + "] ## Can Not Format To Date", e);
 				return false;
 			}
 		}
@@ -64,16 +69,24 @@ public class DateHandler {
 	 * @return yyyy-mm-dd HH:mm:ss
 	 */
 	public static String addTimeToDate(Date date, long second) {
+		if (date == null)
+			return null;
 		return dateToString(timeStampToDate(dateToTimeStamp(date) + second
 				* 1000));
 	}
 
 	/**
+	 * 自动处理各种类型的日期类型字符串，匹配yyyy-mm-dd
+	 * hh:mm:ss类型日期;补全yyyy-mm-dd类型的日期;补全补全yyyy-mm-dd hh:mm类型的日期;转化x(年 or 月 or
+	 * 天)前类型的日期，同时支持英文。
 	 * 
 	 * @param string
-	 * @return
+	 * @return 日期以字符串形式返回
 	 */
 	public static String formatAllTypeDate(String string) {
+		if (StringUtils.isBlank(string))
+			return null;
+
 		if (StringHandler.canMatchRightString(string.trim(), dateType[0]))
 			return StringHandler.matchRightString(string, dateType[0]).trim();
 
@@ -90,13 +103,14 @@ public class DateHandler {
 	}
 
 	/**
+	 * 转化x(年 or 月 or 天)前类型的日期，同时支持英文，日后还需扩展
 	 * 
 	 * @param string
 	 * @return
 	 */
 	private static String handlerDefaultDate(String string) {
 		if (StringHandler.canMatchRightStrings(string, "\\d+", "年", "前")
-				|| StringHandler.canMatchRightStrings(string, "\\d+", "years")) {
+				|| StringHandler.canMatchRightStrings(string, "\\d+", "year")) {
 			int years = Integer.parseInt(StringHandler.matchRightString(string,
 					"\\d+"));
 			return addTimeToDate(new Date(), -years * 365 * 24 * 60 * 60);
@@ -107,7 +121,7 @@ public class DateHandler {
 			return addTimeToDate(new Date(), -183 * 24 * 60 * 60);
 
 		else if (StringHandler.canMatchRightStrings(string, "\\d+", "月", "前")
-				|| StringHandler.canMatchRightStrings(string, "\\d", "months")) {
+				|| StringHandler.canMatchRightStrings(string, "\\d+", "mon")) {
 			int months = Integer.parseInt(StringHandler.matchRightString(
 					string, "\\d+"));
 			return addTimeToDate(new Date(), -months * 30 * 24 * 60 * 60);
@@ -115,8 +129,15 @@ public class DateHandler {
 
 		else if (StringHandler.canMatchRightStrings(string, "半", "月", "前")
 				|| StringHandler
-						.canMatchRightStrings(string, "half ", " month"))
+						.canMatchRightStrings(string, "half ", " mon"))
 			return addTimeToDate(new Date(), -15 * 24 * 60 * 60);
+
+		else if (StringHandler.canMatchRightStrings(string, "\\d+", "周", "前")
+				|| StringHandler.canMatchRightStrings(string, "\\d+ ", " week")) {
+			int weeks = Integer.parseInt(StringHandler.matchRightString(string,
+					"\\d+"));
+			return addTimeToDate(new Date(), -weeks * 7 * 24 * 60 * 60);
+		}
 
 		else if (StringHandler.canMatchRightStrings(string, "\\d+", "天", "前")
 				|| StringHandler.canMatchRightStrings(string, "\\d+", "day")) {
@@ -137,14 +158,14 @@ public class DateHandler {
 			return addTimeToDate(new Date(), -30 * 60);
 
 		else if (StringHandler.canMatchRightStrings(string, "\\d+", "分钟", "前")
-				|| StringHandler.canMatchRightStrings(string, "\\d+", "minute")) {
+				|| StringHandler.canMatchRightStrings(string, "\\d+", "min")) {
 			int minutes = Integer.parseInt(StringHandler.matchRightString(
 					string, "\\d+"));
 			return addTimeToDate(new Date(), -minutes * 60);
 		}
 
 		else if (StringHandler.canMatchRightStrings(string, "\\d+", "秒", "前")
-				|| StringHandler.canMatchRightStrings(string, "\\d+", "second")) {
+				|| StringHandler.canMatchRightStrings(string, "\\d+", "sec")) {
 			int seconds = Integer.parseInt(StringHandler.matchRightString(
 					string, "\\d+"));
 			return addTimeToDate(new Date(), -seconds);
@@ -155,14 +176,15 @@ public class DateHandler {
 	}
 
 	/**
-	 * 日期转化为字符串
+	 * Date转化为字符串
 	 * 
 	 * @param date
 	 * @return
 	 */
 	public static String dateToString(Date date) {
-		SimpleDateFormat df = new SimpleDateFormat(dateFormat);
-		return df.format(date);
+		if (date == null)
+			return null;
+		return new SimpleDateFormat(dateFormat).format(date);
 	}
 
 	/**
@@ -173,10 +195,12 @@ public class DateHandler {
 	 */
 	public static Date stringToDate(String str) {
 		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+		if (StringUtils.isBlank(str))
+			return null;
 		try {
 			return sdf.parse(str);
 		} catch (ParseException e) {
-			logger.error("String:" + str + "Can Not Format To Date", e);
+			logger.error("String [" + str + "] ## Can Not Format To Date", e);
 			return null;
 		}
 
