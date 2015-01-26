@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import net.trustie.downloader.DataBasePageErrorOutPut;
 import net.trustie.downloader.GenerateRawPage;
 import net.trustie.model.DeWenQ_Model;
+import net.trustie.model.IteyeAsk_Model;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -34,7 +36,7 @@ public class IteyeAsk_Extractor {
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						DeWenQ_Model.class).setUUID("iteyeAsk")
+						IteyeAsk_Model.class).setUUID("iteyeAsk")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}

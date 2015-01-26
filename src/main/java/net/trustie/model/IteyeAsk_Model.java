@@ -26,10 +26,10 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 
 	private String tag;
 
-	@ExtractBy("//*div[@class='sproblem_right']/h3[@class='close']/span[@class='score']/text()")
+	@ExtractBy("//*div[@class='sproblem_right']/h3/span[@class='score']/text()")
 	private String questionScore;
 
-	@ExtractBy(value = "//*div[@class='sproblem_right']/h3[@class='close']/a/text()")
+	@ExtractBy(value = "//*div[@class='sproblem_right']/h3/a/text()")
 	private String questionTitle = "";
 
 	@ExtractBy("//*div[@class='sproblem_right']/div[@class='new_content']/allText()")
