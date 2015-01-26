@@ -5,20 +5,25 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import net.trustie.utils.DateHandler;
 import net.trustie.utils.Seperator;
 import net.trustie.utils.StringHandler;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import core.AfterExtractor;
 import core.Page;
+import core.ValidateExtractor;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 
 @ExtractBy("//div[@id='projects_show_page']")
-public class OpenHubProject implements AfterExtractor {
+public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	// private static String indefiniteArticleA = "a";
 	// private static String indefiniteArticleAn = "an";
 	private static String mostWrittenHeader = "mostly written in";
@@ -75,8 +80,52 @@ public class OpenHubProject implements AfterExtractor {
 	private List<String> percentages = null;
 	private String languagePercentages ="";
 
+	//activity
+	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/small[@class='summary_timespan thirty_day']/allText()")
+	private String activityDayTime = null;
+	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@id='thirty_day_summary']/li/big/text()")
+	private List<String> dayActivityInfos = null;
+	private int dCommitNumber = 0;
+	private int dContributorNumber = 0 ;
+	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@id='thirty_day_summary']/li/span[@class = 'clear small']/a/allText()")
+	private String newContributor = null;
+	private int newContriNum = 0;
 	
-
+	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/td/small[@class='summary_timespan']/allText()")
+	private String activityMonthTime = null;
+	@ExtractBy("//div[@class=''span6]/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@class='unstyled nutshell']/li/big/text()")
+	private List<String> monthActivityInfos = null;
+	private int mCommitNumber = 0 ;
+	private int mContributorNumber = 0 ;
+	@ExtractBy("//div[@class=''span6]/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@class='unstyled nutshell']/li/span[@class='small clear']/allText()")
+	private List<String> allTrend = null ;
+	private String theCommitTrend = null ;
+	private String theContriTrend = null ;
+	
+	//community
+	@ExtractBy("//div[@class = 'proj_community_ratings']/div/span[@style='margin-left: 8px']/allText()")
+	private String rateInfo = null ;
+	private int rateNum = 0 ;
+	@ExtractBy("//div[@class = 'proj_community_ratings']/div/div[@class = 'clear']/span[@class='float_left']/allText()")
+    private String rateLevel = null ;		
+	@ExtractBy("//div[@id='page']/div[@id='projects_show_page']/div[@class='span12 mezzo']/div/div[@class='float_left']/table[@id='recent_committers_table']/tbody/tr/td[@class ='recent_committers']/a/allText()")
+	private List<String> RecenctContributors = null ;
+	private String ReContributor = null ;
+	
+	//buttom informations
+	@ExtractBy("//div[@id='projects_show_page']/div[@class='full-width mezzo margin_left_20 margin_right_20 margin_top_15']/div[@class = 'bottom-nav sidebar_project']/div[@class = 'actions']/ul[@class='nav nav-stacked nav-pills']/li[@class=' first']/a/@href")
+	private List<String> firstLinks = null;
+	private String newsLink = null;
+	private String langLink = null;
+	private String commitsLink = null;
+	@ExtractBy("//div[@id='projects_show_page']/div[@class='full-width mezzo margin_left_20 margin_right_20 margin_top_15']/div[@class = 'bottom-nav sidebar_project']/div[@class = 'actions']/ul[@class='nav nav-stacked nav-pills']/li[@class=' ']/a/@href")
+	private List<String> otherLinks = null;
+	private String settingLink = null;
+    private String sharingwidgetsLink = null;
+    private String relatedprojectsLink = null;
+    private String costestLink = null;
+    private String contributorLink = null;
+	
 	private String collectTime;
 	// @ExtractByUrl()
 	private String url;
@@ -142,8 +191,51 @@ public class OpenHubProject implements AfterExtractor {
 			valueList.add(eValue.text());
 		}
 		//this.languagePercentages = StringHandler.assemblyOSSEANMap(eList, valueList);
-
+		
+		//activity
+		String strtmp1 = null;
+		String strtmp2 = null;
+		String strtmp3 = null;
+		String strtmp4 = null;
+		//this.dCommitNumber = Integer.parseInt(dayActivityInfos.get(0));
+		//this.dContributorNumber = Integer.parseInt(dayActivityInfos.get(1));
+		strtmp1 = dayActivityInfos.get(0);
+		this.dCommitNumber = getInt(strtmp1);
+		strtmp2 = dayActivityInfos.get(1); 
+		this.dContributorNumber = getInt(strtmp2);
+		strtmp3 = monthActivityInfos.get(0);
+		this.mCommitNumber = getInt(strtmp3);
+	    strtmp4 = monthActivityInfos.get(1);
+	    this.mContributorNumber = getInt(strtmp4);
+	    this.newContriNum = getInt(this.newContributor);
+	    this.theCommitTrend = allTrend.get(0);
+	    this.theContriTrend = allTrend.get(1);
+	    
+	    //community
+	    this.rateNum = getInt(this.rateInfo);
+	    this.ReContributor = StringHandler.combineTags(this.RecenctContributors);
+	    
+	    //button informations
+	    String tmphref = "https://www.openhub.net";
+	    this.newsLink = tmphref+this.firstLinks.get(0);
+	    this.langLink = tmphref+this.firstLinks.get(1);
+	    this.commitsLink = tmphref+this.firstLinks.get(2);
+	    
+	    this.settingLink = tmphref+this.otherLinks.get(0);
+	    this.sharingwidgetsLink =tmphref+this.otherLinks.get(1);
+	    this.relatedprojectsLink = tmphref+this.otherLinks.get(2);
+	    this.costestLink = tmphref+this.otherLinks.get(3);
+	    this.contributorLink = tmphref+this.otherLinks.get(4);
+	    
 	}
+
+	@Override
+	public void validate(Page page) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 	private void handleQuickRef(Element quickRef) {
 		Elements itemNames = quickRef.select("dt");
@@ -245,7 +337,11 @@ public class OpenHubProject implements AfterExtractor {
 		Elements eles = getAElements(nutshell);
 		Element ele = null;
 		ele = eles.get(0);
-		
+		this.commitNum = getInt(ele.text());
+		ele = eles.get(1);
+		this.contributorNum = getInt(ele.text());
+		ele = eles.get(2);
+		this.codeLinesNum = getInt(ele.text());
 	}
 
 	private void handleNutShell1(String nutshell) {
@@ -290,10 +386,13 @@ public class OpenHubProject implements AfterExtractor {
 				OpenHubProject.lastCommitTimeHeader).trim();
 		System.out.println(lastCommitAt);
 		lastCommitAt = StringHandler.removePreposition(lastCommitAt);
-		
+		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+		this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt));//handleDateBefore(lastCommitAt);
 	}
 
-	
+	private int getInt(String in) {
+		return StringHandler.extractIntFromString(in);
+	}
 
 	private Date handleDateAt(String strDate) {
 		String[] date = strDate.split(",");
@@ -365,6 +464,13 @@ public class OpenHubProject implements AfterExtractor {
 		return rt;
 	}
 
+//	private Date handleDateBefore(String strDate) {
+//		// System.out.println(strDate);
+//		int num = StringHandler.extractIntFromString(strDate);
+//		String unit = StringHandler.getUnit(strDate);
+//
+//		return DateHandler.getDateBefore(num, unit);
+//	}
 
 	/**
 	 * @return the mostWrittenHeader
@@ -920,5 +1026,247 @@ public class OpenHubProject implements AfterExtractor {
 	public void setLanguagePercentages(String languagePercentages) {
 		this.languagePercentages = languagePercentages;
 	}
+	/**
+	 * activity params
+	 */
+	public int getdCommitNumber() {
+		return dCommitNumber;
+	}
+
+	public void setdCommitNumber(int dCommitNumber) {
+		this.dCommitNumber = dCommitNumber;
+	}
+
+	public int getdContributorNumber() {
+		return dContributorNumber;
+	}
+
+	public void setdContributorNumber(int dContributorNumber) {
+		this.dContributorNumber = dContributorNumber;
+	}
+
+	public int getNewContriNum() {
+		return newContriNum;
+	}
+
+	public void setNewContriNum(int newContriNum) {
+		this.newContriNum = newContriNum;
+	}
+
+	public int getmCommitNumber() {
+		return mCommitNumber;
+	}
+
+	public void setmCommitNumber(int mCommitNumber) {
+		this.mCommitNumber = mCommitNumber;
+	}
+
+	public int getmContributorNumber() {
+		return mContributorNumber;
+	}
+
+	public void setmContributorNumber(int mContributorNumber) {
+		this.mContributorNumber = mContributorNumber;
+	}
+
+	public String getTheCommitTrend() {
+		return theCommitTrend;
+	}
+
+	public void setTheCommitTrend(String theCommitTrend) {
+		this.theCommitTrend = theCommitTrend;
+	}
+
+	public String getTheContriTrend() {
+		return theContriTrend;
+	}
+
+	public void setTheContriTrend(String theContriTrend) {
+		this.theContriTrend = theContriTrend;
+	}
+	public List<String> getLanguages() {
+		return languages;
+	}
+
+
+
+	public void setLanguages(List<String> languages) {
+		this.languages = languages;
+	}
+
+
+
+	public String getActivityDayTime() {
+		return activityDayTime;
+	}
+
+
+
+	public void setActivityDayTime(String activityDayTime) {
+		this.activityDayTime = activityDayTime;
+	}
+
+
+
+	public String getNewContributor() {
+		return newContributor;
+	}
+
+
+
+	public void setNewContributor(String newContributor) {
+		this.newContributor = newContributor;
+	}
+
+
+
+	public String getActivityMonthTime() {
+		return activityMonthTime;
+	}
+
+
+
+	public void setActivityMonthTime(String activityMonthTime) {
+		this.activityMonthTime = activityMonthTime;
+	}
+
+
+
+	public int getRateNum() {
+		return rateNum;
+	}
+
+
+
+	public void setRateNum(int rateNum) {
+		this.rateNum = rateNum;
+	}
+
+
+
+	public String getRateLevel() {
+		return rateLevel;
+	}
+
+
+
+	public void setRateLevel(String rateLevel) {
+		this.rateLevel = rateLevel;
+	}
+
+
+
+	public String getReContributor() {
+		return ReContributor;
+	}
+
+
+
+	public void setReContributor(String reContributor) {
+		ReContributor = reContributor;
+	}
+
+
+
+	public String getNewsLink() {
+		return newsLink;
+	}
+
+
+
+	public void setNewsLink(String newsLink) {
+		this.newsLink = newsLink;
+	}
+
+
+
+	public String getLangLink() {
+		return langLink;
+	}
+
+
+
+	public void setLangLink(String langLink) {
+		this.langLink = langLink;
+	}
+
+
+
+	public String getCommitsLink() {
+		return commitsLink;
+	}
+
+
+
+	public void setCommitsLink(String commitsLink) {
+		this.commitsLink = commitsLink;
+	}
+
+
+
+	public String getSettingLink() {
+		return settingLink;
+	}
+
+
+
+	public void setSettingLink(String settingLink) {
+		this.settingLink = settingLink;
+	}
+
+
+
+	public String getSharingwidgetsLink() {
+		return sharingwidgetsLink;
+	}
+
+
+
+	public void setSharingwidgetsLink(String sharingwidgetsLink) {
+		this.sharingwidgetsLink = sharingwidgetsLink;
+	}
+
+
+
+	public String getRelatedprojectsLink() {
+		return relatedprojectsLink;
+	}
+
+
+
+	public void setRelatedprojectsLink(String relatedprojectsLink) {
+		this.relatedprojectsLink = relatedprojectsLink;
+	}
+
+
+
+	public String getCostestLink() {
+		return costestLink;
+	}
+
+
+
+	public void setCostestLink(String costestLink) {
+		this.costestLink = costestLink;
+	}
+
+
+
+	public String getContributorLink() {
+		return contributorLink;
+	}
+
+
+
+	public void setContributorLink(String contributorLink) {
+		this.contributorLink = contributorLink;
+	}
+
+
+
+
+
+
+
 
 }
