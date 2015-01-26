@@ -16,7 +16,7 @@ public class ExtractorTask implements Task {
 		// TODO Auto-generated method stub
 		return site;
 	}
-
+    
 	@Override
 	public String getUUID() {
 		// TODO Auto-generated method stub
