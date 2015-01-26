@@ -69,10 +69,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		// 处理浏览次数m
 		this.viewNum = StringHandler.matchRightString(this.viewNum,
 				"浏览: [0-9]+次");
-		this.viewNum = StringHandler.matchRightString(this.viewNum, "\\d+");
-
-		// 处理发帖时间
-		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
+		this.viewNum = StringHandler.matchRightString(this.viewNum, "\\d+");		
 
 		// 处理作者的url
 		if (StringUtils.isNotBlank(this.authorUrl)) {
@@ -111,7 +108,8 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 		this.pageMD5 = DigestUtils.md5Hex(this.questionTitle + this.viewNum
 				+ this.voteNum + this.answerNum);
 
-		// 处理postTime
+		// 处理postTime			
+		this.postTime=StringHandler.matchRightString(this.postTime, "提问于.*");		
 		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
 
 		// 处理questionId

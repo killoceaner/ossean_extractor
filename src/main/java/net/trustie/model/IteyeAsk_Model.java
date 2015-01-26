@@ -91,10 +91,8 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 		this.pageMD5 = DigestUtils.md5Hex(this.questionTitle + this.answerNum
 				+ this.interestNum + this.voteUp + this.voteDown);
 
-		// 处理postTime
-		this.postTime = this.postTime.replace("年", "-").replace("月", "-")
-				.replace("日", "")
-				+ ":00";
+		// 处理postTime			
+	    this.postTime=DateHandler.formatAllTypeDate(this.postTime);
 	}
 
 	@Override

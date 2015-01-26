@@ -110,8 +110,7 @@ public class StringHandler {
 	 * @return 匹配到的字符串
 	 */
 	public static String matchRightString(String string, String regex) {
-		if (string != null && string.length() > 0 && regex != null
-				&& regex.length() > 0) {
+		if (StringHandler.isAllNotBlank(string, regex)) {
 			Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(string);
 			if (matcher.find())
