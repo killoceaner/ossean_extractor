@@ -219,9 +219,10 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	    String tmphref = "https://www.openhub.net";
 	    this.newsLink = tmphref+this.firstLinks.get(0);
 	    this.langLink = tmphref+this.firstLinks.get(1);
-	    this.commitsLink = tmphref+this.firstLinks.get(2);
 	    
+	    this.commitsLink = tmphref+this.firstLinks.get(2);	    
 	    this.settingLink = tmphref+this.otherLinks.get(0);
+	    
 	    this.sharingwidgetsLink =tmphref+this.otherLinks.get(1);
 	    this.relatedprojectsLink = tmphref+this.otherLinks.get(2);
 	    this.costestLink = tmphref+this.otherLinks.get(3);
