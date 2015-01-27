@@ -1,5 +1,4 @@
 package net.trustie.dao;
-
 import net.trustie.model.CNblogsQ_Model;
 import org.apache.ibatis.annotations.Insert;
 

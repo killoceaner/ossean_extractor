@@ -36,8 +36,7 @@ public class OpenHubProject implements AfterExtractor {
 	private String activity = "";
 	// @ExtractBy("////div[@id='widgets']/div[@itemprop='interactionCount']/div[@class='float_right']/div[@class='use_count']/a/text()")
 	// private String strUseCount = "";
-
-	private int useCount = 0;
+   private int useCount = 0;
 
 	@ExtractBy("//div[@class='span6']/div[@id='project_summary']/p/text()")
 	private String description = "";

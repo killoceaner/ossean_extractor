@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
+
 import core.PageModelPipeline;
 import core.Site;
 import extension.OsseanExtractor;
@@ -34,11 +35,12 @@ public class CsdnTopic_Extractor {
 		generateRawPage.setTable("csdn_topic_html_detail");
 		dbPageErrorOutPut.setTableName("csdn_topic_error_page");
 
-		OsseanExtractor
+/*		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
 						CsdnTopic_Model.class).setUUID("csdnTopics")
 				.setDownloader(generateRawPage)
-				.setPageErrorOutPut(dbPageErrorOutPut).start();
+				.setPageErrorOutPut(dbPageErrorOutPut).start();*/
+		OsseanExtractor.create(Site.me().setResultNum(100), modelPipeline, CsdnTopic_Model.class).setUUID("csdnTopics").setDownloader(generateRawPage).setPageErrorOutPut(dbPageErrorOutPut).start();
 	}
 
 	public static void main(String[] args) throws SQLException {
