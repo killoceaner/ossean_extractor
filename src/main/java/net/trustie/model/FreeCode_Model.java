@@ -9,7 +9,6 @@ import core.Page;
 import core.ValidateExtractor;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 
-//@ExtractBy("//*[@id='page']/div[@id='container']/div[@class='clearfix']")
 public class FreeCode_Model implements AfterExtractor, ValidateExtractor {
 	private int projectId = -1;
 
@@ -232,4 +231,45 @@ public class FreeCode_Model implements AfterExtractor, ValidateExtractor {
 	public void setLicense(String license) {
 		this.license = license;
 	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public String getAuthorUrl() {
+		return authorUrl;
+	}
+
+	public List<String> getOperateSystems() {
+		return operateSystems;
+	}
+
+	public String getProjectDownloads() {
+		return projectDownloads;
+	}
+
+	public String getProjectWebsite() {
+		return projectWebsite;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public void setAuthorUrl(String authorUrl) {
+		this.authorUrl = authorUrl;
+	}
+
+	public void setOperateSystems(List<String> operateSystems) {
+		this.operateSystems = operateSystems;
+	}
+
+	public void setProjectDownloads(String projectDownloads) {
+		this.projectDownloads = projectDownloads;
+	}
+
+	public void setProjectWebsite(String projectWebsite) {
+		this.projectWebsite = projectWebsite;
+	}	
+	
 }
