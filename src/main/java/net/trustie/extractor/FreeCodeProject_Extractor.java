@@ -9,7 +9,7 @@ import net.trustie.model.FreeCode_Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import core.PageModelPipeline;
@@ -17,7 +17,7 @@ import core.Site;
 import extension.OsseanExtractor;
 
 @Component
-public class FreeCode_Extractor {
+public class FreeCodeProject_Extractor {
 	@SuppressWarnings("rawtypes")
 	@Qualifier("freeCodePipeline")
 	@Autowired
@@ -33,23 +33,23 @@ public class FreeCode_Extractor {
 
 	
 	public void begin() {
-		generateRawPage.setTable("freecode_project");
-		dbPageErrorOutPut.setTableName("freecode_project_error_page");
+		generateRawPage.setTable("freecode_html_detail");
+		dbPageErrorOutPut.setTableName("freecode_error_page");
 		
 		
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						FreeCode_Model.class).setUUID("fcode")
+						FreeCode_Model.class).setUUID("freecode")
 				.setDownloader(generateRawPage).start();
 	}
 	
 	public static void main(String[] args) throws SQLException {
-		// TODO 自动生成的方法存根
-		ApplicationContext aContext = new FileSystemXmlApplicationContext(
-				"./resources/spring/applicationContext*.xml");
+		ApplicationContext aContext = new ClassPathXmlApplicationContext(
+				"classpath:/spring/applicationContext*.xml");
 
-		final FreeCode_Extractor extractor = aContext
-				.getBean(FreeCode_Extractor.class);
+		final FreeCodeProject_Extractor extractor = aContext
+				.getBean(FreeCodeProject_Extractor.class);
+
 		extractor.begin();
 	}
 }

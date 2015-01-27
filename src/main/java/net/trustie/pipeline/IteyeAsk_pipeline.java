@@ -17,7 +17,6 @@ public class IteyeAsk_pipeline implements PageModelPipeline<IteyeAsk_Model> {
 	@Override
 	public void process(IteyeAsk_Model ask_Model, Task task) {
 		iteyeAsk_Dao.add(ask_Model);
-
 	}
 
 }
