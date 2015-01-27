@@ -110,8 +110,7 @@ public class StringHandler {
 	 * @return 匹配到的字符串
 	 */
 	public static String matchRightString(String string, String regex) {
-		if (string != null && string.length() > 0 && regex != null
-				&& regex.length() > 0) {
+		if (StringHandler.isAllNotBlank(string, regex)) {
 			Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(string);
 			if (matcher.find())
@@ -326,6 +325,26 @@ public class StringHandler {
 				return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * 从字符串中提取出整形
+	 * 
+	 * @param in
+	 * @return
+	 */
+	public static int extractIntFromString(String in) {
+		char[] chars = in.toCharArray();
+		String rs = "";
+		for (int i = 0; i < chars.length; i++) {
+			if (chars[i] <= '9' && chars[i] >= '0') {
+				rs += chars[i];
+			}
+		}
+		if ("".equals(rs)) {
+			return 0;
+		}
+		return Integer.valueOf(rs);
 	}
 
 }

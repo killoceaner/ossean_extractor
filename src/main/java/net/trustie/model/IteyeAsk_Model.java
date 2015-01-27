@@ -26,31 +26,31 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 
 	private String tag;
 
-	@ExtractBy("//*div[@class='sproblem_right']/h3[@class='close']/span[@class='score']/text()")
+	@ExtractBy("//*div[@class='sproblem_right']/h3/span[@class='score']/text()")
 	private String questionScore;
 
-	@ExtractBy(value = "//*div[@class='sproblem_right']/h3[@class='close']/a/text()")
+	@ExtractBy(value = "//*div[@class='sproblem_right']/h3/a/text()")
 	private String questionTitle = "";
 
-	@ExtractBy("//*div[@class='sproblem_right']/div[@class='new_content']/allText()")
+	@ExtractBy("//*div[@class='sproblem_right']/div[@class='new_content']/div[@class='iteye-blog-content-contain']/allText()|//*div[@class='sproblem_right']/div[@class='new_content']/allText()")
 	private String questionContent = "";
 
 	@ExtractBy(value = "//*[@id='content']/div[@id='main']/div[@class='crumbs']/a[2]/text()", source = Source.RawHtml)
 	private String categories;
 
-	@ExtractBy("//*div[@class='sproblem_right']/div[@class='ask_label']/span/text()")
+	@ExtractBy("//*div[@class='ask_label']/span/text()")
 	private String postTime = "";
 
-	@ExtractBy("//*div[@class='sproblem_right']/div[@class='ask_label']/div[@class='tags']/a/allText()")
+	@ExtractBy("//*div[@class='ask_label']/div[@class='tags']/a/allText()")
 	private List<String> tags;
 
 	@ExtractBy(value = "//*div[@id='content']/div[@id='main']/div[@id='solutions']/h3[@id='num']/text()", source = Source.RawHtml)
 	private String answerNum = "0";
 
-	@ExtractBy("//*div[@class='sproblem_right']/div[@class='user_info']/span[@class='user_blog']/a/text()")
+	@ExtractBy("//*div[@class='user_info']/span[@class='user_blog']/a/text()")
 	private String author;
 
-	@ExtractBy("//*div[@class='sproblem_right']/div[@class='user_info']/span[@class='user_blog']/a/@href")
+	@ExtractBy("//*div[@class='user_info']/span[@class='user_blog']/a/@href")
 	private String authorUrl;
 
 	@ExtractBy("//*div[@id='problem_action']/ul/li[2]/a/text()")
@@ -91,10 +91,8 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 		this.pageMD5 = DigestUtils.md5Hex(this.questionTitle + this.answerNum
 				+ this.interestNum + this.voteUp + this.voteDown);
 
-		// 处理postTime
-		this.postTime = this.postTime.replace("年", "-").replace("月", "-")
-				.replace("日", "")
-				+ ":00";
+		// 处理postTime			
+	    this.postTime=DateHandler.formatAllTypeDate(this.postTime);
 	}
 
 	@Override
@@ -111,9 +109,7 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 		}
 
 		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime))
-			page.setResultSkip(this, true);	
-		
-		System.out.println(page.getResultSkip(this));
+			page.setResultSkip(this, true);		
 	}
 
 	public int getQuestionId() {

@@ -83,7 +83,7 @@ public class OSChinaQuestion_Model implements AfterExtractor, ValidateExtractor 
 		this.pageMD5 = DigestUtils.md5Hex(this.questionContent
 				+ this.questionTitle);
 
-		// 处理postime
+		// 处理postime		
 		this.postTime=DateHandler.formatAllTypeDate(this.postTime);
 	}
 
@@ -103,8 +103,7 @@ public class OSChinaQuestion_Model implements AfterExtractor, ValidateExtractor 
 		}
 
 		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime))
-			page.setResultSkip(this, true);
-		
+			page.setResultSkip(this, true);		
 	}
 
 	public String getQuestionUrl() {

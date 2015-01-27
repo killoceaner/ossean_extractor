@@ -11,10 +11,6 @@ import org.slf4j.LoggerFactory;
 public class DateHandler {
 	private static Logger logger = LoggerFactory.getLogger("DateHandler");
 	private static String dateFormat = "yyy-MM-dd HH:mm:ss";
-	private static String[] dateType = {
-			"[0-9]{4,}-[0-9]{2,}-[0-9]{2,} [0-9]{2,}:[0-9]{2,}:[0-9]{2,}",
-			"[0-9]{4,}-[0-9]{2,}-[0-9]{2,}",
-			"[0-9]{4,}-[0-9]{2,}-[0-9]{2,} [0-9]{2,}:[0-9]{2,}" };
 
 	/**
 	 * 获取抽取时间
@@ -40,7 +36,6 @@ public class DateHandler {
 			try {
 				sdf.parse(s);
 			} catch (ParseException e) {
-				logger.error("String　[" + s + "] ## Can Not Format To Date", e);
 				return false;
 			}
 		}
@@ -87,19 +82,28 @@ public class DateHandler {
 		if (StringUtils.isBlank(string))
 			return null;
 
-		if (StringHandler.canMatchRightString(string.trim(), dateType[0]))
-			return StringHandler.matchRightString(string, dateType[0]).trim();
+		if (canFormatToDate(string))
+			return string;
 
-		else if (StringHandler.canMatchRightString(string.trim(), dateType[1]))
-			return StringHandler.matchRightString(string, dateType[1]).trim()
-					+ " 00:00:00";
+		string = handlerDefaultDate(string);
+		if (canFormatToDate(string))
+			return string;
 
-		else if (StringHandler.canMatchRightString(string.trim(), dateType[2]))
-			return StringHandler.matchRightString(string, dateType[2]).trim()
-					+ ":00";
+		string = replaceChinesDate(string);
+		if (canFormatToDate(string))
+			return string;
 
-		else
-			return handlerDefaultDate(string);
+		string = replacePointDate(string);
+		if (canFormatToDate(string))
+			return string;
+
+		string = standardForDate(string);
+		if (canFormatToDate(string)) {
+			return string;
+		}
+
+		return string;
+
 	}
 
 	/**
@@ -128,8 +132,7 @@ public class DateHandler {
 		}
 
 		else if (StringHandler.canMatchRightStrings(string, "半", "月", "前")
-				|| StringHandler
-						.canMatchRightStrings(string, "half ", " mon"))
+				|| StringHandler.canMatchRightStrings(string, "half ", " mon"))
 			return addTimeToDate(new Date(), -15 * 24 * 60 * 60);
 
 		else if (StringHandler.canMatchRightStrings(string, "\\d+", "周", "前")
@@ -172,7 +175,132 @@ public class DateHandler {
 		}
 
 		else
+			return string;
+	}
+
+	/**
+	 * 标准化年x月x日这种新型的日期
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String replaceChinesDate(String str) {
+		if (StringUtils.isNotBlank(str))
+			return str.replace("年", "-").replace("月", "-").replace("日", "")
+					.replace("时", ":").replace("分", ":").replace("秒", "")
+					.trim();
+		return null;
+	}
+
+	public static String replacePointDate(String str) {
+		if (StringUtils.isNotBlank(str))
+			return str.replace(".", "-").replace(".", "-").replace(".", "")
+					.trim();
+		return null;
+	}
+
+	/**
+	 * 标准化date,形式（yyyy-mm-dd hh:mm:ss）
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static String standardForDate(String date) {
+		if (StringUtils.isBlank(date))
 			return null;
+
+		String[] times = date.split("-");
+		if (times.length < 3)
+			return date;
+
+		times[0] = StringHandler.matchRightString(times[0], "\\d+");
+		times[1] = handlerForData(times[1], 0, 13);
+		times[2] = handlerTime(times[2]);
+
+		if (times[0].length() != 4
+				|| !StringHandler.canFormatterInteger(times[0])
+				|| StringHandler.isAtLeastOneBlank(times[1], times[2]))
+			return null;
+
+		return new StringBuffer().append(times[0]).append("-").append(times[1])
+				.append("-").append(times[2]).toString();
+	}
+
+	private static String handlerTime(String str) {
+		StringBuffer sb = new StringBuffer();
+		if (StringUtils.isNotBlank(str)) {
+			String[] strings = str.split(":");
+			switch (strings.length) {
+			case 1:
+				strings[0] = handlerDayAndHour(strings[0]);
+				if (StringHandler.isAtLeastOneBlank(strings))
+					return null;
+				sb.append(strings[0]).append(":00:00");
+				break;
+			case 2:
+				strings[0] = handlerDayAndHour(strings[0]);
+				strings[1] = handlerForData(strings[1], -1, 60);
+				if (StringHandler.isAtLeastOneBlank(strings))
+					return null;
+				sb.append(handlerDayAndHour(strings[0])).append(":")
+						.append(strings[1]).append(":00");
+				break;
+			case 3:
+				strings[0] = handlerDayAndHour(strings[0]);
+				strings[1] = handlerForData(strings[1], -1, 60);
+				strings[2] = handlerForData(
+						StringHandler.matchRightString(strings[2], "\\d+"), -1,
+						60);
+				if (StringHandler.isAtLeastOneBlank(strings))
+					return null;
+				sb.append(handlerDayAndHour(strings[0])).append(":")
+						.append(strings[1]).append(":").append(strings[2]);
+				break;
+			default:
+				return null;
+			}
+			return sb.toString();
+		}
+		return null;
+	}
+
+	private static String handlerDayAndHour(String str) {
+		StringBuffer sb = new StringBuffer();
+		if (StringUtils.isNotBlank(str)) {
+			str = str.trim();
+			String[] strs = str.split("[' ']{1,}");
+			switch (strs.length) {
+			case 1:
+				strs[0] = handlerForData(strs[0], 0, 32);
+				if (StringHandler.isAtLeastOneBlank(strs))
+					return null;
+				sb.append(strs[0]).append(" 00");
+				break;
+			case 2:
+				strs[0] = handlerForData(strs[0], 0, 32);
+				strs[1] = handlerForData(strs[1], -1, 24);
+				if (StringHandler.isAtLeastOneBlank(strs))
+					return null;
+				sb.append(strs[0]).append(" ").append(strs[1]);
+				break;
+			default:
+				return null;
+			}
+			return sb.toString();
+		}
+		return null;
+	}
+
+	private static String handlerForData(String str, int min, int max) {
+		if (StringUtils.isNotBlank(str)
+				&& StringHandler.canFormatterInteger(str.trim())
+				&& Integer.parseInt(str.trim()) > min
+				&& Integer.parseInt(str.trim()) < max) {
+			if (str.trim().length() == 1)
+				return "0" + str.trim();
+			return str.trim();
+		}
+		return null;
 	}
 
 	/**
@@ -213,7 +341,12 @@ public class DateHandler {
 	 * @return
 	 */
 	public static long dateToTimeStamp(Date date) {
-		return date.getTime();
+		if (date != null)
+			return date.getTime();
+		else {
+			logger.error("Date Is Null Will Return 0");
+			return 0;
+		}
 	}
 
 	/**
