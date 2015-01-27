@@ -26,10 +26,10 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 
 	private String tag;
 
-	@ExtractBy("//*div[@class='sproblem_right']/h3[@class='close']/span[@class='score']/text()")
+	@ExtractBy("//*div[@class='sproblem_right']/h3/span[@class='score']/text()")
 	private String questionScore;
 
-	@ExtractBy(value = "//*div[@class='sproblem_right']/h3[@class='close']/a/text()")
+	@ExtractBy(value = "//*div[@class='sproblem_right']/h3/a/text()")
 	private String questionTitle = "";
 
 	@ExtractBy("//*div[@class='sproblem_right']/div[@class='new_content']/allText()")
@@ -91,10 +91,8 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 		this.pageMD5 = DigestUtils.md5Hex(this.questionTitle + this.answerNum
 				+ this.interestNum + this.voteUp + this.voteDown);
 
-		// 处理postTime
-		this.postTime = this.postTime.replace("年", "-").replace("月", "-")
-				.replace("日", "")
-				+ ":00";
+		// 处理postTime			
+	    this.postTime=DateHandler.formatAllTypeDate(this.postTime);
 	}
 
 	@Override
@@ -111,9 +109,8 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 		}
 
 		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime))
-			page.setResultSkip(this, true);	
+			page.setResultSkip(this, true);		
 		
-		System.out.println(page.getResultSkip(this));
 	}
 
 	public int getQuestionId() {

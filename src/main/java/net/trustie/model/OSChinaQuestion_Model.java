@@ -83,7 +83,7 @@ public class OSChinaQuestion_Model implements AfterExtractor, ValidateExtractor 
 		this.pageMD5 = DigestUtils.md5Hex(this.questionContent
 				+ this.questionTitle);
 
-		// 处理postime
+		// 处理postime		
 		this.postTime=DateHandler.formatAllTypeDate(this.postTime);
 	}
 
