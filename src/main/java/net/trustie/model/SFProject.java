@@ -3,6 +3,8 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import net.trustie.utils.DateHandler;
+import net.trustie.utils.StringHandler;
 import net.trustie.utils.VanishTime;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -51,7 +53,7 @@ public class SFProject implements AfterExtractor {
 
 	public void afterProcess(Page page) {
 		//long start = System.currentTimeMillis();
-
+        this.url=page.getPageUrl();
 		// justify it's enterprise or bluesteel user
 		//this.html = page.getHtml().toString();
 		this.urlMd5 = DigestUtils.md5Hex(page.getPageUrl());
@@ -319,6 +321,17 @@ public class SFProject implements AfterExtractor {
 			}
 
 		}
+	}
+	public void validate(Page page) {
+		if (StringHandler.isAtLeastOneBlank(this.name, this.platform,
+				this.categories, this.url)) {
+			page.setResultSkip(this, true);
+			return;
+		}
+        if (!DateHandler.canFormatToDate(this.lastUpdate,this.registeredTime,this.collectTime)) {
+			page.setResultSkip(this, true);
+		}	
+		
 	}
 
 	private String getTime(String strTime) {
