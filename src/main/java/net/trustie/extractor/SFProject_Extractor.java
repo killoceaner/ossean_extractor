@@ -17,10 +17,9 @@ import core.Site;
 import extension.OsseanExtractor;
 
 @Component
-
 public class SFProject_Extractor {
 	@SuppressWarnings("rawtypes")
-	@Qualifier("SFProjectPipeline")
+	@Qualifier("sfProjectPipeline")
 	@Autowired
 	private PageModelPipeline modelPipeline;
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import core.PageModelPipeline;
 import us.codecraft.webmagic.Task;
 
-@Component("csdnTopicPipeline")
+@Component("sfProjectPipeline")
 public class SFProject_pipeline  implements PageModelPipeline<SFProject>{
 	@Resource 
 	private SFProject_Dao sfp_Dao;
