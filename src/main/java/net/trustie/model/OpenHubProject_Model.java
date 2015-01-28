@@ -19,7 +19,7 @@ import core.ValidateExtractor;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 
 @ExtractBy("//div[@id='projects_show_page']")
-public class OpenHubProject implements AfterExtractor, ValidateExtractor {
+public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	// private static String indefiniteArticleA = "a";
 	// private static String indefiniteArticleAn = "an";
 	private static String mostWrittenHeader = "mostly written in";
@@ -100,7 +100,7 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	//community
 	@ExtractBy("//div[@class = 'proj_community_ratings']/div/span[@style='margin-left: 8px']/allText()")
 	private String rateInfo = null ;
-	private int rateNum = 0 ;
+
 	@ExtractBy("//div[@class = 'proj_community_ratings']/div/div[@class = 'clear']/span[@class='float_left']/allText()")
     private String rateLevel = null ;		
 	@ExtractBy("//div[@id='page']/div[@id='projects_show_page']/div[@class='span12 mezzo']/div/div[@class='float_left']/table[@id='recent_committers_table']/tbody/tr/td[@class ='recent_committers']/a/allText()")
@@ -207,7 +207,7 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	    this.theContriTrend = allTrend.get(1);
 	    
 	    //community
-	    this.rateNum = getInt(this.rateInfo);
+	  // this.rateNum = getInt(this.rateInfo);
 	    this.ReContributor = StringHandler.combineTags(this.RecenctContributors);
 	    
 	    //button informations
@@ -343,11 +343,11 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 		Element ele = null;
 		ele = eles.get(0);
 		this.mostWrittenIn = StringHandler.removeHeader(ele.text(),
-				OpenHubProject.mostWrittenHeader).trim();
+				OpenHubProject_Model.mostWrittenHeader).trim();
 		ele = eles.get(1);
 		// System.out.println(ele.text());
 		this.commentsPercentage = StringHandler.removeTail(ele.text(),
-				OpenHubProject.commentsPercentageTail).trim();
+				OpenHubProject_Model.commentsPercentageTail).trim();
 		// System.out.println(this.commentsPercentage);
 		this.commentsPercentage = StringHandler.removeIndefiniteArticles(
 				this.commentsPercentage).trim();
@@ -370,15 +370,15 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 		Element ele = null;
 		ele = eles.get(0);
 		this.estimateEffortTime = StringHandler.removeTail(ele.text(),
-				OpenHubProject.estimateEffortTimeTail).trim();
+				OpenHubProject_Model.estimateEffortTimeTail).trim();
 		ele = eles.get(1);
 		String firstCommitAt = StringHandler.removeHeader(ele.text(),
-				OpenHubProject.firstCommitTimeHeader).trim();
+				OpenHubProject_Model.firstCommitTimeHeader).trim();
 		this.firstCommitTime = handleDateAt(firstCommitAt);
 		ele = eles.get(2);
 		String lastCommitAt = StringHandler.removeHeader(ele.text(),
-				OpenHubProject.lastCommitTimeHeader).trim();
-		System.out.println(lastCommitAt);
+				OpenHubProject_Model.lastCommitTimeHeader).trim();
+		//System.out.println(lastCommitAt);
 		lastCommitAt = StringHandler.removePreposition(lastCommitAt);
 		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
 		this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt));//handleDateBefore(lastCommitAt);
@@ -723,7 +723,7 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	 *            the mostWrittenHeader to set
 	 */
 	public static void setMostWrittenHeader(String mostWrittenHeader) {
-		OpenHubProject.mostWrittenHeader = mostWrittenHeader;
+		OpenHubProject_Model.mostWrittenHeader = mostWrittenHeader;
 	}
 
 	/**
@@ -731,7 +731,7 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	 *            the commentsPercentageTail to set
 	 */
 	public static void setCommentsPercentageTail(String commentsPercentageTail) {
-		OpenHubProject.commentsPercentageTail = commentsPercentageTail;
+		OpenHubProject_Model.commentsPercentageTail = commentsPercentageTail;
 	}
 
 	/**
@@ -740,7 +740,7 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	 */
 	public static void setCodebaseStatusHeaderTail(
 			String codebaseStatusHeaderTail) {
-		OpenHubProject.codebaseStatusHeaderTail = codebaseStatusHeaderTail;
+		OpenHubProject_Model.codebaseStatusHeaderTail = codebaseStatusHeaderTail;
 	}
 
 	/**
@@ -748,7 +748,7 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	 *            the teamScaleTail to set
 	 */
 	public static void setTeamScaleTail(String teamScaleTail) {
-		OpenHubProject.teamScaleTail = teamScaleTail;
+		OpenHubProject_Model.teamScaleTail = teamScaleTail;
 	}
 
 	/**
@@ -756,7 +756,7 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	 *            the commitStatusTail to set
 	 */
 	public static void setCommitStatusTail(String commitStatusTail) {
-		OpenHubProject.commitStatusTail = commitStatusTail;
+		OpenHubProject_Model.commitStatusTail = commitStatusTail;
 	}
 
 	/**
@@ -764,7 +764,7 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	 *            the estimateEffortTimeTail to set
 	 */
 	public static void setEstimateEffortTimeTail(String estimateEffortTimeTail) {
-		OpenHubProject.estimateEffortTimeTail = estimateEffortTimeTail;
+		OpenHubProject_Model.estimateEffortTimeTail = estimateEffortTimeTail;
 	}
 
 	/**
@@ -772,7 +772,7 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	 *            the firstCommitTimeHeader to set
 	 */
 	public static void setFirstCommitTimeHeader(String firstCommitTimeHeader) {
-		OpenHubProject.firstCommitTimeHeader = firstCommitTimeHeader;
+		OpenHubProject_Model.firstCommitTimeHeader = firstCommitTimeHeader;
 	}
 
 	/**
@@ -780,7 +780,7 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 	 *            the lastCommitTimeHeader to set
 	 */
 	public static void setLastCommitTimeHeader(String lastCommitTimeHeader) {
-		OpenHubProject.lastCommitTimeHeader = lastCommitTimeHeader;
+		OpenHubProject_Model.lastCommitTimeHeader = lastCommitTimeHeader;
 	}
 
 	/**
@@ -1082,185 +1082,120 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 		return languages;
 	}
 
-
-
 	public void setLanguages(List<String> languages) {
 		this.languages = languages;
 	}
-
-
 
 	public String getActivityDayTime() {
 		return activityDayTime;
 	}
 
-
-
 	public void setActivityDayTime(String activityDayTime) {
 		this.activityDayTime = activityDayTime;
 	}
-
-
 
 	public String getNewContributor() {
 		return newContributor;
 	}
 
-
-
 	public void setNewContributor(String newContributor) {
 		this.newContributor = newContributor;
 	}
-
-
-
+	
 	public String getActivityMonthTime() {
 		return activityMonthTime;
 	}
-
-
 
 	public void setActivityMonthTime(String activityMonthTime) {
 		this.activityMonthTime = activityMonthTime;
 	}
 
-
-
-	public int getRateNum() {
-		return rateNum;
-	}
-
-
-
-	public void setRateNum(int rateNum) {
-		this.rateNum = rateNum;
-	}
-
-
-
 	public String getRateLevel() {
 		return rateLevel;
 	}
-
-
 
 	public void setRateLevel(String rateLevel) {
 		this.rateLevel = rateLevel;
 	}
 
-
-
 	public String getReContributor() {
 		return ReContributor;
 	}
 
-
-
 	public void setReContributor(String reContributor) {
 		ReContributor = reContributor;
 	}
-
-
-
+	
 	public String getNewsLink() {
 		return newsLink;
 	}
-
-
 
 	public void setNewsLink(String newsLink) {
 		this.newsLink = newsLink;
 	}
 
-
-
 	public String getLangLink() {
 		return langLink;
 	}
-
-
 
 	public void setLangLink(String langLink) {
 		this.langLink = langLink;
 	}
 
-
-
 	public String getCommitsLink() {
 		return commitsLink;
 	}
-
-
-
+	
 	public void setCommitsLink(String commitsLink) {
 		this.commitsLink = commitsLink;
 	}
-
-
 
 	public String getSettingLink() {
 		return settingLink;
 	}
 
-
-
 	public void setSettingLink(String settingLink) {
 		this.settingLink = settingLink;
 	}
-
-
 
 	public String getSharingwidgetsLink() {
 		return sharingwidgetsLink;
 	}
 
-
-
 	public void setSharingwidgetsLink(String sharingwidgetsLink) {
 		this.sharingwidgetsLink = sharingwidgetsLink;
 	}
 
-
-
 	public String getRelatedprojectsLink() {
 		return relatedprojectsLink;
 	}
-
-
-
+	
 	public void setRelatedprojectsLink(String relatedprojectsLink) {
 		this.relatedprojectsLink = relatedprojectsLink;
 	}
-
-
 
 	public String getCostestLink() {
 		return costestLink;
 	}
 
-
-
 	public void setCostestLink(String costestLink) {
 		this.costestLink = costestLink;
 	}
-
-
 
 	public String getContributorLink() {
 		return contributorLink;
 	}
 
-
-
 	public void setContributorLink(String contributorLink) {
 		this.contributorLink = contributorLink;
 	}
 
+	public String getRateInfo() {
+		return rateInfo;
+	}
 
-
-
-
-
-
+	public void setRateInfo(String rateInfo) {
+		this.rateInfo = rateInfo;
+	}
 
 }

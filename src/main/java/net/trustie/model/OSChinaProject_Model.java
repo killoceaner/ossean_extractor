@@ -1,12 +1,9 @@
 package net.trustie.model;
 
 import java.util.List;
-
 import org.apache.commons.codec.digest.DigestUtils;
-
 import net.trustie.utils.DateHandler;
 import net.trustie.utils.StringHandler;
-
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 import us.codecraft.webmagic.model.annotation.ExtractBy.Source;
 import core.AfterExtractor;
@@ -57,7 +54,7 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 	private List<String> attrs;
 
 	@Override
-	public void validate(Page page) {
+	public void afterProcess(Page page) {
 		// 处理projectUrl
 		this.projectUrl = page.getPageUrl();
 
@@ -89,28 +86,42 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 			}
 
 			else if (s.contains("开发语言")) {
-				List<String> languages=StringHandler.extractHtmlList(s, "//a/allText()");
-				this.projectLanguage=StringHandler.combineTags(languages).replace(",<查看源码»>", "");
+				List<String> languages = StringHandler.extractHtmlList(s,
+						"//a/allText()");
+				this.projectLanguage = StringHandler.combineTags(languages)
+						.replace(",<查看源码»>", "");
 			}
 
-			else if (s.contains("操作系统")) {				
-				List<String> osystems=StringHandler.extractHtmlList(s, "//a/allText()");
-				this.projectOS=StringHandler.combineTags(osystems);				
+			else if (s.contains("操作系统")) {
+				List<String> osystems = StringHandler.extractHtmlList(s,
+						"//a/allText()");
+				this.projectOS = StringHandler.combineTags(osystems);
 			}
 
 			else if (s.contains("收录时间")) {
 				this.IncludedTime = StringHandler.matchRightString(
 						StringHandler.extractHtml(s, "//allText()"), "\\d+年.*");
-				this.IncludedTime = DateHandler
-						.formatAllTypeDate(this.IncludedTime);
+				this.IncludedTime = DateHandler.formatAllTypeDate(
+						this.IncludedTime).trim();
 			}
 		}
 	}
 
 	@Override
-	public void afterProcess(Page page) {
-		// TODO Auto-generated method stub
+	public void validate(Page page) {
+		if (StringHandler.isAtLeastOneBlank(this.projectTitle,
+				this.projectShortName, this.projectCategory)) {
+			page.setResultSkip(this, true);
+			return;
+		}
 
+		if (!StringHandler.canFormatterInteger(this.usedNum, this.housedNum)) {
+			page.setResultSkip(this, true);
+			return;
+		}
+
+		if (!DateHandler.canFormatToDate(this.IncludedTime,this.exteactTime))
+			page.setResultSkip(this, true);			
 	}
 
 	public String getProjectUrl() {

@@ -3,6 +3,8 @@ package net.trustie.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import net.trustie.utils.DateHandler;
 import net.trustie.utils.StringHandler;
 import core.AfterExtractor;
 import core.Page;
@@ -80,6 +82,7 @@ public class FreeCode_Model implements AfterExtractor, ValidateExtractor {
 			projectId = Integer.parseInt(id);
 		}
 			
+		this.postDate = DateHandler.formatAllTypeDate(postDate);
 		
 		// 处理extractorTime	
 		SimpleDateFormat dateFormat = new SimpleDateFormat(
