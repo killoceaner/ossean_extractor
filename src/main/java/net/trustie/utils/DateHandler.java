@@ -218,7 +218,7 @@ public class DateHandler {
 		if (times.length < 3)
 			return date;
 
-		times[0] = StringHandler.matchRightString(times[0], "\\d+");
+		times[0] = StringHandler.matchRightString(times[0], "[0-9]{4}");
 		times[1] = handlerForData(times[1], 0, 13);
 		times[2] = handlerTime(times[2]);
 
