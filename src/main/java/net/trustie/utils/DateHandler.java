@@ -365,7 +365,7 @@ public class DateHandler {
 	}
 
 	/**
-	 * 格式化时间戳
+	 * 格式化时间戳  dd MM yyyy hh:mm
 	 * 
 	 */
 	public static String handleTime(String str) {
