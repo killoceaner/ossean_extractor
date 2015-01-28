@@ -33,9 +33,9 @@ public class DateHandler {
 		for (String s : strings) {
 			if (StringUtils.isBlank(s))
 				return false;
-			try {
+			try {			
 				sdf.parse(s);
-			} catch (ParseException e) {
+			} catch (ParseException e) {				
 				return false;
 			}
 		}
