@@ -4,7 +4,8 @@ import java.sql.SQLException;
 
 import net.trustie.downloader.DataBasePageErrorOutPut;
 import net.trustie.downloader.GenerateRawPage;
-import net.trustie.model.CsdnTopic_Model;
+import net.trustie.model.SFProject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -16,10 +17,10 @@ import core.Site;
 import extension.OsseanExtractor;
 
 @Component
-public class CsdnTopic_Extractor {
 
+public class SFProject_Extractor {
 	@SuppressWarnings("rawtypes")
-	@Qualifier("csdnTopicPipeline")
+	@Qualifier("SFProjectPipeline")
 	@Autowired
 	private PageModelPipeline modelPipeline;
 
@@ -30,26 +31,26 @@ public class CsdnTopic_Extractor {
 	@Qualifier("errorPageToDB")
 	@Autowired
 	private DataBasePageErrorOutPut dbPageErrorOutPut;
-
 	public void begin() {
-		generateRawPage.setTable("csdn_topic_html_detail");
-		dbPageErrorOutPut.setTableName("csdn_topic_error_page");
+		generateRawPage.setTable("SFProject_html_detail");
+		dbPageErrorOutPut.setTableName("SFProject_error_page");
 
-/*		OsseanExtractor
-				.create(Site.me().setResultNum(100), modelPipeline,
-						CsdnTopic_Model.class).setUUID("csdnTopics")
-				.setDownloader(generateRawPage)
-				.setPageErrorOutPut(dbPageErrorOutPut).start();*/
-		OsseanExtractor.create(Site.me().setResultNum(100), modelPipeline, CsdnTopic_Model.class).setUUID("csdnTopics").setDownloader(generateRawPage).setPageErrorOutPut(dbPageErrorOutPut).start();
+		OsseanExtractor.create(Site.me().
+				setResultNum(100), modelPipeline, SFProject.class).
+				setUUID("SFProject").
+				setDownloader(generateRawPage).
+				setPageErrorOutPut(dbPageErrorOutPut).
+				start();
 	}
-
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args)throws SQLException{
 		ApplicationContext aContext = new ClassPathXmlApplicationContext(
 				"classpath:/spring/applicationContext*.xml");
+		
+		final SFProject_Extractor  extractor = aContext
+				.getBean(SFProject_Extractor.class);
 
-		final CsdnTopic_Extractor extractor = aContext
-				.getBean(CsdnTopic_Extractor.class);
-
-		extractor.begin();
+		            extractor.begin();
+		
 	}
+
 }

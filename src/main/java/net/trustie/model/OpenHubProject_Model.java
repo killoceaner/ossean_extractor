@@ -1,22 +1,18 @@
 package net.trustie.model;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import net.trustie.utils.DateHandler;
 import net.trustie.utils.Seperator;
 import net.trustie.utils.StringHandler;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
@@ -41,8 +37,7 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	private String activity = "";
 	// @ExtractBy("////div[@id='widgets']/div[@itemprop='interactionCount']/div[@class='float_right']/div[@class='use_count']/a/text()")
 	// private String strUseCount = "";
-
-	private int useCount = 0;
+   private int useCount = 0;
 
 	@ExtractBy("//div[@class='span6']/div[@id='project_summary']/p/text()")
 	private String description = "";
