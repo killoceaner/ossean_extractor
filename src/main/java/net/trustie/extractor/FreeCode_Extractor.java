@@ -32,7 +32,7 @@ public class FreeCode_Extractor {
 	private DataBasePageErrorOutPut dbPageErrorOutPut;
 
 	
-	public void begin() {
+	public void begin() {		
 		generateRawPage.setTable("freecode_project");
 		dbPageErrorOutPut.setTableName("freecode_project_error_page");
 		

@@ -3,9 +3,7 @@ package net.trustie.extractor;
 import java.sql.SQLException;
 import net.trustie.downloader.DataBasePageErrorOutPut;
 import net.trustie.downloader.GenerateRawPage;
-import net.trustie.model.DeWenQ_Model;
 import net.trustie.model.OSChinaQuestion_Model;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
