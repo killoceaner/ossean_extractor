@@ -33,9 +33,9 @@ public class DateHandler {
 		for (String s : strings) {
 			if (StringUtils.isBlank(s))
 				return false;
-			try {			
+			try {
 				sdf.parse(s);
-			} catch (ParseException e) {				
+			} catch (ParseException e) {
 				return false;
 			}
 		}
@@ -97,9 +97,12 @@ public class DateHandler {
 		if (canFormatToDate(string))
 			return string;
 
-		string = handleTime(string);
-		if (canFormatToDate(string)) {
-			return string;
+		if (StringHandler.canMatchRightString(string,
+				"\\d+ [a-z]{1,} \\d+ \\d+:\\d+")) {
+			string = handleTime(string);
+			if (canFormatToDate(string)) {
+				return string;
+			}
 		}
 
 		string = standardForDate(string);
@@ -365,7 +368,7 @@ public class DateHandler {
 	}
 
 	/**
-	 * 格式化时间戳  dd MM yyyy hh:mm
+	 * 格式化时间戳 dd MM yyyy hh:mm
 	 * 
 	 */
 	public static String handleTime(String str) {
