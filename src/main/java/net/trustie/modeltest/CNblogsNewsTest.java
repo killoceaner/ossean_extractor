@@ -1,10 +1,9 @@
 package net.trustie.modeltest;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-
+import net.trustie.core.GetPage;
+import net.trustie.core.OsseanExtractorTest;
 import net.trustie.model.CNblogsNews_Model;
 import org.junit.Test;
 import core.ConsolePipeline;

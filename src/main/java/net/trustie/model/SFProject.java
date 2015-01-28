@@ -24,7 +24,7 @@ public class SFProject implements AfterExtractor {
 	private String maintainers = "";
 	// @ExtractBy("//section[@id='main-content']/section[@id='call-to-action']/section[@id='counts-sharing']/section[@id='project-info']/section[@class='content']/a[@title='Browse reviews']/text()")
 	private float stars = 0;
-	private long downloadCount = 0;
+	private String downloadCount = "";
 	// @ExtractBy("//section[@id='main-content']/section[@id='call-to-action']/section[@id='counts-sharing']/section[@id='last-updated']/section[@class='content']/time[@class='dateUpdated']/@datetime | //div[@id='project-header']/div[@class='content-group']/div[@class='project-rating']/time[@class='dateUpdated']/@datetime")
 	private String lastUpdate = "";
 	// @ExtractBy("//article[@id='project']/section[@id='main-content']/section[@id='call-to-action']/section[@id='download_button']/section[@class='project-info']/allText() | //div[@id='project-header']/div[@class='content-group']/h1[@class='download-os']/allText()")
@@ -152,7 +152,7 @@ public class SFProject implements AfterExtractor {
 		if (downloadElements.size() > 0) {
 			String strDownloadCount = downloadElements.get(0).text();
 			strDownloadCount = strDownloadCount.replaceAll("[^\\d]", "");
-			downloadCount = Long.parseLong(strDownloadCount);
+			this.downloadCount =strDownloadCount;
 		}
 
 		// last update
@@ -251,7 +251,7 @@ public class SFProject implements AfterExtractor {
 		if (downloadElements.size() > 0) {
 			String strDownloadCount = downloadElements.get(0).text();
 			strDownloadCount = strDownloadCount.replaceAll("[^\\d]", "");
-			downloadCount = Long.parseLong(strDownloadCount);
+			downloadCount = strDownloadCount;
 		}
 
 		// last update
@@ -328,6 +328,11 @@ public class SFProject implements AfterExtractor {
 			page.setResultSkip(this, true);
 			return;
 		}
+		
+		if (!StringHandler.canFormatterInteger(this.downloadCount)) {
+			page.setResultSkip(this, true);
+			return;
+		};
         if (!DateHandler.canFormatToDate(this.lastUpdate,this.registeredTime,this.collectTime)) {
 			page.setResultSkip(this, true);
 		}	
@@ -377,7 +382,7 @@ public class SFProject implements AfterExtractor {
 		return stars;
 	}
 
-	public long getDownloadCount() {
+	public String getDownloadCount() {
 		return downloadCount;
 	}
 
@@ -437,7 +442,7 @@ public class SFProject implements AfterExtractor {
 		this.stars = stars;
 	}
 
-	public void setDownloadCount(long downloadCount) {
+	public void setDownloadCount(String downloadCount) {
 		this.downloadCount = downloadCount;
 	}
 

@@ -1,22 +1,18 @@
 package net.trustie.model;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import net.trustie.utils.DateHandler;
 import net.trustie.utils.Seperator;
 import net.trustie.utils.StringHandler;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
@@ -234,8 +230,6 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 		// TODO Auto-generated method stub
 		
 	}
-
-	
 
 	private void handleQuickRef(Element quickRef) {
 		Elements itemNames = quickRef.select("dt");
