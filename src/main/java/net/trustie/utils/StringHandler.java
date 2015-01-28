@@ -177,7 +177,7 @@ public class StringHandler {
 	 * @param str
 	 * @return 链表形式
 	 */
-	public static List<String> listExtractHtml(String html, String str) {
+	public static List<String> extractHtmlList(String html, String str) {
 		if (html != null && html.length() > 0) {
 			Document doc = Jsoup.parse(html);
 			if (doc != null) {
