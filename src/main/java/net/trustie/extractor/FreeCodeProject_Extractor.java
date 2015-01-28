@@ -29,14 +29,11 @@ public class FreeCodeProject_Extractor {
 	
 	@Qualifier("errorPageToDB")
 	@Autowired
-	private DataBasePageErrorOutPut dbPageErrorOutPut;
+	private DataBasePageErrorOutPut dbPageErrorOutPut;	
 
-	
 	public void begin() {
 		generateRawPage.setTable("freecode_html_detail");
-		dbPageErrorOutPut.setTableName("freecode_error_page");
-		
-		
+		dbPageErrorOutPut.setTableName("freecode_error_page");		
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
 						FreeCode_Model.class).setUUID("freecode")

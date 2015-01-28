@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SITE='freecode'
+SITE='freecode_project'
 
 find ./target/classes -name "*.xml"|xargs rm -f
 
@@ -14,4 +14,4 @@ JAVA_OPTS="-Xms256m -Xmx256m -Xmn128m"
 
 echo $CLASSPATH
 
-java $JAVA_OPTS -DlogFilePath=${SITE} -classpath $CLASSPATH net.trustie.extractor.FreeCode_Extractor >>log/${SITE}.log 2>&1 &
+java $JAVA_OPTS -DlogFilePath=${SITE} -classpath $CLASSPATH net.trustie.extractor.FreeCodeProject_Extractor >>log/${SITE}.log 2>&1 &
