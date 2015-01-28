@@ -89,13 +89,16 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 			}
 
 			else if (s.contains("开发语言")) {
-				List<String> languages=StringHandler.extractHtmlList(s, "//a/allText()");
-				this.projectLanguage=StringHandler.combineTags(languages).replace(",<查看源码»>", "");
+				List<String> languages = StringHandler.extractHtmlList(s,
+						"//a/allText()");
+				this.projectLanguage = StringHandler.combineTags(languages)
+						.replace(",<查看源码»>", "");
 			}
 
-			else if (s.contains("操作系统")) {				
-				List<String> osystems=StringHandler.extractHtmlList(s, "//a/allText()");
-				this.projectOS=StringHandler.combineTags(osystems);				
+			else if (s.contains("操作系统")) {
+				List<String> osystems = StringHandler.extractHtmlList(s,
+						"//a/allText()");
+				this.projectOS = StringHandler.combineTags(osystems);
 			}
 
 			else if (s.contains("收录时间")) {
@@ -109,8 +112,18 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 
 	@Override
 	public void afterProcess(Page page) {
-		// TODO Auto-generated method stub
-
+		if(StringHandler.isAtLeastOneBlank(this.projectTitle,this.projectShortName,this.projectCategory)){
+			page.setResultSkip(this, true);
+			return;
+		}
+		
+		if(!StringHandler.canFormatterInteger(this.usedNum,this.housedNum)){
+			page.setResultSkip(this, true);
+			return;
+		}
+		
+		if(!DateHandler.canFormatToDate(this.IncludedTime,this.exteactTime))
+			page.setResultSkip(this, true);
 	}
 
 	public String getProjectUrl() {
