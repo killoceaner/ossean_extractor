@@ -385,7 +385,7 @@ public class OpenHubProject implements AfterExtractor, ValidateExtractor {
 		ele = eles.get(2);
 		String lastCommitAt = StringHandler.removeHeader(ele.text(),
 				OpenHubProject.lastCommitTimeHeader).trim();
-		System.out.println(lastCommitAt);
+		//System.out.println(lastCommitAt);
 		lastCommitAt = StringHandler.removePreposition(lastCommitAt);
 		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
 		this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt));//handleDateBefore(lastCommitAt);

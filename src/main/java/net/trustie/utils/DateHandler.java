@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 public class DateHandler {
 	private static Logger logger = LoggerFactory.getLogger("DateHandler");
-	private static String dateFormat = "yyy-MM-dd HH:mm:ss";
+	private static String dateFormat = "yyyy-MM-dd HH:mm:ss";
 
 	/**
 	 * 获取抽取时间
@@ -96,6 +96,11 @@ public class DateHandler {
 		string = replacePointDate(string);
 		if (canFormatToDate(string))
 			return string;
+
+		string = handleTime(string);
+		if (canFormatToDate(string)) {
+			return string;
+		}
 
 		string = standardForDate(string);
 		if (canFormatToDate(string)) {
@@ -357,5 +362,74 @@ public class DateHandler {
 	 */
 	public static Date timeStampToDate(long timeStamp) {
 		return new Date(timeStamp);
+	}
+
+	/**
+	 * 格式化时间戳
+	 * 
+	 */
+	public static String handleTime(String str) {
+		String tmp = str.trim();
+		String[] tmpList = tmp.split(" ");
+		String date = tmpList[0];
+		String month = tmpList[1];
+		String year = tmpList[2];
+		String time = tmpList[3];
+		switch (month) {
+		case "Jan": {
+			month = "01";
+			break;
+		}
+		case "Feb": {
+			month = "02";
+			break;
+		}
+		case "Mar": {
+			month = "03";
+			break;
+		}
+		case "Apr": {
+			month = "04";
+			break;
+		}
+		case "May": {
+			month = "05";
+			break;
+		}
+		case "Jun": {
+			month = "06";
+			break;
+		}
+		case "Jul": {
+			month = "07";
+			break;
+		}
+		case "Aug": {
+			month = "08";
+			break;
+		}
+		case "Sep": {
+			month = "09";
+			break;
+		}
+		case "Oct": {
+			month = "10";
+			break;
+		}
+		case "Nov": {
+			month = "11";
+			break;
+		}
+		case "Dec": {
+			month = "12";
+			break;
+		}
+		default: {
+			month = "00";
+			break;
+		}
+		}
+		String resultDate = year + "-" + month + "-" + date + " " + time;
+		return resultDate;
 	}
 }
