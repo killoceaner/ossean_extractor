@@ -100,9 +100,10 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 
 			else if (s.contains("收录时间")) {
 				this.IncludedTime = StringHandler.matchRightString(
-						StringHandler.extractHtml(s, "//allText()"), "\\d+年.*");
+						StringHandler.extractHtml(s, "//allText()"), "\\d+年\\d+月\\d+日");
+				
 				this.IncludedTime = DateHandler.formatAllTypeDate(
-						this.IncludedTime).trim();
+						this.IncludedTime);
 			}
 		}
 	}
