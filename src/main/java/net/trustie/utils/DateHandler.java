@@ -371,6 +371,7 @@ public class DateHandler {
 	public static String handleTime(String str) {
 		String tmp = str.trim();
 		String[] tmpList = tmp.split(" ");
+		if(tmpList.length>0){
 		String date = tmpList[0];
 		String month = tmpList[1];
 		String year = tmpList[2];
@@ -431,5 +432,80 @@ public class DateHandler {
 		}
 		String resultDate = year + "-" + month + "-" + date + " " + time;
 		return resultDate;
+		}
+		return null ;
 	}
+	/**
+	 * OpenhubProject CommitTime 先根据约定的方式解决以后再想更好的方法
+	 * @param str
+	 * @return
+	 */
+	public static String handleTimeToFormat(String str) {
+		String tmp = str.trim();
+		String[] tmpList = tmp.split(" ");
+		if(tmpList.length>0){
+		String date = tmpList[2];
+		String month = tmpList[1];
+		String year = tmpList[tmpList.length-1];
+		String time = tmpList[3];
+		switch (month) {
+		case "Jan": {
+			month = "01";
+			break;
+		}
+		case "Feb": {
+			month = "02";
+			break;
+		}
+		case "Mar": {
+			month = "03";
+			break;
+		}
+		case "Apr": {
+			month = "04";
+			break;
+		}
+		case "May": {
+			month = "05";
+			break;
+		}
+		case "Jun": {
+			month = "06";
+			break;
+		}
+		case "Jul": {
+			month = "07";
+			break;
+		}
+		case "Aug": {
+			month = "08";
+			break;
+		}
+		case "Sep": {
+			month = "09";
+			break;
+		}
+		case "Oct": {
+			month = "10";
+			break;
+		}
+		case "Nov": {
+			month = "11";
+			break;
+		}
+		case "Dec": {
+			month = "12";
+			break;
+		}
+		default: {
+			month = "00";
+			break;
+		}
+		}
+		String resultDate = year + "-" + month + "-" + date + " " + time;		
+		return resultDate;
+		}
+		return null ;
+	}
+
 }

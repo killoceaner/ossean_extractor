@@ -39,8 +39,8 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	private String name = "";
 	@ExtractBy("//div[@id='widgets']/div[@id='project_header_activity_indicator']/div/text()")
 	private String activity = "";
-	// @ExtractBy("////div[@id='widgets']/div[@itemprop='interactionCount']/div[@class='float_right']/div[@class='use_count']/a/text()")
-	// private String strUseCount = "";
+	@ExtractBy("////div[@id='widgets']/div[@itemprop='interactionCount']/div[@class='float_right']/div[@class='use_count']/a/text()")
+	private String strUseCount = "";
 
 	private int useCount = 0;
 
@@ -78,54 +78,78 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	private List<String> languages = null;
 	@ExtractBy("//div[@class='span6']/table[@class=table]/tbody/tr[@class='float_left']/td[@style='width: 20px']/span/span[@itemprop='ratingValue']")
 	private List<String> percentages = null;
-	private String languagePercentages ="";
+	private String languagePercentages = "";
 
-	//activity
+	// activity
 	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/small[@class='summary_timespan thirty_day']/allText()")
 	private String activityDayTime = null;
 	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@id='thirty_day_summary']/li/big/text()")
 	private List<String> dayActivityInfos = null;
-	private int dCommitNumber = 0;
-	private int dContributorNumber = 0 ;
-	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@id='thirty_day_summary']/li/span[@class = 'clear small']/a/allText()")
+	private int daysCommitNumber = 0;
+	private int daysContributorNumber = 0;
+	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@id='thirty_day_summary']/li/span[@class='clear small']/a/allText()")
 	private String newContributor = null;
 	private int newContriNum = 0;
-	
+
 	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/td/small[@class='summary_timespan']/allText()")
 	private String activityMonthTime = null;
-	@ExtractBy("//div[@class=''span6]/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@class='unstyled nutshell']/li/big/text()")
+	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@class='unstyled nutshell']/li/big/text()")
 	private List<String> monthActivityInfos = null;
-	private int mCommitNumber = 0 ;
-	private int mContributorNumber = 0 ;
-	@ExtractBy("//div[@class=''span6]/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@class='unstyled nutshell']/li/span[@class='small clear']/allText()")
-	private List<String> allTrend = null ;
-	private String theCommitTrend = null ;
-	private String theContriTrend = null ;
-	
-	//community
-	@ExtractBy("//div[@class = 'proj_community_ratings']/div/span[@style='margin-left: 8px']/allText()")
-	private String rateInfo = null ;
+	private int monthsCommitNumber = 0;
+	private int monthsContributorNumber = 0;
+	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@class='unstyled nutshell']/li/span[@class='small clear']/allText()")
+	private List<String> allTrend = null;
+	private String theCommitTrend = null;
 
-	@ExtractBy("//div[@class = 'proj_community_ratings']/div/div[@class = 'clear']/span[@class='float_left']/allText()")
-    private String rateLevel = null ;		
-	@ExtractBy("//div[@id='page']/div[@id='projects_show_page']/div[@class='span12 mezzo']/div/div[@class='float_left']/table[@id='recent_committers_table']/tbody/tr/td[@class ='recent_committers']/a/allText()")
-	private List<String> RecenctContributors = null ;
-	private String ReContributor = null ;
+	private String theContriTrend = null;
+
+	// community
+	@ExtractBy("//div[@class='proj_community_ratings']/div/span[@style='margin-left: 8px']/allText()")
+	private String rateInfo = null;
+
+	@ExtractBy("//div[@class='proj_community_ratings']/div/div[@class='clear']/span[@class='float_left']/allText()")
+	private String rateLevel = null;
+	@ExtractBy("//table[@id='recent_committers_table']/tbody/tr/td[@class='recent_committers']/a/allText()")
+	private List<String> RecenctContributors = null;
+	private String ReContributor = null;
+
+	// buttom informations
+//	@ExtractBy("//div[@id='projects_show_page']/div[@class='full-width mezzo margin_left_20 margin_right_20 margin_top_15']/div[@class='bottom-nav sidebar_project']/div[@class='actions']")
+//	private List<String>linkInfos = null;
+//	private List<String> firstLinks = null;
+//	private String newsLink = null;
+//	private String langLink = null;
+//	private String commitsLink = null;
+//	@ExtractBy("//div[@id='projects_show_page']/div[@class='full-width mezzo margin_left_20 margin_right_20 margin_top_15']/div[@class='bottom-nav sidebar_project']/div[@class='actions']/ul[@class='nav nav-stacked nav-pills']/li[@class=' ']/a/text()")
+//	private List<String> otherLinks = null;
+//	private String settingLink = null;
+//	private String sharingwidgetsLink = null;
+//	private String relatedprojectsLink = null;
+//	private String costestLink = null;
+//	private String contributorLink = null;
+//	
+	/**
+	 * just for test
+	 */
 	
-	//buttom informations
-	@ExtractBy("//div[@id='projects_show_page']/div[@class='full-width mezzo margin_left_20 margin_right_20 margin_top_15']/div[@class = 'bottom-nav sidebar_project']/div[@class = 'actions']/ul[@class='nav nav-stacked nav-pills']/li[@class=' first']/a/@href")
-	private List<String> firstLinks = null;
-	private String newsLink = null;
-	private String langLink = null;
-	private String commitsLink = null;
-	@ExtractBy("//div[@id='projects_show_page']/div[@class='full-width mezzo margin_left_20 margin_right_20 margin_top_15']/div[@class = 'bottom-nav sidebar_project']/div[@class = 'actions']/ul[@class='nav nav-stacked nav-pills']/li[@class=' ']/a/@href")
-	private List<String> otherLinks = null;
-	private String settingLink = null;
-    private String sharingwidgetsLink = null;
-    private String relatedprojectsLink = null;
-    private String costestLink = null;
-    private String contributorLink = null;
-	
+    private String ansTmp = null;
+	public String getAnsTmp() {
+		return ansTmp;
+	}
+
+	public void setAnsTmp(String ansTmp) {
+		this.ansTmp = ansTmp;
+	}
+//
+//	private Elements links = null ;
+//	public Elements getLinks() {
+//		return links;
+//	}
+//
+//	public void setLinks(Elements links) {
+//		this.links = links;
+//	}
+
 	private String collectTime;
 	// @ExtractByUrl()
 	private String url;
@@ -178,61 +202,77 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		handleNutShell2(nutShell2);
 		String nutShell3 = codeInfos.get(3);
 		handleNutShell3(nutShell3);
-		
+
 		List<String> eList = new ArrayList<String>();
 		List<String> valueList = new ArrayList<String>();
-		//language
-		for(int i = 0 ;i<languages.size();i++){
+		// language
+		for (int i = 0; i < languages.size(); i++) {
 			Element e = Jsoup.parse(languages.get(i));
 			Element eValue = Jsoup.parse(percentages.get(i));
-			//String strE = e.text();
+			// String strE = e.text();
 			eList.add(e.text());
-			//String strValue = eValue.text();
+			// String strValue = eValue.text();
 			valueList.add(eValue.text());
 		}
-		//this.languagePercentages = StringHandler.assemblyOSSEANMap(eList, valueList);
-		
-		//activity
+		// this.languagePercentages = StringHandler.assemblyOSSEANMap(eList,
+		// valueList);
+
+		// activity
 		String strtmp1 = null;
 		String strtmp2 = null;
 		String strtmp3 = null;
 		String strtmp4 = null;
-		//this.dCommitNumber = Integer.parseInt(dayActivityInfos.get(0));
-		//this.dContributorNumber = Integer.parseInt(dayActivityInfos.get(1));
-		strtmp1 = dayActivityInfos.get(0);
-		this.dCommitNumber = getInt(strtmp1);
-		strtmp2 = dayActivityInfos.get(1); 
-		this.dContributorNumber = getInt(strtmp2);
-		strtmp3 = monthActivityInfos.get(0);
-		this.mCommitNumber = getInt(strtmp3);
-	    strtmp4 = monthActivityInfos.get(1);
-	    this.mContributorNumber = getInt(strtmp4);
-	    this.newContriNum = getInt(this.newContributor);
-	    this.theCommitTrend = allTrend.get(0);
-	    this.theContriTrend = allTrend.get(1);
-	    
-	    //community
-	  // this.rateNum = getInt(this.rateInfo);
-	    this.ReContributor = StringHandler.combineTags(this.RecenctContributors);
-	    
-	    //button informations
-	    String tmphref = "https://www.openhub.net";
-	    this.newsLink = tmphref+this.firstLinks.get(0);
-	    this.langLink = tmphref+this.firstLinks.get(1);
-	    
-	    this.commitsLink = tmphref+this.firstLinks.get(2);	    
-	    this.settingLink = tmphref+this.otherLinks.get(0);
-	    
-	    this.sharingwidgetsLink =tmphref+this.otherLinks.get(1);
-	    this.relatedprojectsLink = tmphref+this.otherLinks.get(2);
-	    this.costestLink = tmphref+this.otherLinks.get(3);
-	    this.contributorLink = tmphref+this.otherLinks.get(4);
-	    
+		// this.dCommitNumber = Integer.parseInt(dayActivityInfos.get(0));
+		// this.dContributorNumber = Integer.parseInt(dayActivityInfos.get(1));
+		if (dayActivityInfos.size() > 0) {
+			strtmp1 = dayActivityInfos.get(0);
+			this.daysCommitNumber = getInt(strtmp1);
+			strtmp2 = dayActivityInfos.get(1);
+			this.daysContributorNumber = getInt(strtmp2);
+			strtmp3 = monthActivityInfos.get(0);
+			this.monthsCommitNumber = getInt(strtmp3);
+			strtmp4 = monthActivityInfos.get(1);
+			this.monthsContributorNumber = getInt(strtmp4);
+			this.newContriNum = getInt(this.newContributor);
+			this.theCommitTrend = allTrend.get(0);
+			this.theContriTrend = allTrend.get(1);
+		}
+		// community
+		// this.rateNum = getInt(this.rateInfo);
+		this.ReContributor = StringHandler
+				.combineTags(this.RecenctContributors);		
+		// button informations
+//		String headHref = "https://www.openhub.net";
+//		Document docTmp = Jsoup.parse(this.linkInfos.get(0));
+//		this.links = docTmp.getElementsByTag("a");
+//		
+//		for(Element link : links){
+//			String url = headHref + link.attr("href");
+//			ansTmp += url +"**";
+//		}
+//		
+			
+
+//		if (this.firstLinks.size() > 0) {
+//
+//			this.newsLink = tmphref + this.firstLinks.get(0);
+//			this.langLink = tmphref + this.firstLinks.get(1);
+//
+//			this.commitsLink = tmphref + this.firstLinks.get(2);
+//			this.settingLink = tmphref + this.otherLinks.get(0);
+//			
+//			this.sharingwidgetsLink = tmphref + this.otherLinks.get(1);
+//			this.relatedprojectsLink = tmphref + this.otherLinks.get(2);
+//			this.costestLink = tmphref + this.otherLinks.get(3);
+//			this.contributorLink = tmphref + this.otherLinks.get(4);
+//		}
 	}
+
+
 
 	@Override
 	public void validate(Page page) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub	
 		
 	}
 
@@ -379,14 +419,16 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		ele = eles.get(1);
 		String firstCommitAt = StringHandler.removeHeader(ele.text(),
 				OpenHubProject_Model.firstCommitTimeHeader).trim();
+		ansTmp = handleDateAt(firstCommitAt).toString();
 		this.firstCommitTime = handleDateAt(firstCommitAt);
 		ele = eles.get(2);
 		String lastCommitAt = StringHandler.removeHeader(ele.text(),
 				OpenHubProject_Model.lastCommitTimeHeader).trim();
-		//System.out.println(lastCommitAt);
+		// System.out.println(lastCommitAt);
 		lastCommitAt = StringHandler.removePreposition(lastCommitAt);
-		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
-		this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt));//handleDateBefore(lastCommitAt);
+		// SimpleDateFormat simpleDateFormat = new
+		// SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+		this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt));
 	}
 
 	private int getInt(String in) {
@@ -457,591 +499,330 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		try {
 			rt = sdf.parse(dateTmp);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return rt;
 	}
 
-//	private Date handleDateBefore(String strDate) {
-//		// System.out.println(strDate);
-//		int num = StringHandler.extractIntFromString(strDate);
-//		String unit = StringHandler.getUnit(strDate);
-//
-//		return DateHandler.getDateBefore(num, unit);
-//	}
-
-	/**
-	 * @return the mostWrittenHeader
-	 */
 	public static String getMostWrittenHeader() {
 		return mostWrittenHeader;
 	}
 
-	/**
-	 * @return the commentsPercentageTail
-	 */
-	public static String getCommentsPercentageTail() {
-		return commentsPercentageTail;
-	}
-
-	/**
-	 * @return the codebaseStatusHeaderTail
-	 */
-	public static String getCodebaseStatusHeaderTail() {
-		return codebaseStatusHeaderTail;
-	}
-
-	/**
-	 * @return the teamScaleTail
-	 */
-	public static String getTeamScaleTail() {
-		return teamScaleTail;
-	}
-
-	/**
-	 * @return the commitStatusTail
-	 */
-	public static String getCommitStatusTail() {
-		return commitStatusTail;
-	}
-
-	/**
-	 * @return the estimateEffortTimeTail
-	 */
-	public static String getEstimateEffortTimeTail() {
-		return estimateEffortTimeTail;
-	}
-
-	/**
-	 * @return the firstCommitTimeHeader
-	 */
-	public static String getFirstCommitTimeHeader() {
-		return firstCommitTimeHeader;
-	}
-
-	/**
-	 * @return the lastCommitTimeHeader
-	 */
-	public static String getLastCommitTimeHeader() {
-		return lastCommitTimeHeader;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @return the activity
-	 */
-	public String getActivity() {
-		return activity;
-	}
-
-	/**
-	 * @return the useCount
-	 */
-	public int getUseCount() {
-		return useCount;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @return the tags
-	 */
-	public String getTags() {
-		return tags;
-	}
-
-	/**
-	 * @return the organization
-	 */
-	public String getOrganization() {
-		return organization;
-	}
-
-	/**
-	 * @return the projectLinks
-	 */
-	public String getProjectLinks() {
-		return projectLinks;
-	}
-
-	/**
-	 * @return the codeLocation
-	 */
-	public String getCodeLocation() {
-		return codeLocation;
-	}
-
-	/**
-	 * @return the licenses
-	 */
-	public String getLicenses() {
-		return licenses;
-	}
-
-	/**
-	 * @return the similarProjects
-	 */
-	public String getSimilarProjects() {
-		return similarProjects;
-	}
-
-	/**
-	 * @return the managers
-	 */
-	public String getManagers() {
-		return managers;
-	}
-
-	/**
-	 * @return the codeInfos
-	 */
-	public List<String> getCodeInfos() {
-		return codeInfos;
-	}
-
-	/**
-	 * @return the commitNum
-	 */
-	public int getCommitNum() {
-		return commitNum;
-	}
-
-	/**
-	 * @return the contributorNum
-	 */
-	public int getContributorNum() {
-		return contributorNum;
-	}
-
-	/**
-	 * @return the codeLinesNum
-	 */
-	public int getCodeLinesNum() {
-		return codeLinesNum;
-	}
-
-	/**
-	 * @return the mostWrittenIn
-	 */
-	public String getMostWrittenIn() {
-		return mostWrittenIn;
-	}
-
-	/**
-	 * @return the commentsPercentage
-	 */
-	public String getCommentsPercentage() {
-		return commentsPercentage;
-	}
-
-	/**
-	 * @return the codebaseStatus
-	 */
-	public String getCodebaseStatus() {
-		return codebaseStatus;
-	}
-
-	/**
-	 * @return the teamScale
-	 */
-	public String getTeamScale() {
-		return teamScale;
-	}
-
-	/**
-	 * @return the commitStatus
-	 */
-	public String getCommitStatus() {
-		return commitStatus;
-	}
-
-	/**
-	 * @return the estimateEffortTime
-	 */
-	public String getEstimateEffortTime() {
-		return estimateEffortTime;
-	}
-
-	/**
-	 * @return the firstCommitTime
-	 */
-	public Date getFirstCommitTime() {
-		return firstCommitTime;
-	}
-
-	/**
-	 * @return the lastCommitTime
-	 */
-	public Date getLastCommitTime() {
-		return lastCommitTime;
-	}
-
-	/**
-	 * @return the collectTime
-	 */
-	public String getCollectTime() {
-		return collectTime;
-	}
-
-	/**
-	 * @return the url
-	 */
-	public String getUrl() {
-		return url;
-	}
-
-	/**
-	 * @return the urlMd5
-	 */
-	public String getUrlMd5() {
-		return urlMd5;
-	}
-
-	/**
-	 * @return the pageMd5
-	 */
-	public String getPageMd5() {
-		return pageMd5;
-	}
-
-	/**
-	 * @return the history
-	 */
-	public int getHistory() {
-		return history;
-	}
-
-	/**
-	 * @param mostWrittenHeader
-	 *            the mostWrittenHeader to set
-	 */
 	public static void setMostWrittenHeader(String mostWrittenHeader) {
 		OpenHubProject_Model.mostWrittenHeader = mostWrittenHeader;
 	}
 
-	/**
-	 * @param commentsPercentageTail
-	 *            the commentsPercentageTail to set
-	 */
+	public static String getCommentsPercentageTail() {
+		return commentsPercentageTail;
+	}
+
 	public static void setCommentsPercentageTail(String commentsPercentageTail) {
 		OpenHubProject_Model.commentsPercentageTail = commentsPercentageTail;
 	}
 
-	/**
-	 * @param codebaseStatusHeaderTail
-	 *            the codebaseStatusHeaderTail to set
-	 */
+	public static String getCodebaseStatusHeaderTail() {
+		return codebaseStatusHeaderTail;
+	}
+
 	public static void setCodebaseStatusHeaderTail(
 			String codebaseStatusHeaderTail) {
 		OpenHubProject_Model.codebaseStatusHeaderTail = codebaseStatusHeaderTail;
 	}
 
-	/**
-	 * @param teamScaleTail
-	 *            the teamScaleTail to set
-	 */
+	public static String getTeamScaleTail() {
+		return teamScaleTail;
+	}
+
 	public static void setTeamScaleTail(String teamScaleTail) {
 		OpenHubProject_Model.teamScaleTail = teamScaleTail;
 	}
 
-	/**
-	 * @param commitStatusTail
-	 *            the commitStatusTail to set
-	 */
+	public static String getCommitStatusTail() {
+		return commitStatusTail;
+	}
+
 	public static void setCommitStatusTail(String commitStatusTail) {
 		OpenHubProject_Model.commitStatusTail = commitStatusTail;
 	}
 
-	/**
-	 * @param estimateEffortTimeTail
-	 *            the estimateEffortTimeTail to set
-	 */
+	public static String getEstimateEffortTimeTail() {
+		return estimateEffortTimeTail;
+	}
+
 	public static void setEstimateEffortTimeTail(String estimateEffortTimeTail) {
 		OpenHubProject_Model.estimateEffortTimeTail = estimateEffortTimeTail;
 	}
 
-	/**
-	 * @param firstCommitTimeHeader
-	 *            the firstCommitTimeHeader to set
-	 */
+	public static String getFirstCommitTimeHeader() {
+		return firstCommitTimeHeader;
+	}
+
 	public static void setFirstCommitTimeHeader(String firstCommitTimeHeader) {
 		OpenHubProject_Model.firstCommitTimeHeader = firstCommitTimeHeader;
 	}
 
-	/**
-	 * @param lastCommitTimeHeader
-	 *            the lastCommitTimeHeader to set
-	 */
+	public static String getLastCommitTimeHeader() {
+		return lastCommitTimeHeader;
+	}
+
 	public static void setLastCommitTimeHeader(String lastCommitTimeHeader) {
 		OpenHubProject_Model.lastCommitTimeHeader = lastCommitTimeHeader;
 	}
 
-	/**
-	 * @param name
-	 *            the name to set
-	 */
+	public String getName() {
+		return name;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * @param activity
-	 *            the activity to set
-	 */
+	public String getActivity() {
+		return activity;
+	}
+
 	public void setActivity(String activity) {
 		this.activity = activity;
 	}
 
-	/**
-	 * @param useCount
-	 *            the useCount to set
-	 */
+	public String getStrUseCount() {
+		return strUseCount;
+	}
+
+	public void setStrUseCount(String strUseCount) {
+		this.strUseCount = strUseCount;
+	}
+
+	public int getUseCount() {
+		return useCount;
+	}
+
 	public void setUseCount(int useCount) {
 		this.useCount = useCount;
 	}
 
-	/**
-	 * @param description
-	 *            the description to set
-	 */
+	public String getDescription() {
+		return description;
+	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * @param tags
-	 *            the tags to set
-	 */
+	public String getTags() {
+		return tags;
+	}
+
 	public void setTags(String tags) {
 		this.tags = tags;
 	}
 
-	/**
-	 * @param organization
-	 *            the organization to set
-	 */
+	public String getOrganization() {
+		return organization;
+	}
+
 	public void setOrganization(String organization) {
 		this.organization = organization;
 	}
 
-	/**
-	 * @param projectLinks
-	 *            the projectLinks to set
-	 */
+	public String getProjectLinks() {
+		return projectLinks;
+	}
+
 	public void setProjectLinks(String projectLinks) {
 		this.projectLinks = projectLinks;
 	}
 
-	/**
-	 * @param codeLocation
-	 *            the codeLocation to set
-	 */
+	public String getCodeLocation() {
+		return codeLocation;
+	}
+
 	public void setCodeLocation(String codeLocation) {
 		this.codeLocation = codeLocation;
 	}
 
-	/**
-	 * @param licenses
-	 *            the licenses to set
-	 */
+	public String getLicenses() {
+		return licenses;
+	}
+
 	public void setLicenses(String licenses) {
 		this.licenses = licenses;
 	}
 
-	/**
-	 * @param similarProjects
-	 *            the similarProjects to set
-	 */
+	public String getSimilarProjects() {
+		return similarProjects;
+	}
+
 	public void setSimilarProjects(String similarProjects) {
 		this.similarProjects = similarProjects;
 	}
 
-	/**
-	 * @param managers
-	 *            the managers to set
-	 */
+	public String getManagers() {
+		return managers;
+	}
+
 	public void setManagers(String managers) {
 		this.managers = managers;
 	}
 
-	/**
-	 * @param codeInfos
-	 *            the codeInfos to set
-	 */
+	public List<String> getCodeInfos() {
+		return codeInfos;
+	}
+
 	public void setCodeInfos(List<String> codeInfos) {
 		this.codeInfos = codeInfos;
 	}
 
-	/**
-	 * @param commitNum
-	 *            the commitNum to set
-	 */
+	public int getCommitNum() {
+		return commitNum;
+	}
+
 	public void setCommitNum(int commitNum) {
 		this.commitNum = commitNum;
 	}
 
-	/**
-	 * @param contributorNum
-	 *            the contributorNum to set
-	 */
+	public int getContributorNum() {
+		return contributorNum;
+	}
+
 	public void setContributorNum(int contributorNum) {
 		this.contributorNum = contributorNum;
 	}
 
-	/**
-	 * @param codeLinesNum
-	 *            the codeLinesNum to set
-	 */
+	public int getCodeLinesNum() {
+		return codeLinesNum;
+	}
+
 	public void setCodeLinesNum(int codeLinesNum) {
 		this.codeLinesNum = codeLinesNum;
 	}
 
-	/**
-	 * @param mostWrittenIn
-	 *            the mostWrittenIn to set
-	 */
+	public String getMostWrittenIn() {
+		return mostWrittenIn;
+	}
+
 	public void setMostWrittenIn(String mostWrittenIn) {
 		this.mostWrittenIn = mostWrittenIn;
 	}
 
-	/**
-	 * @param commentsPercentage
-	 *            the commentsPercentage to set
-	 */
+	public String getCommentsPercentage() {
+		return commentsPercentage;
+	}
+
 	public void setCommentsPercentage(String commentsPercentage) {
 		this.commentsPercentage = commentsPercentage;
 	}
 
-	/**
-	 * @param codebaseStatus
-	 *            the codebaseStatus to set
-	 */
+	public String getCodebaseStatus() {
+		return codebaseStatus;
+	}
+
 	public void setCodebaseStatus(String codebaseStatus) {
 		this.codebaseStatus = codebaseStatus;
 	}
 
-	/**
-	 * @param teamScale
-	 *            the teamScale to set
-	 */
+	public String getTeamScale() {
+		return teamScale;
+	}
+
 	public void setTeamScale(String teamScale) {
 		this.teamScale = teamScale;
 	}
 
-	/**
-	 * @param commitStatus
-	 *            the commitStatus to set
-	 */
+	public String getCommitStatus() {
+		return commitStatus;
+	}
+
 	public void setCommitStatus(String commitStatus) {
 		this.commitStatus = commitStatus;
 	}
 
-	/**
-	 * @param estimateEffortTime
-	 *            the estimateEffortTime to set
-	 */
+	public String getEstimateEffortTime() {
+		return estimateEffortTime;
+	}
+
 	public void setEstimateEffortTime(String estimateEffortTime) {
 		this.estimateEffortTime = estimateEffortTime;
 	}
 
-	/**
-	 * @param firstCommitTime
-	 *            the firstCommitTime to set
-	 */
+	public Date getFirstCommitTime() {
+		return firstCommitTime;
+	}
+
 	public void setFirstCommitTime(Date firstCommitTime) {
 		this.firstCommitTime = firstCommitTime;
 	}
 
-	/**
-	 * @param lastCommitTime
-	 *            the lastCommitTime to set
-	 */
+	public Date getLastCommitTime() {
+		return lastCommitTime;
+	}
+
 	public void setLastCommitTime(Date lastCommitTime) {
 		this.lastCommitTime = lastCommitTime;
 	}
 
-	/**
-	 * @param collectTime
-	 *            the collectTime to set
-	 */
-	public void setCollectTime(String collectTime) {
-		this.collectTime = collectTime;
+	public List<String> getLanguages() {
+		return languages;
 	}
 
-	/**
-	 * @param url
-	 *            the url to set
-	 */
-	public void setUrl(String url) {
-		this.url = url;
+	public void setLanguages(List<String> languages) {
+		this.languages = languages;
 	}
 
-	/**
-	 * @param urlMd5
-	 *            the urlMd5 to set
-	 */
-	public void setUrlMd5(String urlMd5) {
-		this.urlMd5 = urlMd5;
+	public List<String> getPercentages() {
+		return percentages;
 	}
 
-	/**
-	 * @param pageMd5
-	 *            the pageMd5 to set
-	 */
-	public void setPageMd5(String pageMd5) {
-		this.pageMd5 = pageMd5;
+	public void setPercentages(List<String> percentages) {
+		this.percentages = percentages;
 	}
 
-	/**
-	 * @param history
-	 *            the history to set
-	 */
-	public void setHistory(int history) {
-		this.history = history;
-	}
-	
-	/**
-	 * @return the languagePercentages
-	 */
 	public String getLanguagePercentages() {
 		return languagePercentages;
 	}
 
-	/**
-	 * @param languagePercentages the languagePercentages to set
-	 */
 	public void setLanguagePercentages(String languagePercentages) {
 		this.languagePercentages = languagePercentages;
 	}
-	/**
-	 * activity params
-	 */
-	public int getdCommitNumber() {
-		return dCommitNumber;
+
+	public String getActivityDayTime() {
+		return activityDayTime;
 	}
 
-	public void setdCommitNumber(int dCommitNumber) {
-		this.dCommitNumber = dCommitNumber;
+	public void setActivityDayTime(String activityDayTime) {
+		this.activityDayTime = activityDayTime;
 	}
 
-	public int getdContributorNumber() {
-		return dContributorNumber;
+	public List<String> getDayActivityInfos() {
+		return dayActivityInfos;
 	}
 
-	public void setdContributorNumber(int dContributorNumber) {
-		this.dContributorNumber = dContributorNumber;
+	public void setDayActivityInfos(List<String> dayActivityInfos) {
+		this.dayActivityInfos = dayActivityInfos;
+	}
+
+	public int getDaysCommitNumber() {
+		return daysCommitNumber;
+	}
+
+	public void setDaysCommitNumber(int daysCommitNumber) {
+		this.daysCommitNumber = daysCommitNumber;
+	}
+
+	public int getDaysContributorNumber() {
+		return daysContributorNumber;
+	}
+
+	public void setDaysContributorNumber(int daysContributorNumber) {
+		this.daysContributorNumber = daysContributorNumber;
+	}
+
+	public String getNewContributor() {
+		return newContributor;
+	}
+
+	public void setNewContributor(String newContributor) {
+		this.newContributor = newContributor;
 	}
 
 	public int getNewContriNum() {
@@ -1052,20 +833,44 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		this.newContriNum = newContriNum;
 	}
 
-	public int getmCommitNumber() {
-		return mCommitNumber;
+	public String getActivityMonthTime() {
+		return activityMonthTime;
 	}
 
-	public void setmCommitNumber(int mCommitNumber) {
-		this.mCommitNumber = mCommitNumber;
+	public void setActivityMonthTime(String activityMonthTime) {
+		this.activityMonthTime = activityMonthTime;
 	}
 
-	public int getmContributorNumber() {
-		return mContributorNumber;
+	public List<String> getMonthActivityInfos() {
+		return monthActivityInfos;
 	}
 
-	public void setmContributorNumber(int mContributorNumber) {
-		this.mContributorNumber = mContributorNumber;
+	public void setMonthActivityInfos(List<String> monthActivityInfos) {
+		this.monthActivityInfos = monthActivityInfos;
+	}
+
+	public int getMonthsCommitNumber() {
+		return monthsCommitNumber;
+	}
+
+	public void setMonthsCommitNumber(int monthsCommitNumber) {
+		this.monthsCommitNumber = monthsCommitNumber;
+	}
+
+	public int getMonthsContributorNumber() {
+		return monthsContributorNumber;
+	}
+
+	public void setMonthsContributorNumber(int monthsContributorNumber) {
+		this.monthsContributorNumber = monthsContributorNumber;
+	}
+
+	public List<String> getAllTrend() {
+		return allTrend;
+	}
+
+	public void setAllTrend(List<String> allTrend) {
+		this.allTrend = allTrend;
 	}
 
 	public String getTheCommitTrend() {
@@ -1083,36 +888,13 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	public void setTheContriTrend(String theContriTrend) {
 		this.theContriTrend = theContriTrend;
 	}
-	public List<String> getLanguages() {
-		return languages;
+
+	public String getRateInfo() {
+		return rateInfo;
 	}
 
-	public void setLanguages(List<String> languages) {
-		this.languages = languages;
-	}
-
-	public String getActivityDayTime() {
-		return activityDayTime;
-	}
-
-	public void setActivityDayTime(String activityDayTime) {
-		this.activityDayTime = activityDayTime;
-	}
-
-	public String getNewContributor() {
-		return newContributor;
-	}
-
-	public void setNewContributor(String newContributor) {
-		this.newContributor = newContributor;
-	}
-	
-	public String getActivityMonthTime() {
-		return activityMonthTime;
-	}
-
-	public void setActivityMonthTime(String activityMonthTime) {
-		this.activityMonthTime = activityMonthTime;
+	public void setRateInfo(String rateInfo) {
+		this.rateInfo = rateInfo;
 	}
 
 	public String getRateLevel() {
@@ -1123,6 +905,14 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		this.rateLevel = rateLevel;
 	}
 
+	public List<String> getRecenctContributors() {
+		return RecenctContributors;
+	}
+
+	public void setRecenctContributors(List<String> recenctContributors) {
+		RecenctContributors = recenctContributors;
+	}
+
 	public String getReContributor() {
 		return ReContributor;
 	}
@@ -1130,77 +920,131 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	public void setReContributor(String reContributor) {
 		ReContributor = reContributor;
 	}
-	
-	public String getNewsLink() {
-		return newsLink;
+
+//	public List<String> getFirstLinks() {
+//		return firstLinks;
+//	}
+//
+//	public void setFirstLinks(List<String> firstLinks) {
+//		this.firstLinks = firstLinks;
+//	}
+//
+//	public String getNewsLink() {
+//		return newsLink;
+//	}
+//
+//	public void setNewsLink(String newsLink) {
+//		this.newsLink = newsLink;
+//	}
+//
+//	public String getLangLink() {
+//		return langLink;
+//	}
+//
+//	public void setLangLink(String langLink) {
+//		this.langLink = langLink;
+//	}
+//
+//	public String getCommitsLink() {
+//		return commitsLink;
+//	}
+//
+//	public void setCommitsLink(String commitsLink) {
+//		this.commitsLink = commitsLink;
+//	}
+//
+//	public List<String> getOtherLinks() {
+//		return otherLinks;
+//	}
+//
+//	public void setOtherLinks(List<String> otherLinks) {
+//		this.otherLinks = otherLinks;
+//	}
+//
+//	public String getSettingLink() {
+//		return settingLink;
+//	}
+//
+//	public void setSettingLink(String settingLink) {
+//		this.settingLink = settingLink;
+//	}
+//
+//	public String getSharingwidgetsLink() {
+//		return sharingwidgetsLink;
+//	}
+//
+//	public void setSharingwidgetsLink(String sharingwidgetsLink) {
+//		this.sharingwidgetsLink = sharingwidgetsLink;
+//	}
+//
+//	public String getRelatedprojectsLink() {
+//		return relatedprojectsLink;
+//	}
+//
+//	public void setRelatedprojectsLink(String relatedprojectsLink) {
+//		this.relatedprojectsLink = relatedprojectsLink;
+//	}
+//
+//	public String getCostestLink() {
+//		return costestLink;
+//	}
+//
+//	public void setCostestLink(String costestLink) {
+//		this.costestLink = costestLink;
+//	}
+//
+//	public String getContributorLink() {
+//		return contributorLink;
+//	}
+//
+//	public void setContributorLink(String contributorLink) {
+//		this.contributorLink = contributorLink;
+//	}
+
+	public String getCollectTime() {
+		return collectTime;
 	}
 
-	public void setNewsLink(String newsLink) {
-		this.newsLink = newsLink;
+	public void setCollectTime(String collectTime) {
+		this.collectTime = collectTime;
 	}
 
-	public String getLangLink() {
-		return langLink;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setLangLink(String langLink) {
-		this.langLink = langLink;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
-	public String getCommitsLink() {
-		return commitsLink;
-	}
-	
-	public void setCommitsLink(String commitsLink) {
-		this.commitsLink = commitsLink;
+	public String getUrlMd5() {
+		return urlMd5;
 	}
 
-	public String getSettingLink() {
-		return settingLink;
+	public void setUrlMd5(String urlMd5) {
+		this.urlMd5 = urlMd5;
 	}
 
-	public void setSettingLink(String settingLink) {
-		this.settingLink = settingLink;
+	public String getPageMd5() {
+		return pageMd5;
 	}
 
-	public String getSharingwidgetsLink() {
-		return sharingwidgetsLink;
+	public void setPageMd5(String pageMd5) {
+		this.pageMd5 = pageMd5;
 	}
 
-	public void setSharingwidgetsLink(String sharingwidgetsLink) {
-		this.sharingwidgetsLink = sharingwidgetsLink;
+	public int getHistory() {
+		return history;
 	}
 
-	public String getRelatedprojectsLink() {
-		return relatedprojectsLink;
+	public void setHistory(int history) {
+		this.history = history;
 	}
-	
-	public void setRelatedprojectsLink(String relatedprojectsLink) {
-		this.relatedprojectsLink = relatedprojectsLink;
-	}
-
-	public String getCostestLink() {
-		return costestLink;
-	}
-
-	public void setCostestLink(String costestLink) {
-		this.costestLink = costestLink;
-	}
-
-	public String getContributorLink() {
-		return contributorLink;
-	}
-
-	public void setContributorLink(String contributorLink) {
-		this.contributorLink = contributorLink;
-	}
-
-	public String getRateInfo() {
-		return rateInfo;
-	}
-
-	public void setRateInfo(String rateInfo) {
-		this.rateInfo = rateInfo;
-	}
-
+//	public List<String> getLinkInfos() {
+//		return linkInfos;
+//	}
+//
+//	public void setLinkInfos(List<String> linkInfos) {
+//		this.linkInfos = linkInfos;
+//	}
 }
