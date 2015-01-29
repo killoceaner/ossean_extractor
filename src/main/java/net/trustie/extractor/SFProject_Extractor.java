@@ -3,7 +3,7 @@ package net.trustie.extractor;
 import java.sql.SQLException;
 import net.trustie.downloader.DataBasePageErrorOutPut;
 import net.trustie.downloader.GenerateRawPage;
-import net.trustie.model.SFProject;
+import net.trustie.model.SFProject_Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -34,7 +34,7 @@ public class SFProject_Extractor {
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						SFProject.class).setUUID("SFProject")
+						SFProject_Model.class).setUUID("SFProject")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}

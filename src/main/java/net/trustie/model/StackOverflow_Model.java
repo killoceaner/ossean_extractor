@@ -12,7 +12,7 @@ import core.Page;
 import core.ValidateExtractor;
 
 @ExtractBy("//*[@class='container']/div[@id='content']/div/div[@id='mainbar']/div[@id='question']/table")
-public class StackOverflow implements AfterExtractor, ValidateExtractor {
+public class StackOverflow_Model implements AfterExtractor, ValidateExtractor {
 	private String tag;
 
 	private String extractTime;

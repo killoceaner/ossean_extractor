@@ -1,4 +1,5 @@
 package net.trustie.model;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,8 +17,9 @@ import core.AfterExtractor;
 import core.Page;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
 
-@ExtractBy("//body[@id='pg_project']/div[@id='page-body']/article[@id='project']")//限定抽取区域
-public class SFProject implements AfterExtractor {
+@ExtractBy("//body[@id='pg_project']/div[@id='page-body']/article[@id='project']")
+// 限定抽取区域
+public class SFProject_Model implements AfterExtractor {
 	// @ExtractBy("//div[@id='project-header']/section[@id='project-title']/h1/allText() | //div[@id='project-header']/div[@class='content-group']/h1[@class='project-name']/text()")
 	private String name = "";
 	// @ExtractBy("//div[@id='project-header']/section[@id='project-title']/p[@itemprop='author']/a/allText()")
@@ -44,18 +46,19 @@ public class SFProject implements AfterExtractor {
 	private String programmingLanguage = "";
 	private String registeredTime = "";
 	private String collectTime;
-	//@ExtractByUrl()
+	// @ExtractByUrl()
 	private String url;
 	private String urlMd5;
 	private String pageMd5;
 	private int history = 0;
-	//private String html;
+
+	// private String html;
 
 	public void afterProcess(Page page) {
-		//long start = System.currentTimeMillis();
-        this.url=page.getPageUrl();
+		// long start = System.currentTimeMillis();
+		this.url = page.getPageUrl();
 		// justify it's enterprise or bluesteel user
-		//this.html = page.getHtml().toString();
+		// this.html = page.getHtml().toString();
 		this.urlMd5 = DigestUtils.md5Hex(page.getPageUrl());
 		SimpleDateFormat bartDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd HH:mm:ss");
@@ -72,16 +75,16 @@ public class SFProject implements AfterExtractor {
 				String type = body.attr("class");
 
 				if (type.equals("bluesteel user")) {
-					
-					//bluesteel user
+
+					// bluesteel user
 					extractPageBluesteelUser(doc);
 
 				} else if (type.equals("enterprise user")) {
-					//enterprise user
+					// enterprise user
 					extractPageEnterpriseUser(doc);
 
 				} else {
-					//others
+					// others
 				}
 
 				if (lastUpdate.contains("ago")) {
@@ -114,9 +117,9 @@ public class SFProject implements AfterExtractor {
 				this.feature = featuresEles.text();
 			}
 		}
-		
-//		long end = System.currentTimeMillis();
-//		System.out.println(end-start);
+
+		// long end = System.currentTimeMillis();
+		// System.out.println(end-start);
 
 		// System.out.println(this.toString());
 		// System.out.println(types.get(0).attr("class"));
@@ -152,7 +155,7 @@ public class SFProject implements AfterExtractor {
 		if (downloadElements.size() > 0) {
 			String strDownloadCount = downloadElements.get(0).text();
 			strDownloadCount = strDownloadCount.replaceAll("[^\\d]", "");
-			this.downloadCount =strDownloadCount;
+			this.downloadCount = strDownloadCount;
 		}
 
 		// last update
@@ -322,21 +325,24 @@ public class SFProject implements AfterExtractor {
 
 		}
 	}
+
 	public void validate(Page page) {
 		if (StringHandler.isAtLeastOneBlank(this.name, this.platform,
 				this.categories, this.url)) {
 			page.setResultSkip(this, true);
 			return;
 		}
-		
+
 		if (!StringHandler.canFormatterInteger(this.downloadCount)) {
 			page.setResultSkip(this, true);
 			return;
-		};
-        if (!DateHandler.canFormatToDate(this.lastUpdate,this.registeredTime,this.collectTime)) {
+		}
+		;
+		if (!DateHandler.canFormatToDate(this.lastUpdate, this.registeredTime,
+				this.collectTime)) {
 			page.setResultSkip(this, true);
-		}	
-		
+		}
+
 	}
 
 	private String getTime(String strTime) {
@@ -531,13 +537,13 @@ public class SFProject implements AfterExtractor {
 		this.history = history;
 	}
 
-//	public String getHtml() {
-//		return html;
-//	}
-//
-//	public void setHtml(String html) {
-//		this.html = html;
-//	}
+	// public String getHtml() {
+	// return html;
+	// }
+	//
+	// public void setHtml(String html) {
+	// this.html = html;
+	// }
 
 	/*
 	 * (non-Javadoc)
@@ -556,7 +562,7 @@ public class SFProject implements AfterExtractor {
 				+ ", programmingLanguage=" + programmingLanguage
 				+ ", registeredTime=" + registeredTime + ", collectTime="
 				+ collectTime + ", url=" + url + ", urlMD5=" + urlMd5
-				+ ", pageMD5=" + pageMd5 + ", history=" + history  + "]";
+				+ ", pageMD5=" + pageMd5 + ", history=" + history + "]";
 	}
 
 }
