@@ -3,6 +3,8 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import net.trustie.utils.DateHandler;
+import net.trustie.utils.StringHandler;
 import net.trustie.utils.VanishTime;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -22,7 +24,7 @@ public class SFProject implements AfterExtractor {
 	private String maintainers = "";
 	// @ExtractBy("//section[@id='main-content']/section[@id='call-to-action']/section[@id='counts-sharing']/section[@id='project-info']/section[@class='content']/a[@title='Browse reviews']/text()")
 	private float stars = 0;
-	private long downloadCount = 0;
+	private String downloadCount = "";
 	// @ExtractBy("//section[@id='main-content']/section[@id='call-to-action']/section[@id='counts-sharing']/section[@id='last-updated']/section[@class='content']/time[@class='dateUpdated']/@datetime | //div[@id='project-header']/div[@class='content-group']/div[@class='project-rating']/time[@class='dateUpdated']/@datetime")
 	private String lastUpdate = "";
 	// @ExtractBy("//article[@id='project']/section[@id='main-content']/section[@id='call-to-action']/section[@id='download_button']/section[@class='project-info']/allText() | //div[@id='project-header']/div[@class='content-group']/h1[@class='download-os']/allText()")
@@ -51,7 +53,7 @@ public class SFProject implements AfterExtractor {
 
 	public void afterProcess(Page page) {
 		//long start = System.currentTimeMillis();
-
+        this.url=page.getPageUrl();
 		// justify it's enterprise or bluesteel user
 		//this.html = page.getHtml().toString();
 		this.urlMd5 = DigestUtils.md5Hex(page.getPageUrl());
@@ -150,7 +152,7 @@ public class SFProject implements AfterExtractor {
 		if (downloadElements.size() > 0) {
 			String strDownloadCount = downloadElements.get(0).text();
 			strDownloadCount = strDownloadCount.replaceAll("[^\\d]", "");
-			downloadCount = Long.parseLong(strDownloadCount);
+			this.downloadCount =strDownloadCount;
 		}
 
 		// last update
@@ -249,7 +251,7 @@ public class SFProject implements AfterExtractor {
 		if (downloadElements.size() > 0) {
 			String strDownloadCount = downloadElements.get(0).text();
 			strDownloadCount = strDownloadCount.replaceAll("[^\\d]", "");
-			downloadCount = Long.parseLong(strDownloadCount);
+			downloadCount = strDownloadCount;
 		}
 
 		// last update
@@ -320,6 +322,22 @@ public class SFProject implements AfterExtractor {
 
 		}
 	}
+	public void validate(Page page) {
+		if (StringHandler.isAtLeastOneBlank(this.name, this.platform,
+				this.categories, this.url)) {
+			page.setResultSkip(this, true);
+			return;
+		}
+		
+		if (!StringHandler.canFormatterInteger(this.downloadCount)) {
+			page.setResultSkip(this, true);
+			return;
+		};
+        if (!DateHandler.canFormatToDate(this.lastUpdate,this.registeredTime,this.collectTime)) {
+			page.setResultSkip(this, true);
+		}	
+		
+	}
 
 	private String getTime(String strTime) {
 		String time = null;
@@ -364,7 +382,7 @@ public class SFProject implements AfterExtractor {
 		return stars;
 	}
 
-	public long getDownloadCount() {
+	public String getDownloadCount() {
 		return downloadCount;
 	}
 
@@ -424,7 +442,7 @@ public class SFProject implements AfterExtractor {
 		this.stars = stars;
 	}
 
-	public void setDownloadCount(long downloadCount) {
+	public void setDownloadCount(String downloadCount) {
 		this.downloadCount = downloadCount;
 	}
 

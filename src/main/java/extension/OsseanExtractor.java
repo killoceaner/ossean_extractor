@@ -52,7 +52,7 @@ public class OsseanExtractor extends TimerTask {
 		this.site = site;
 		this.modelPipeline = new ModelPipeline();
 		this.addPipeline(modelPipeline);
-		for (Class<?> pageModel : pageModels) {
+		for (Class<?> pageModel : pageModels) {  
 			modelName.add(pageModel.getCanonicalName());
 			if (pageModelPipeline != null) {
 				this.modelPipeline.put(pageModel, pageModelPipeline);
