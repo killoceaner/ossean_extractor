@@ -14,7 +14,7 @@ import core.Page;
 import core.ValidateExtractor;
 
 @ExtractBy("//div[@class='main']/div[@class='persion_section']")
-public class CsdnQ_Model implements AfterExtractor, ValidateExtractor {
+public class CsdnAsk_Model implements AfterExtractor, ValidateExtractor {
 	private String issueId = "0";
 
 	private String issueUrl = "";
@@ -67,7 +67,7 @@ public class CsdnQ_Model implements AfterExtractor, ValidateExtractor {
 
 		// 处理postTime
 		this.postTime = StringHandler.subString(this.postTime, "创建自");
-		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
+		this.postTime = DateHandler.formatAllTypeDate(this.postTime,page.getTime());
 
 		// 处理answerNum
 		if (StringUtils.isNotBlank(this.answerNum))

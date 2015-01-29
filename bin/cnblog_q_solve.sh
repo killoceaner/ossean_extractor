@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SITE='cnblog_qsolve'
+SITE='cnblog_q_solve'
 
 find ./target/classes -name "*.xml"|xargs rm -f
 

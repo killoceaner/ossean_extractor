@@ -35,7 +35,7 @@ public class DeWenQ_Extractor {
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						DeWenQ_Model.class).setUUID("deWenQ")
+						DeWenQ_Model.class).setUUID("deWen_question")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}

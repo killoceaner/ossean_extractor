@@ -1,5 +1,7 @@
 package core;
 
+import java.util.Date;
+
 import us.codecraft.webmagic.selector.Html;
 import us.codecraft.webmagic.selector.Json;
 import us.codecraft.webmagic.selector.Selectable;
@@ -22,6 +24,8 @@ public class Page {
 	private Selectable url;
 
 	private String pageUrl;
+	
+	private Date time;
 
 	public Page() {
 
@@ -138,6 +142,14 @@ public class Page {
 
 	public void setPageUrl(String pageUrl) {
 		this.pageUrl = pageUrl;
+	}	
+
+	public Date getTime() {
+		return time;
+	}
+
+	public void setTime(Date time) {
+		this.time = time;
 	}
 
 	@Override

@@ -33,9 +33,9 @@ public class DateHandler {
 		for (String s : strings) {
 			if (StringUtils.isBlank(s))
 				return false;
-			try {			
+			try {
 				sdf.parse(s);
-			} catch (ParseException e) {				
+			} catch (ParseException e) {
 				return false;
 			}
 		}
@@ -78,16 +78,18 @@ public class DateHandler {
 	 * @param string
 	 * @return 日期以字符串形式返回
 	 */
-	public static String formatAllTypeDate(String string) {
+	public static String formatAllTypeDate(String string, Date date) {
 		if (StringUtils.isBlank(string))
 			return null;
 
 		if (canFormatToDate(string))
 			return string;
 
-		string = handlerDefaultDate(string);
-		if (canFormatToDate(string))
-			return string;
+		if (date != null) {
+			string = handlerDefaultDate(string, date);
+			if (canFormatToDate(string))
+				return string;
+		}
 
 		string = replaceChinesDate(string);
 		if (canFormatToDate(string))
@@ -96,11 +98,6 @@ public class DateHandler {
 		string = replacePointDate(string);
 		if (canFormatToDate(string))
 			return string;
-
-		string = handleTime(string);
-		if (canFormatToDate(string)) {
-			return string;
-		}
 
 		string = standardForDate(string);
 		if (canFormatToDate(string)) {
@@ -117,66 +114,66 @@ public class DateHandler {
 	 * @param string
 	 * @return
 	 */
-	private static String handlerDefaultDate(String string) {
+	private static String handlerDefaultDate(String string, Date date) {
 		if (StringHandler.canMatchRightStrings(string, "\\d+", "年", "前")
 				|| StringHandler.canMatchRightStrings(string, "\\d+", "year")) {
 			int years = Integer.parseInt(StringHandler.matchRightString(string,
 					"\\d+"));
-			return addTimeToDate(new Date(), -years * 365 * 24 * 60 * 60);
+			return addTimeToDate(date, -years * 365 * 24 * 60 * 60);
 		}
 
 		else if (StringHandler.canMatchRightStrings(string, "半" + "年", "前")
 				|| StringHandler.canMatchRightStrings(string, "half", "year"))
-			return addTimeToDate(new Date(), -183 * 24 * 60 * 60);
+			return addTimeToDate(date, -183 * 24 * 60 * 60);
 
 		else if (StringHandler.canMatchRightStrings(string, "\\d+", "月", "前")
 				|| StringHandler.canMatchRightStrings(string, "\\d+", "mon")) {
 			int months = Integer.parseInt(StringHandler.matchRightString(
 					string, "\\d+"));
-			return addTimeToDate(new Date(), -months * 30 * 24 * 60 * 60);
+			return addTimeToDate(date, -months * 30 * 24 * 60 * 60);
 		}
 
 		else if (StringHandler.canMatchRightStrings(string, "半", "月", "前")
 				|| StringHandler.canMatchRightStrings(string, "half ", " mon"))
-			return addTimeToDate(new Date(), -15 * 24 * 60 * 60);
+			return addTimeToDate(date, -15 * 24 * 60 * 60);
 
 		else if (StringHandler.canMatchRightStrings(string, "\\d+", "周", "前")
 				|| StringHandler.canMatchRightStrings(string, "\\d+ ", " week")) {
 			int weeks = Integer.parseInt(StringHandler.matchRightString(string,
 					"\\d+"));
-			return addTimeToDate(new Date(), -weeks * 7 * 24 * 60 * 60);
+			return addTimeToDate(date, -weeks * 7 * 24 * 60 * 60);
 		}
 
 		else if (StringHandler.canMatchRightStrings(string, "\\d+", "天", "前")
 				|| StringHandler.canMatchRightStrings(string, "\\d+", "day")) {
 			int days = Integer.parseInt(StringHandler.matchRightString(string,
 					"\\d+"));
-			return addTimeToDate(new Date(), -days * 24 * 60 * 60);
+			return addTimeToDate(date, -days * 24 * 60 * 60);
 		}
 
 		else if (StringHandler.canMatchRightStrings(string, "\\d+", "小时", "前")
 				|| StringHandler.canMatchRightStrings(string, "\\d+", "hour")) {
 			int hours = Integer.parseInt(StringHandler.matchRightString(string,
 					"\\d+"));
-			return addTimeToDate(new Date(), -hours * 60 * 60);
+			return addTimeToDate(date, -hours * 60 * 60);
 		}
 
 		else if (StringHandler.canMatchRightStrings(string, "半", "小时", "前")
 				|| StringHandler.canMatchRightStrings(string, "half ", " hour"))
-			return addTimeToDate(new Date(), -30 * 60);
+			return addTimeToDate(date, -30 * 60);
 
 		else if (StringHandler.canMatchRightStrings(string, "\\d+", "分钟", "前")
 				|| StringHandler.canMatchRightStrings(string, "\\d+", "min")) {
 			int minutes = Integer.parseInt(StringHandler.matchRightString(
 					string, "\\d+"));
-			return addTimeToDate(new Date(), -minutes * 60);
+			return addTimeToDate(date, -minutes * 60);
 		}
 
 		else if (StringHandler.canMatchRightStrings(string, "\\d+", "秒", "前")
 				|| StringHandler.canMatchRightStrings(string, "\\d+", "sec")) {
 			int seconds = Integer.parseInt(StringHandler.matchRightString(
 					string, "\\d+"));
-			return addTimeToDate(new Date(), -seconds);
+			return addTimeToDate(date, -seconds);
 		}
 
 		else
@@ -363,6 +360,7 @@ public class DateHandler {
 	public static Date timeStampToDate(long timeStamp) {
 		return new Date(timeStamp);
 	}
+
 
 	/**
 	 * 格式化时间戳  dd MM yyyy hh:mm

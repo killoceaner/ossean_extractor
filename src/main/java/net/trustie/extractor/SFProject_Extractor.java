@@ -1,10 +1,9 @@
 package net.trustie.extractor;
 
 import java.sql.SQLException;
-
 import net.trustie.downloader.DataBasePageErrorOutPut;
 import net.trustie.downloader.GenerateRawPage;
-import net.trustie.model.CsdnBlogs_Model;
+import net.trustie.model.SFProject_Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -15,9 +14,9 @@ import core.Site;
 import extension.OsseanExtractor;
 
 @Component
-public class CsdnQ_Extractor {
+public class SFProject_Extractor {
 	@SuppressWarnings("rawtypes")
-	@Qualifier("csdnQPipeline")
+	@Qualifier("sfProjectPipeline")
 	@Autowired
 	private PageModelPipeline modelPipeline;
 
@@ -30,12 +29,12 @@ public class CsdnQ_Extractor {
 	private DataBasePageErrorOutPut dbPageErrorOutPut;
 
 	public void begin() {
-		generateRawPage.setTable("oschina_question_html_detail");
-		dbPageErrorOutPut.setTableName("oschina_question_error_page");
+		generateRawPage.setTable("sourceforge_html_detail");
+		dbPageErrorOutPut.setTableName("sourceforge_error_page");
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						CsdnBlogs_Model.class).setUUID("csdnQ")
+						SFProject_Model.class).setUUID("SFProject")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}
@@ -44,9 +43,11 @@ public class CsdnQ_Extractor {
 		ApplicationContext aContext = new ClassPathXmlApplicationContext(
 				"classpath:/spring/applicationContext*.xml");
 
-		final CsdnQ_Extractor extractor = aContext
-				.getBean(CsdnQ_Extractor.class);
+		final SFProject_Extractor extractor = aContext
+				.getBean(SFProject_Extractor.class);
 
 		extractor.begin();
+
 	}
+
 }

@@ -1,22 +1,18 @@
 package net.trustie.model;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import net.trustie.utils.DateHandler;
 import net.trustie.utils.Seperator;
 import net.trustie.utils.StringHandler;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
@@ -39,10 +35,12 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	private String name = "";
 	@ExtractBy("//div[@id='widgets']/div[@id='project_header_activity_indicator']/div/text()")
 	private String activity = "";
+
 	@ExtractBy("////div[@id='widgets']/div[@itemprop='interactionCount']/div[@class='float_right']/div[@class='use_count']/a/text()")
 	private String strUseCount = "";
 
 	private int useCount = 0;
+
 
 	@ExtractBy("//div[@class='span6']/div[@id='project_summary']/p/text()")
 	private String description = "";
@@ -201,7 +199,8 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		String nutShell2 = codeInfos.get(2);
 		handleNutShell2(nutShell2);
 		String nutShell3 = codeInfos.get(3);
-		handleNutShell3(nutShell3);
+
+		handleNutShell3(nutShell3,page.getTime());
 
 		List<String> eList = new ArrayList<String>();
 		List<String> valueList = new ArrayList<String>();
@@ -413,7 +412,7 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		this.commitStatus = ele.text();
 	}
 
-	private void handleNutShell3(String nutshell) {
+	private void handleNutShell3(String nutshell,Date date) {
 		Elements eles = getAElements(nutshell);
 		Element ele = null;
 		ele = eles.get(0);
@@ -431,7 +430,11 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		lastCommitAt = StringHandler.removePreposition(lastCommitAt);
 		// SimpleDateFormat simpleDateFormat = new
 		// SimpleDateFormat("yyy-MM-dd HH:mm:ss");
-		this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt));
+		
+
+		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+		this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt,date));//handleDateBefore(lastCommitAt);
+
 	}
 
 	private int getInt(String in) {

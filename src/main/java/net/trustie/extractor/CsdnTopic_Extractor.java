@@ -1,7 +1,6 @@
 package net.trustie.extractor;
 
 import java.sql.SQLException;
-
 import net.trustie.downloader.DataBasePageErrorOutPut;
 import net.trustie.downloader.GenerateRawPage;
 import net.trustie.model.CsdnTopic_Model;
@@ -36,7 +35,7 @@ public class CsdnTopic_Extractor {
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						CsdnTopic_Model.class).setUUID("csdnTopics")
+						CsdnTopic_Model.class).setUUID("csdn_topic")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}
