@@ -36,7 +36,7 @@ public class CNblogNews_Extractor {
 		
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						CNblogsNews_Model.class).setUUID("cnBlogNews")
+						CNblogsNews_Model.class).setUUID("cnblog_news")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}
