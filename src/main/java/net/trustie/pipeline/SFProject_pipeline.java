@@ -6,7 +6,6 @@ import net.trustie.model.SFProject;
 import org.springframework.stereotype.Component;
 import core.PageModelPipeline;
 import us.codecraft.webmagic.Task;
-
 @Component("SFProjectpipeline")
 public class SFProject_pipeline  implements PageModelPipeline<SFProject>{
 	@Resource 
