@@ -5,7 +5,9 @@ import java.util.List;
 import net.trustie.core.OsseanExtractorTest;
 import core.Page;
 public class StackOverflowTest{
+	@SuppressWarnings("unused")
 	private List<Page> pageList;
+	@SuppressWarnings("unused")
 	private OsseanExtractorTest oExtractorTest;
 //	@Test
 //	public void TestForStackOverFlowModel(){
