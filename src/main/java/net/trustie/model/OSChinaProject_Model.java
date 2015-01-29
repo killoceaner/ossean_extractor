@@ -2,6 +2,8 @@ package net.trustie.model;
 
 import java.util.List;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import net.trustie.utils.DateHandler;
 import net.trustie.utils.StringHandler;
 import us.codecraft.webmagic.model.annotation.ExtractBy;
@@ -29,7 +31,7 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 
 	private String IncludedTime;
 
-	@ExtractBy(value = "//*div[@id='OSC_Banner']/div[1]/dl/dt[2]/text()", source = Source.RawHtml)
+	@ExtractBy("//h1[@class='PN']/a/u/text()")
 	private String projectShortName;
 
 	@ExtractBy(value = "//*div[@id='OSC_Banner']/div[1]/dl/dt[2]/a[2]/text()", source = Source.RawHtml)
@@ -56,10 +58,11 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 	@Override
 	public void afterProcess(Page page) {
 		// 处理projectUrl
-		this.projectUrl = page.getPageUrl();
+		this.projectUrl = page.getPageUrl();		
 
 		// 处理projectShortName
-		this.projectShortName = projectShortName.replace("»", "").trim();
+		if (StringUtils.isNotBlank(this.projectShortName))
+			this.projectShortName = projectShortName.replace("»", "").trim();
 
 		// 处理exteactTime
 		this.exteactTime = DateHandler.getExtractTime();
@@ -100,10 +103,11 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 
 			else if (s.contains("收录时间")) {
 				this.IncludedTime = StringHandler.matchRightString(
-						StringHandler.extractHtml(s, "//allText()"), "\\d+年\\d+月\\d+日");
-				
-				this.IncludedTime = DateHandler.formatAllTypeDate(
-						this.IncludedTime);
+						StringHandler.extractHtml(s, "//allText()"),
+						"\\d+年\\d+月\\d+日");
+
+				this.IncludedTime = DateHandler
+						.formatAllTypeDate(this.IncludedTime);
 			}
 		}
 	}
@@ -111,7 +115,7 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 	@Override
 	public void validate(Page page) {
 		if (StringHandler.isAtLeastOneBlank(this.projectTitle,
-				this.projectShortName, this.projectCategory)) {
+				this.projectCategory)) {
 			page.setResultSkip(this, true);
 			return;
 		}
@@ -121,8 +125,8 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 			return;
 		}
 
-		if (!DateHandler.canFormatToDate(this.IncludedTime,this.exteactTime))
-			page.setResultSkip(this, true);			
+		if (!DateHandler.canFormatToDate(this.IncludedTime, this.exteactTime))
+			page.setResultSkip(this, true);
 	}
 
 	public String getProjectUrl() {

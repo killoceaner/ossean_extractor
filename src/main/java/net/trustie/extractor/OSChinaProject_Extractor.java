@@ -34,7 +34,7 @@ public class OSChinaProject_Extractor {
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						OSChinaProject_Model.class).setUUID("oschinaProject")
+						OSChinaProject_Model.class).setUUID("oschina_project")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}

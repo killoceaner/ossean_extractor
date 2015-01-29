@@ -35,7 +35,7 @@ public class CNblogQSolve_Extractor {
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						CNblogsQ_Model.class).setUUID("cnBlogQSolve")
+						CNblogsQ_Model.class).setUUID("cnblog_q_solve")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}

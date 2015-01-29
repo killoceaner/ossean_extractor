@@ -36,7 +36,7 @@ public class CsdnBlogs_Extractor {
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						CsdnBlogs_Model.class).setUUID("csdnBlogs")
+						CsdnBlogs_Model.class).setUUID("csdn_blogs")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}

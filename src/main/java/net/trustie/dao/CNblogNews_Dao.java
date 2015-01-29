@@ -1,7 +1,6 @@
 package net.trustie.dao;
 
 import net.trustie.model.CNblogsNews_Model;
-
 import org.apache.ibatis.annotations.Insert;
 
 public interface CNblogNews_Dao {

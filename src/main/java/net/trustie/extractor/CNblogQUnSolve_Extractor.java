@@ -35,7 +35,7 @@ public class CNblogQUnSolve_Extractor {
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						CNblogsQ_Model.class).setUUID("cnBlogQSolve")
+						CNblogsQ_Model.class).setUUID("cnblog_q_unsolve")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}
@@ -44,8 +44,8 @@ public class CNblogQUnSolve_Extractor {
 		ApplicationContext aContext = new ClassPathXmlApplicationContext(
 				"classpath:/spring/applicationContext*.xml");
 
-		final CNblogQSolve_Extractor extractor = aContext
-				.getBean(CNblogQSolve_Extractor.class);
+		final CNblogQUnSolve_Extractor extractor = aContext
+				.getBean(CNblogQUnSolve_Extractor.class);
 
 		extractor.begin();
 	}

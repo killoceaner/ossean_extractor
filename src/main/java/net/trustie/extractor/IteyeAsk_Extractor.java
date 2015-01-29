@@ -34,7 +34,7 @@ public class IteyeAsk_Extractor {
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						IteyeAsk_Model.class).setUUID("iteyeAsk")
+						IteyeAsk_Model.class).setUUID("iteye_ask")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}
