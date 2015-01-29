@@ -1,17 +1,14 @@
 package net.trustie.extractor;
 
 import java.sql.SQLException;
-
 import net.trustie.downloader.DataBasePageErrorOutPut;
 import net.trustie.downloader.GenerateRawPage;
 import net.trustie.model.SFProject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
-
 import core.PageModelPipeline;
 import core.Site;
 import extension.OsseanExtractor;
@@ -31,8 +28,8 @@ public class SFProject_Extractor {
 	@Autowired
 	private DataBasePageErrorOutPut dbPageErrorOutPut;
 	public void begin() {
-		generateRawPage.setTable("SFProject_html_detail");
-		dbPageErrorOutPut.setTableName("SFProject_error_page");
+		generateRawPage.setTable("sourceforge_html_detail");
+		dbPageErrorOutPut.setTableName("sourceforge_error_page");
 
 		OsseanExtractor.create(Site.me().
 				setResultNum(100), modelPipeline, SFProject.class).
