@@ -34,8 +34,8 @@ public class OpenHubProject_Extractor {
 	
 	
 	public void begin() {
-		generateRawPage.setTable("openhubproject_html_detail");
-		dbPageErrorOutPut.setTableName("oschina_question_error_page");
+		generateRawPage.setTable("openhub_html_detail");
+		dbPageErrorOutPut.setTableName("openhub_error_page");
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
