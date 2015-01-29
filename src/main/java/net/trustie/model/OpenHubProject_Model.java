@@ -214,8 +214,8 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 			// String strValue = eValue.text();
 			valueList.add(eValue.text());
 		}
-		// this.languagePercentages = StringHandler.assemblyOSSEANMap(eList,
-		// valueList);
+		 this.languagePercentages = StringHandler.assemblyOSSEANMap(eList,
+		 valueList);
 
 		// activity
 		String strtmp1 = null;
@@ -273,7 +273,10 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	@Override
 	public void validate(Page page) {
 		// TODO Auto-generated method stub	
-		
+		if(StringHandler.isAtLeastOneBlank(this.name,this.activity,this.description,this.licenses)){
+			page.setResultSkip(this, true);
+			return;
+		}
 	}
 
 	private void handleQuickRef(Element quickRef) {

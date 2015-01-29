@@ -334,17 +334,21 @@ public class StringHandler {
 	 * @return
 	 */
 	public static int extractIntFromString(String in) {
-		char[] chars = in.toCharArray();
-		String rs = "";
-		for (int i = 0; i < chars.length; i++) {
-			if (chars[i] <= '9' && chars[i] >= '0') {
-				rs += chars[i];
-			}
-		}
-		if ("".equals(rs)) {
+		if (in == null) {
 			return 0;
+		} else {
+			char[] chars = in.toCharArray();
+			String rs = "";
+			for (int i = 0; i < chars.length; i++) {
+				if (chars[i] <= '9' && chars[i] >= '0') {
+					rs += chars[i];
+				}
+			}
+			if ("".equals(rs)) {
+				return 0;
+			}
+			return Integer.valueOf(rs);
 		}
-		return Integer.valueOf(rs);
 	}
 
 }
