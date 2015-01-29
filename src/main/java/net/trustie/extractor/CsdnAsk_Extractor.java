@@ -1,10 +1,9 @@
 package net.trustie.extractor;
 
 import java.sql.SQLException;
-
 import net.trustie.downloader.DataBasePageErrorOutPut;
 import net.trustie.downloader.GenerateRawPage;
-import net.trustie.model.CsdnBlogs_Model;
+import net.trustie.model.CsdnAsk_Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -35,7 +34,7 @@ public class CsdnAsk_Extractor {
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
-						CsdnBlogs_Model.class).setUUID("csdn_ask")
+						CsdnAsk_Model.class).setUUID("csdn_ask")
 				.setDownloader(generateRawPage)
 				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}
