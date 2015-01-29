@@ -107,7 +107,7 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 						"\\d+年\\d+月\\d+日");
 
 				this.IncludedTime = DateHandler
-						.formatAllTypeDate(this.IncludedTime);
+						.formatAllTypeDate(this.IncludedTime,page.getTime());
 			}
 		}
 	}

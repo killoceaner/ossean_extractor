@@ -82,7 +82,7 @@ public class CsdnTopic_Model implements AfterExtractor, ValidateExtractor {
 				"更多 分享到：");
 
 		// 处理帖子的提交时间
-		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
+		this.postTime = DateHandler.formatAllTypeDate(this.postTime,page.getTime());
 
 		// 处理extractorTime
 		this.extractTime = DateHandler.getExtractTime();

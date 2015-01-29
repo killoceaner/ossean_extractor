@@ -172,7 +172,7 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		String nutShell2 = codeInfos.get(2);
 		handleNutShell2(nutShell2);
 		String nutShell3 = codeInfos.get(3);
-		handleNutShell3(nutShell3);
+		handleNutShell3(nutShell3,page.getTime());
 		
 		List<String> eList = new ArrayList<String>();
 		List<String> valueList = new ArrayList<String>();
@@ -365,7 +365,7 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		this.commitStatus = ele.text();
 	}
 
-	private void handleNutShell3(String nutshell) {
+	private void handleNutShell3(String nutshell,Date date) {
 		Elements eles = getAElements(nutshell);
 		Element ele = null;
 		ele = eles.get(0);
@@ -381,7 +381,7 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		//System.out.println(lastCommitAt);
 		lastCommitAt = StringHandler.removePreposition(lastCommitAt);
 		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
-		this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt));//handleDateBefore(lastCommitAt);
+		this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt,date));//handleDateBefore(lastCommitAt);
 	}
 
 	private int getInt(String in) {

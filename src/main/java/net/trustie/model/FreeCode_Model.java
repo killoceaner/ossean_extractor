@@ -82,7 +82,7 @@ public class FreeCode_Model implements AfterExtractor, ValidateExtractor {
 			projectId = Integer.parseInt(id);
 		}
 			
-		this.postDate = DateHandler.formatAllTypeDate(postDate);
+		this.postDate = DateHandler.formatAllTypeDate(postDate,page.getTime());
 		
 		// 处理extractorTime	
 		SimpleDateFormat dateFormat = new SimpleDateFormat(

@@ -92,7 +92,7 @@ public class IteyeAsk_Model implements AfterExtractor, ValidateExtractor {
 				+ this.interestNum + this.voteUp + this.voteDown);
 
 		// 处理postTime			
-	    this.postTime=DateHandler.formatAllTypeDate(this.postTime);
+	    this.postTime=DateHandler.formatAllTypeDate(this.postTime,page.getTime());
 	}
 
 	@Override

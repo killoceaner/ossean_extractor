@@ -1,5 +1,7 @@
 package extension;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,8 @@ public class RawPage {
 
 	private String html;
 
+	private Date crawledTime;
+
 	private Page page;
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -28,8 +32,10 @@ public class RawPage {
 				page.setPageUrl(this.url);
 				page.setRawText(this.html);
 				page.setSkip(false);
+				page.setTime(crawledTime);
 			} else {
 				page.setPageUrl(this.url);
+				page.setTime(crawledTime);
 				page.setSkip(true);
 				logger.warn("Warnning:" + this.toString()
 						+ " RawText Is Null OR Empty!");
@@ -104,6 +110,22 @@ public class RawPage {
 
 	public boolean isExtracted() {
 		return isExtracted;
+	}	
+
+	public String getHtml() {
+		return html;
+	}
+
+	public Date getCrawledTime() {
+		return crawledTime;
+	}
+
+	public void setHtml(String html) {
+		this.html = html;
+	}
+
+	public void setCrawledTime(Date crawledTime) {
+		this.crawledTime = crawledTime;
 	}
 
 	public void setExtracted(boolean isExtracted) {
