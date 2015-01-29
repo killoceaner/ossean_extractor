@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SITE='csdn_blog'
+SITE='csdn_blogs'
 
 find ./target/classes -name "*.xml"|xargs rm -f
 

@@ -27,26 +27,27 @@ public class SFProject_Extractor {
 	@Qualifier("errorPageToDB")
 	@Autowired
 	private DataBasePageErrorOutPut dbPageErrorOutPut;
+
 	public void begin() {
 		generateRawPage.setTable("sourceforge_html_detail");
 		dbPageErrorOutPut.setTableName("sourceforge_error_page");
 
-		OsseanExtractor.create(Site.me().
-				setResultNum(100), modelPipeline, SFProject.class).
-				setUUID("SFProject").
-				setDownloader(generateRawPage).
-				setPageErrorOutPut(dbPageErrorOutPut).
-				start();
+		OsseanExtractor
+				.create(Site.me().setResultNum(100), modelPipeline,
+						SFProject.class).setUUID("SFProject")
+				.setDownloader(generateRawPage)
+				.setPageErrorOutPut(dbPageErrorOutPut).start();
 	}
-	public static void main(String[] args)throws SQLException{
+
+	public static void main(String[] args) throws SQLException {
 		ApplicationContext aContext = new ClassPathXmlApplicationContext(
 				"classpath:/spring/applicationContext*.xml");
-		
-		final SFProject_Extractor  extractor = aContext
+
+		final SFProject_Extractor extractor = aContext
 				.getBean(SFProject_Extractor.class);
 
-		            extractor.begin();
-		
+		extractor.begin();
+
 	}
 
 }

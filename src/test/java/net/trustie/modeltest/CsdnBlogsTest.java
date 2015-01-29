@@ -18,11 +18,9 @@ public class CsdnBlogsTest {
 	@Test
 	public void TestForCNblogsQModel() {
 		List<String> urls = new ArrayList<String>(Arrays.asList(
-				"http://blog.csdn.net/helloboat/article/details/42418085",								
-				"http://blog.csdn.net/luoye7422/article/details/42322017",
-				"http://blog.csdn.net/luoye7422/article/details/42321941",
-				"http://blog.csdn.net/liubinblog/article/details/42399331",
-				"http://blog.csdn.net/jiasike/article/details/42362119",
+				"http://blog.csdn.net/q1q1x2x2/article/details/42869849",								
+				"http://blog.csdn.net/u011439689/article/details/42872869",				
+				"http://blog.csdn.net/pistolove/article/details/42833739",
 				"http://blog.csdn.net/ekeuy/article/details/42292589"));
 		pageList = GetPage.getPagesFromInternet(urls);
 		oExtractorTest = OsseanExtractorTest.create(new ConsolePipeline(),

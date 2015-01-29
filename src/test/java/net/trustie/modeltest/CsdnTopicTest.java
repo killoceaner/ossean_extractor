@@ -18,21 +18,16 @@ public class CsdnTopicTest {
 	private OsseanExtractorTest oExtractorTest;
 
 	@Test
-	public void TestForCsdnTopicModel() {		
+	public void TestForCsdnTopicModel() {
 		List<String> urls = new ArrayList<String>(Arrays.asList(
 				"http://bbs.csdn.net/topics/390701880",
-				"http://bbs.csdn.net/topics/390682886",
-				"http://bbs.csdn.net/topics/390679083",
-				"http://bbs.csdn.net/topics/390702076",
-				"http://bbs.csdn.net/topics/390702075",
-				"http://bbs.csdn.net/topics/390701813",
-				"http://bbs.csdn.net/topics/390702065",
-				"http://bbs.csdn.net/topics/390701880",
-				"http://bbs.csdn.net/topics/390698558"));		
-		pageList = GetPage.getPagesFromInternet(urls);		
+				"http://bbs.csdn.net/topics/390354975",
+				"http://bbs.csdn.net/topics/390354932",
+				"http://bbs.csdn.net/topics/390329107"));
+		pageList = GetPage.getPagesFromInternet(urls);
 		oExtractorTest = OsseanExtractorTest.create(new ConsolePipeline(),
 				CsdnTopic_Model.class);
-		for (Page page : pageList){
+		for (Page page : pageList) {
 			oExtractorTest.runExtractor(page);
 		}
 	}

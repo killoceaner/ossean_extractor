@@ -1,4 +1,5 @@
 package net.trustie.modeltest;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

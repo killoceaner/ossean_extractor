@@ -19,14 +19,14 @@ public class OSChinaQuestionTest {
 	@Test
 	public void TestForOSChinaQuestionModel() {
 		List<String> urls = new ArrayList<String>(Arrays.asList(
-				"http://www.oschina.net/question/202626_218331",
-				"http://www.oschina.net/question/1390076_218051",
-				"http://www.oschina.net/question/1050447_218480",
-				"http://www.oschina.net/question/816727_218368",
-				"http://www.oschina.net/question/1863482_218522",
-				"http://www.oschina.net/question/1378920_218960",
-				"http://www.oschina.net/question/1444646_218948",
-				"http://www.oschina.net/question/115983_218961"));
+				"http://www.oschina.net/question/1013116_150368",
+				"http://www.oschina.net/question/6556_150338",
+				"http://www.oschina.net/question/1376388_150394",
+				"http://www.oschina.net/question/12_150380",
+				"http://www.oschina.net/question/1763928_153465",
+				"http://www.oschina.net/question/1538193_150408",
+				"http://www.oschina.net/question/1763928_153465",
+				"http://www.oschina.net/question/1376388_150394"));
 		pageList = GetPage.getPagesFromInternet(urls);
 		oExtractorTest = OsseanExtractorTest.create(new ConsolePipeline(),
 				OSChinaQuestion_Model.class);
