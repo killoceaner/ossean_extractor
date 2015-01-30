@@ -31,8 +31,8 @@ public class StackOverflow_Extractor {
 	private DataBasePageErrorOutPut dbPageErrorOutPut;
 
 	public void begin() {
-		generateRawPage.setTable("oschina_question_html_detail");
-		dbPageErrorOutPut.setTableName("oschina_question_error_page");
+		generateRawPage.setTable("stackoverflow_html_detail");
+		dbPageErrorOutPut.setTableName("stackoverflow_error_page");
 
 		OsseanExtractor
 				.create(Site.me().setResultNum(100), modelPipeline,
