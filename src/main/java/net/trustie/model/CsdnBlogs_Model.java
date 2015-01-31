@@ -90,7 +90,7 @@ public class CsdnBlogs_Model implements AfterExtractor, ValidateExtractor {
 		this.extractTime = DateHandler.getExtractTime();
 
 		// 处理postTime
-		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
+		this.postTime = DateHandler.formatAllTypeDate(this.postTime,page.getTime());
 
 		// 处理作者
 		if (StringUtils.isBlank(this.author))

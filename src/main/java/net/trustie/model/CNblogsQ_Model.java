@@ -110,7 +110,7 @@ public class CNblogsQ_Model implements AfterExtractor, ValidateExtractor {
 
 		// 处理postTime			
 		this.postTime=StringHandler.matchRightString(this.postTime, "提问于.*");		
-		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
+		this.postTime = DateHandler.formatAllTypeDate(this.postTime,page.getTime());
 
 		// 处理questionId
 		this.questionId = StringHandler.matchRightString(this.questionUrl,

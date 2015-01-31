@@ -78,7 +78,7 @@ public class DeWenQ_Model implements AfterExtractor, ValidateExtractor {
 			this.attentionNum = "0";
 
 		// 处理postTime
-		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
+		this.postTime = DateHandler.formatAllTypeDate(this.postTime,page.getTime());
 
 		// 处理authorUrl
 		this.authorUrl = "http://www.dewen.io" + this.authorUrl;

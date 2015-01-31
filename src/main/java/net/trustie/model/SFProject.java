@@ -113,6 +113,10 @@ public class SFProject implements AfterExtractor {
 						.select("div#top_left div#home_intro div#proj-overview ul");
 				this.feature = featuresEles.text();
 			}
+		
+			    this.lastUpdate = DateHandler.formatAllTypeDate(lastUpdate,page.getTime());
+				this.registeredTime = DateHandler.formatAllTypeDate(registeredTime, page.getTime());
+	
 		}
 		
 //		long end = System.currentTimeMillis();
@@ -445,10 +449,10 @@ public class SFProject implements AfterExtractor {
 	public void setDownloadCount(String downloadCount) {
 		this.downloadCount = downloadCount;
 	}
-
+/*
 	public void setLastUpdate(String lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+		this.lastUpdate = DateHandler.formatAllTypeDate(lastUpdate,page.getTime());
+	}*/
 
 	public void setPlatform(String platform) {
 		this.platform = platform;
@@ -484,10 +488,6 @@ public class SFProject implements AfterExtractor {
 
 	public void setProgrammingLanguage(String programmingLanguage) {
 		this.programmingLanguage = programmingLanguage;
-	}
-
-	public void setRegisteredTime(String registeredTime) {
-		this.registeredTime = registeredTime;
 	}
 
 	public String getCollectTime() {

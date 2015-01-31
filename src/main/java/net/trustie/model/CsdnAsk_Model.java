@@ -67,7 +67,7 @@ public class CsdnAsk_Model implements AfterExtractor, ValidateExtractor {
 
 		// 处理postTime
 		this.postTime = StringHandler.subString(this.postTime, "创建自");
-		this.postTime = DateHandler.formatAllTypeDate(this.postTime);
+		this.postTime = DateHandler.formatAllTypeDate(this.postTime,page.getTime());
 
 		// 处理answerNum
 		if (StringUtils.isNotBlank(this.answerNum))
