@@ -12,7 +12,7 @@ import core.Page;
 import core.ValidateExtractor;
 
 @ExtractBy("//*[@class='container']/div[@id='content']/div/div[@id='mainbar']/div[@id='question']/table")
-public class StackOverflow implements AfterExtractor, ValidateExtractor {
+public class StackOverflow_Model implements AfterExtractor, ValidateExtractor {
 	private String tag;
 
 	private String extractTime;
@@ -22,8 +22,10 @@ public class StackOverflow implements AfterExtractor, ValidateExtractor {
 	private String urlMD5;
 
 	private String pageMD5;
-	
+
 	private String questionId;
+	
+	private String history="0";
 
 	@ExtractBy(value = "//*[@id='question-header']/h1/a[@class='question-hyperlink']/text()", source = Source.RawHtml)
 	private String questionTitle;
@@ -56,7 +58,7 @@ public class StackOverflow implements AfterExtractor, ValidateExtractor {
 	private String answerNum;
 
 	@ExtractBy(value = "//*table[@id='qinfo']/tbody/tr[3]/td[2]/p[@class='label-key']/b/a/@title", source = Source.RawHtml)
-	private String active;
+	private String activeTime;
 
 	public void afterProcess(Page page) {
 		// 处理标签
@@ -78,13 +80,24 @@ public class StackOverflow implements AfterExtractor, ValidateExtractor {
 		if (StringUtils.isBlank(this.likeNum))
 			this.likeNum = "0";
 
-		// 处理postTime
-		this.postTime = this.postTime.substring(0, this.postTime.length() - 1);
-		this.postTime=DateHandler.addTimeToDate(this.postTime, 8*60*60);
-
+		// 处理postTimei
+		if (StringUtils.isNotBlank(this.postTime)) {
+			this.postTime = this.postTime.substring(0,
+					this.postTime.length() - 1);
+			this.postTime = DateHandler.addTimeToDate(this.postTime,
+					8 * 60 * 60);
+		}
 		// 处理active
-		this.active = this.active.substring(0, this.active.length() - 1);
-		this.active=DateHandler.addTimeToDate(this.active, 8*60*60);
+		if (StringUtils.isNotBlank(this.activeTime)) {
+			this.activeTime = this.activeTime.substring(0,
+					this.activeTime.length() - 1);
+			this.activeTime = DateHandler.addTimeToDate(this.activeTime,
+					8 * 60 * 60);
+		}
+
+		// 处理answerNum
+		if (StringUtils.isEmpty(this.answerNum))
+			this.answerNum = "0";
 
 		// 处理urlMD5
 		this.urlMD5 = DigestUtils.md5Hex(this.url);
@@ -94,17 +107,19 @@ public class StackOverflow implements AfterExtractor, ValidateExtractor {
 
 		// 处理extractorTime
 		this.extractTime = DateHandler.getExtractTime();
-		
-		//处理帖子的ID
-		this.questionId=StringHandler.matchRightString(this.url, "questions/\\d+/");
-		this.questionId=StringHandler.matchRightString(this.questionId, "\\d+");
+
+		// 处理帖子的ID
+		this.questionId = StringHandler.matchRightString(this.url,
+				"questions/\\d+/");
+		this.questionId = StringHandler.matchRightString(this.questionId,
+				"\\d+");
 	}
 
 	@Override
 	public void validate(Page page) {
 		if (page.getResultSkip(this))
 			return;
-		
+
 		if (StringHandler.isAtLeastOneBlank(this.url, this.questionTitle,
 				this.author, this.authorUrl)) {
 			page.setResultSkip(this, true);
@@ -119,8 +134,7 @@ public class StackOverflow implements AfterExtractor, ValidateExtractor {
 
 		if (!DateHandler.canFormatToDate(this.postTime, this.extractTime))
 			page.setResultSkip(this, true);
-		
-		System.out.println(page.getResultSkip(this));
+
 	}
 
 	public String getQuestionTitle() {
@@ -251,12 +265,12 @@ public class StackOverflow implements AfterExtractor, ValidateExtractor {
 		this.answerNum = answerNum;
 	}
 
-	public String getActive() {
-		return active;
+	public String getActiveTime() {
+		return activeTime;
 	}
 
-	public void setActive(String active) {
-		this.active = active;
+	public void setActiveTime(String activeTime) {
+		this.activeTime = activeTime;
 	}
 
 	public String getQuestionId() {
@@ -265,5 +279,13 @@ public class StackOverflow implements AfterExtractor, ValidateExtractor {
 
 	public void setQuestionId(String questionId) {
 		this.questionId = questionId;
+	}
+
+	public String getHistory() {
+		return history;
+	}
+
+	public void setHistory(String history) {
+		this.history = history;
 	}	
 }
