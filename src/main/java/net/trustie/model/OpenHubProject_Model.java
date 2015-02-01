@@ -154,7 +154,8 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	private String urlMd5;
 	private String pageMd5;
 	private int history = 0;
-
+	private String crawlerTime = null;
+		
 	public void afterProcess(Page page) {
 
 		this.urlMd5 = DigestUtils.md5Hex(page.getPageUrl());
@@ -338,6 +339,9 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		this.rateInfo = this.rateInfo.trim();
 		this.rateLevel = this.rateLevel.trim();
 		this.projectLinks = this.projectLinks.trim();
+		
+		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		this.crawlerTime =s.format(page.getTime());
 	}
 
 
@@ -1001,7 +1005,7 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	public void setReContributor(String reContributor) {
 		ReContributor = reContributor;
 	}
-
+	
 //	public List<String> getFirstLinks() {
 //		return firstLinks;
 //	}
@@ -1081,6 +1085,14 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 //	public void setContributorLink(String contributorLink) {
 //		this.contributorLink = contributorLink;
 //	}
+
+	public String getCrawlerTime() {
+		return crawlerTime;
+	}
+
+	public void setCrawlerTime(String crawlerTime) {
+		this.crawlerTime = crawlerTime;
+	}
 
 	public String getCollectTime() {
 		return collectTime;

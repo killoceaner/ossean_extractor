@@ -28,6 +28,10 @@ public class FreeCode_Model implements AfterExtractor, ValidateExtractor {
 
 	private int history = 0;
 
+	private String crawlerTime = null;
+	
+	
+
 	@ExtractBy("//*div[@class ='clearfix']/h1/text()")
 	private String projectTitle;
 
@@ -91,6 +95,11 @@ public class FreeCode_Model implements AfterExtractor, ValidateExtractor {
 		
 		//处理标题
 		this.projectTitle = this.projectTitle.trim();
+		
+		//处理爬虫时间
+		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		this.crawlerTime = s.format(page.getTime());
+		
 	}
 
 	@Override
@@ -109,7 +118,6 @@ public class FreeCode_Model implements AfterExtractor, ValidateExtractor {
 				page.setSkip(true);
 				return;
 			}
-
 //			if (!StringHandler.canFormatterDate(this.postDate)) {
 //				page.setSkip(true);
 //				return;
@@ -164,7 +172,15 @@ public class FreeCode_Model implements AfterExtractor, ValidateExtractor {
 	public void setProjectTitle(String projectTitle) {
 		this.projectTitle = projectTitle;
 	}
+	
+	public String getCrawlerTime() {
+		return crawlerTime;
+	}
 
+	public void setCrawlerTime(String crawlerTime) {
+		this.crawlerTime = crawlerTime;
+	}
+	
 	public String getProjectDesc() {
 		return projectDesc;
 	}
