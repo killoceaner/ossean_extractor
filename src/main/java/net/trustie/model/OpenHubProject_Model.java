@@ -339,6 +339,8 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		this.rateInfo = this.rateInfo.trim();
 		this.rateLevel = this.rateLevel.trim();
 		this.projectLinks = this.projectLinks.trim();
+		if(!projectLinks.contains("( 2 Links )"))
+		this.projectLinks = this.projectLinks.substring(" ".length());
 		
 		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		this.crawlerTime =s.format(page.getTime());
