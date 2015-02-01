@@ -192,16 +192,47 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		}
 
 		// nutshell
-		String nutShell0 = codeInfos.get(0);
-		handleNutShell0(nutShell0);
-		String nutShell1 = codeInfos.get(1);
-		handleNutShell1(nutShell1);
-		String nutShell2 = codeInfos.get(2);
-		handleNutShell2(nutShell2);
-		String nutShell3 = codeInfos.get(3);
-
-		handleNutShell3(nutShell3,page.getTime());
-
+//		if (codeInfos.size() > 0) {
+//			String nutShell0 = codeInfos.get(0);
+//			handleNutShell0(nutShell0);
+//			String nutShell1 = codeInfos.get(1);
+//			handleNutShell1(nutShell1);
+//			String nutShell2 = codeInfos.get(2);
+//			handleNutShell2(nutShell2);
+//			String nutShell3 = codeInfos.get(3);
+//			handleNutShell3(nutShell3, page.getTime());
+//		}
+		
+		int tmplength = codeInfos.size();
+		if(tmplength>0){
+			if(tmplength == 1){
+				String nutShell0 = codeInfos.get(0);
+				handleNutShell0(nutShell0);
+			}else if(tmplength == 2){
+				String nutShell0 = codeInfos.get(0);
+				handleNutShell0(nutShell0);
+				String nutShell1 = codeInfos.get(1);
+				handleNutShell1(nutShell1);
+			}else if(tmplength == 3){
+				String nutShell0 = codeInfos.get(0);
+				handleNutShell0(nutShell0);
+				String nutShell1 = codeInfos.get(1);
+				handleNutShell1(nutShell1);
+				String nutShell2 = codeInfos.get(2);
+				handleNutShell2(nutShell2);
+			}else{
+				String nutShell0 = codeInfos.get(0);
+				handleNutShell0(nutShell0);
+				String nutShell1 = codeInfos.get(1);
+				handleNutShell1(nutShell1);
+				String nutShell2 = codeInfos.get(2);
+				handleNutShell2(nutShell2);
+				String nutShell3 = codeInfos.get(3);
+				handleNutShell3(nutShell3, page.getTime());
+			}
+		}
+	    
+		
 		List<String> eList = new ArrayList<String>();
 		List<String> valueList = new ArrayList<String>();
 		// language
@@ -223,19 +254,57 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		String strtmp4 = null;
 		// this.dCommitNumber = Integer.parseInt(dayActivityInfos.get(0));
 		// this.dContributorNumber = Integer.parseInt(dayActivityInfos.get(1));
-		if (dayActivityInfos.size() > 0) {
-			strtmp1 = dayActivityInfos.get(0);
-			this.daysCommitNumber = getInt(strtmp1);
-			strtmp2 = dayActivityInfos.get(1);
-			this.daysContributorNumber = getInt(strtmp2);
-			strtmp3 = monthActivityInfos.get(0);
-			this.monthsCommitNumber = getInt(strtmp3);
-			strtmp4 = monthActivityInfos.get(1);
-			this.monthsContributorNumber = getInt(strtmp4);
-			this.newContriNum = getInt(this.newContributor);
-			this.theCommitTrend = allTrend.get(0);
-			this.theContriTrend = allTrend.get(1);
+//		if (dayActivityInfos.size() > 0) {
+//			strtmp1 = dayActivityInfos.get(0);
+//			this.daysCommitNumber = getInt(strtmp1);
+//			strtmp2 = dayActivityInfos.get(1);
+//			this.daysContributorNumber = getInt(strtmp2);
+//			strtmp3 = monthActivityInfos.get(0);
+//			this.monthsCommitNumber = getInt(strtmp3);
+//			strtmp4 = monthActivityInfos.get(1);
+//			this.monthsContributorNumber = getInt(strtmp4);
+//
+//		}
+		
+		int length = dayActivityInfos.size();
+		if(length > 0){
+			if(length == 1){
+				strtmp1 = dayActivityInfos.get(0);
+				this.daysCommitNumber = getInt(strtmp1);
+			}else{
+				strtmp1 = dayActivityInfos.get(0);
+				this.daysCommitNumber = getInt(strtmp1);
+				strtmp2 = dayActivityInfos.get(1);
+				this.daysContributorNumber = getInt(strtmp2);
+			}
 		}
+		
+		int length1 = monthActivityInfos.size();
+		if(length1 > 0){
+			if(length1==1){
+				strtmp3 = monthActivityInfos.get(0);
+				this.monthsCommitNumber = getInt(strtmp3);
+			}else{
+				strtmp3 = monthActivityInfos.get(0);
+				this.monthsCommitNumber = getInt(strtmp3);
+				strtmp4 = monthActivityInfos.get(1);
+				this.monthsContributorNumber = getInt(strtmp4);
+			}
+		}
+		
+		this.newContriNum = getInt(this.newContributor);
+//		this.theCommitTrend = allTrend.get(0);
+//		this.theContriTrend = allTrend.get(1);
+		
+		if(allTrend.size()>0){
+			if(allTrend.size() == 1){
+				this.theCommitTrend = allTrend.get(0);
+			}else{
+				this.theCommitTrend = allTrend.get(0);
+				this.theContriTrend = allTrend.get(1);
+			}
+		}
+		
 		// community
 		// this.rateNum = getInt(this.rateInfo);
 		this.ReContributor = StringHandler
@@ -265,6 +334,10 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 //			this.costestLink = tmphref + this.otherLinks.get(3);
 //			this.contributorLink = tmphref + this.otherLinks.get(4);
 //		}
+		
+		this.rateInfo = this.rateInfo.trim();
+		this.rateLevel = this.rateLevel.trim();
+		this.projectLinks = this.projectLinks.trim();
 	}
 
 
@@ -391,14 +464,16 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		ele = eles.get(0);
 		this.mostWrittenIn = StringHandler.removeHeader(ele.text(),
 				OpenHubProject_Model.mostWrittenHeader).trim();
-		ele = eles.get(1);
-		// System.out.println(ele.text());
-		this.commentsPercentage = StringHandler.removeTail(ele.text(),
-				OpenHubProject_Model.commentsPercentageTail).trim();
-		// System.out.println(this.commentsPercentage);
-		this.commentsPercentage = StringHandler.removeIndefiniteArticles(
-				this.commentsPercentage).trim();
-		// System.out.println(this.commentsPercentage);
+		if (eles.size() > 1) {
+			ele = eles.get(1);
+			// System.out.println(ele.text());
+			this.commentsPercentage = StringHandler.removeTail(ele.text(),
+					OpenHubProject_Model.commentsPercentageTail).trim();
+			// System.out.println(this.commentsPercentage);
+			this.commentsPercentage = StringHandler.removeIndefiniteArticles(
+					this.commentsPercentage).trim();
+			// System.out.println(this.commentsPercentage);
+		}
 	}
 
 	private void handleNutShell2(String nutshell) {

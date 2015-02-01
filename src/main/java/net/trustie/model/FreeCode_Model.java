@@ -89,6 +89,8 @@ public class FreeCode_Model implements AfterExtractor, ValidateExtractor {
 				"yyyy-MM-dd HH:mm:ss");
 		this.extractTime = dateFormat.format(new Date());
 		
+		//处理标题
+		this.projectTitle = this.projectTitle.trim();
 	}
 
 	@Override
