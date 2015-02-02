@@ -155,7 +155,8 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	private String pageMd5;
 	private int history = 0;
 	private String crawlerTime = null;
-		
+	private String projectUrl =null ;
+	
 	public void afterProcess(Page page) {
 
 		this.urlMd5 = DigestUtils.md5Hex(page.getPageUrl());
@@ -338,12 +339,19 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		
 		this.rateInfo = this.rateInfo.trim();
 		this.rateLevel = this.rateLevel.trim();
+		//专门处理projectlinks的前后空格
 		this.projectLinks = this.projectLinks.trim();
-		if(!projectLinks.contains("( 2 Links )"))
-		this.projectLinks = this.projectLinks.substring(" ".length());
+		if(this.projectLinks.contains(" "))
+		{
+			this.projectLinks = this.projectLinks.replace(" ", " ");
+			this.projectLinks = this.projectLinks.trim();
+		}
+		this.activity = this.activity.trim();
 		
 		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		this.crawlerTime =s.format(page.getTime());
+		this.projectUrl = page.getPageUrl();
+		
 	}
 
 
@@ -485,17 +493,69 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	private void handleNutShell2(String nutshell) {
 		Elements eles = getAElements(nutshell);
 		Element ele = null;
+		if(eles.size()>0){
 		ele = eles.get(0);
 		this.codebaseStatus = ele.text();
 		ele = eles.get(1);
 		this.teamScale = ele.text();
 		ele = eles.get(2);
 		this.commitStatus = ele.text();
+		if(eles.size()==1){
+			ele = eles.get(0);
+			this.codebaseStatus = ele.text();
+		}else if(eles.size() ==2){
+			ele = eles.get(0);
+			this.codebaseStatus = ele.text();
+			ele = eles.get(1);
+			this.teamScale = ele.text();
+		}else{
+			ele = eles.get(0);
+			this.codebaseStatus = ele.text();
+			ele = eles.get(1);
+			this.teamScale = ele.text();
+			ele = eles.get(2);
+			this.commitStatus = ele.text();
+		}
+		}
 	}
 
 	private void handleNutShell3(String nutshell,Date date) {
 		Elements eles = getAElements(nutshell);
 		Element ele = null;
+		if(eles.size()>0){
+			if(eles.size() == 1){
+				ele = eles.get(0);
+				this.estimateEffortTime = StringHandler.removeTail(ele.text(),
+						OpenHubProject_Model.estimateEffortTimeTail).trim();
+			}else if(eles.size() ==2){
+				ele = eles.get(0);
+				this.estimateEffortTime = StringHandler.removeTail(ele.text(),
+						OpenHubProject_Model.estimateEffortTimeTail).trim();
+				ele = eles.get(1);
+				String firstCommitAt = StringHandler.removeHeader(ele.text(),
+						OpenHubProject_Model.firstCommitTimeHeader).trim();
+				ansTmp = handleDateAt(firstCommitAt).toString();
+				this.firstCommitTime = handleDateAt(firstCommitAt);
+			}else{
+				ele = eles.get(0);
+				this.estimateEffortTime = StringHandler.removeTail(ele.text(),
+						OpenHubProject_Model.estimateEffortTimeTail).trim();
+				ele = eles.get(1);
+				String firstCommitAt = StringHandler.removeHeader(ele.text(),
+						OpenHubProject_Model.firstCommitTimeHeader).trim();
+				ansTmp = handleDateAt(firstCommitAt).toString();
+				this.firstCommitTime = handleDateAt(firstCommitAt);
+				ele = eles.get(2);
+				String lastCommitAt = StringHandler.removeHeader(ele.text(),
+						OpenHubProject_Model.lastCommitTimeHeader).trim();
+				// System.out.println(lastCommitAt);
+				lastCommitAt = StringHandler.removePreposition(lastCommitAt);
+				// SimpleDateFormat simpleDateFormat = new
+				// SimpleDateFormat("yyy-MM-dd HH:mm:ss");				
+				//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+				this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt,date));//handleDateBefore(lastCommitAt);
+			}
+		}
 		ele = eles.get(0);
 		this.estimateEffortTime = StringHandler.removeTail(ele.text(),
 				OpenHubProject_Model.estimateEffortTimeTail).trim();
@@ -1087,6 +1147,14 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 //	public void setContributorLink(String contributorLink) {
 //		this.contributorLink = contributorLink;
 //	}
+
+	public String getProjectUrl() {
+		return projectUrl;
+	}
+
+	public void setProjectUrl(String projectUrl) {
+		this.projectUrl = projectUrl;
+	}
 
 	public String getCrawlerTime() {
 		return crawlerTime;
