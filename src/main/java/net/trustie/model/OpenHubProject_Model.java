@@ -556,26 +556,6 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 				this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt,date));//handleDateBefore(lastCommitAt);
 			}
 		}
-		ele = eles.get(0);
-		this.estimateEffortTime = StringHandler.removeTail(ele.text(),
-				OpenHubProject_Model.estimateEffortTimeTail).trim();
-		ele = eles.get(1);
-		String firstCommitAt = StringHandler.removeHeader(ele.text(),
-				OpenHubProject_Model.firstCommitTimeHeader).trim();
-		ansTmp = handleDateAt(firstCommitAt).toString();
-		this.firstCommitTime = handleDateAt(firstCommitAt);
-		ele = eles.get(2);
-		String lastCommitAt = StringHandler.removeHeader(ele.text(),
-				OpenHubProject_Model.lastCommitTimeHeader).trim();
-		// System.out.println(lastCommitAt);
-		lastCommitAt = StringHandler.removePreposition(lastCommitAt);
-		// SimpleDateFormat simpleDateFormat = new
-		// SimpleDateFormat("yyy-MM-dd HH:mm:ss");
-		
-
-		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
-		this.lastCommitTime = DateHandler.stringToDate(DateHandler.formatAllTypeDate(lastCommitAt,date));//handleDateBefore(lastCommitAt);
-
 	}
 
 	private int getInt(String in) {
