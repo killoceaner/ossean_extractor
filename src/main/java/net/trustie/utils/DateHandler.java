@@ -506,4 +506,85 @@ public class DateHandler {
 		return null ;
 	}
 
+	
+	
+	public static String handleFreeCodePostTime(String str){
+		str = str.trim();
+		String[] tmpList = str.split(" ");
+		String ans = null;
+		if(tmpList.length>0){
+			String date = tmpList[0];
+			String month = tmpList[1];
+			String year = tmpList[2];
+			String time = tmpList[3];
+			month = changeMonthToNum(month);
+			ans = year+"-"+month+"-"+date+" "+time;
+		}else{
+			return null;
+		}
+		return ans;
+	}
+	
+	private static String changeMonthToNum(String month){
+		if(month!=null){
+			switch (month) {
+			case "Jan": {
+				month = "01";
+				break;
+			}
+			case "Feb": {
+				month = "02";
+				break;
+			}
+			case "Mar": {
+				month = "03";
+				break;
+			}
+			case "Apr": {
+				month = "04";
+				break;
+			}
+			case "May": {
+				month = "05";
+				break;
+			}
+			case "Jun": {
+				month = "06";
+				break;
+			}
+			case "Jul": {
+				month = "07";
+				break;
+			}
+			case "Aug": {
+				month = "08";
+				break;
+			}
+			case "Sep": {
+				month = "09";
+				break;
+			}
+			case "Oct": {
+				month = "10";
+				break;
+			}
+			case "Nov": {
+				month = "11";
+				break;
+			}
+			case "Dec": {
+				month = "12";
+				break;
+			}
+			default: {
+				month = "00";
+				break;
+			}
+			}
+			return month;
+		}else{
+			return null;
+		}
+		
+	}
 }
