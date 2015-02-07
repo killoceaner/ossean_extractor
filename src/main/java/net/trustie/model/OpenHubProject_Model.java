@@ -58,7 +58,7 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 
 	// nut shell
 	@ExtractBy("//div[@class='span6']/div[@class='well']/ul[@id='factoids']/li/div[@class='indent']")
-	private List<String> codeInfos = null;
+	private List<String> codeInfos =new ArrayList<String>() ;
 	private int commitNum = 0;
 	private int contributorNum = 0;
 	private int codeLinesNum = 0;
@@ -68,48 +68,48 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	private String teamScale = "";
 	private String commitStatus = "";
 	private String estimateEffortTime = "";
-	private Date firstCommitTime = null;
-	private Date lastCommitTime = null;
+	private Date firstCommitTime = new Date();
+	private Date lastCommitTime = new Date();
 
 	// languages
 	@ExtractBy("//div[@class='span6']/table[@class=table]/tbody/tr[@class='float_left']/td[@style='width: 120px']")
-	private List<String> languages = null;
+	private List<String> languages = new ArrayList<String>();
 	@ExtractBy("//div[@class='span6']/table[@class=table]/tbody/tr[@class='float_left']/td[@style='width: 20px']/span/span[@itemprop='ratingValue']")
-	private List<String> percentages = null;
+	private List<String> percentages = new ArrayList<String>();
 	private String languagePercentages = "";
 
 	// activity
 	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/small[@class='summary_timespan thirty_day']/allText()")
-	private String activityDayTime = null;
+	private String activityDayTime = "";
 	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@id='thirty_day_summary']/li/big/text()")
-	private List<String> dayActivityInfos = null;
+	private List<String> dayActivityInfos = new ArrayList<String>();
 	private int daysCommitNumber = 0;
 	private int daysContributorNumber = 0;
 	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@id='thirty_day_summary']/li/span[@class='clear small']/a/allText()")
-	private String newContributor = null;
+	private String newContributor = "";
 	private int newContriNum = 0;
 
 	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/td/small[@class='summary_timespan']/allText()")
-	private String activityMonthTime = null;
+	private String activityMonthTime = "";
 	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@class='unstyled nutshell']/li/big/text()")
-	private List<String> monthActivityInfos = null;
+	private List<String> monthActivityInfos = new ArrayList<String>();
 	private int monthsCommitNumber = 0;
 	private int monthsContributorNumber = 0;
 	@ExtractBy("//div[@class='span6']/div[@class='well']/table[@id='activity_table']/tbody/tr/td/ul[@class='unstyled nutshell']/li/span[@class='small clear']/allText()")
-	private List<String> allTrend = null;
-	private String theCommitTrend = null;
+	private List<String> allTrend = new ArrayList<String>();
+	private String theCommitTrend = "";
 
-	private String theContriTrend = null;
+	private String theContriTrend = "";
 
 	// community
 	@ExtractBy("//div[@class='proj_community_ratings']/div/span[@style='margin-left: 8px']/allText()")
-	private String rateInfo = null;
+	private String rateInfo = "";
 
 	@ExtractBy("//div[@class='proj_community_ratings']/div/div[@class='clear']/span[@class='float_left']/allText()")
-	private String rateLevel = null;
+	private String rateLevel = "";
 	@ExtractBy("//table[@id='recent_committers_table']/tbody/tr/td[@class='recent_committers']/a/allText()")
-	private List<String> RecenctContributors = null;
-	private String ReContributor = null;
+	private List<String> RecenctContributors = new ArrayList<String>();
+	private String ReContributor = "";
 
 	// buttom informations
 //	@ExtractBy("//div[@id='projects_show_page']/div[@class='full-width mezzo margin_left_20 margin_right_20 margin_top_15']/div[@class='bottom-nav sidebar_project']/div[@class='actions']")
@@ -154,8 +154,8 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 	private String urlMd5;
 	private String pageMd5;
 	private int history = 0;
-	private String crawlerTime = null;
-	private String projectUrl =null ;
+	private String crawlerTime = "";
+	private String projectUrl ="" ;
 	
 	public void afterProcess(Page page) {
 
@@ -250,10 +250,10 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		 valueList);
 
 		// activity
-		String strtmp1 = null;
-		String strtmp2 = null;
-		String strtmp3 = null;
-		String strtmp4 = null;
+		String strtmp1 = "";
+		String strtmp2 = "";
+		String strtmp3 = "";
+		String strtmp4 = "";
 		// this.dCommitNumber = Integer.parseInt(dayActivityInfos.get(0));
 		// this.dContributorNumber = Integer.parseInt(dayActivityInfos.get(1));
 //		if (dayActivityInfos.size() > 0) {
@@ -494,12 +494,12 @@ public class OpenHubProject_Model implements AfterExtractor, ValidateExtractor {
 		Elements eles = getAElements(nutshell);
 		Element ele = null;
 		if(eles.size()>0){
-		ele = eles.get(0);
-		this.codebaseStatus = ele.text();
-		ele = eles.get(1);
-		this.teamScale = ele.text();
-		ele = eles.get(2);
-		this.commitStatus = ele.text();
+//		ele = eles.get(0);
+//		this.codebaseStatus = ele.text();
+//		ele = eles.get(1);
+//		this.teamScale = ele.text();
+//		ele = eles.get(2);
+//		this.commitStatus = ele.text();
 		if(eles.size()==1){
 			ele = eles.get(0);
 			this.codebaseStatus = ele.text();
