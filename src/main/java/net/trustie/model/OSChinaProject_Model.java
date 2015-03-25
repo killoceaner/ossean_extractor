@@ -12,7 +12,7 @@ import core.AfterExtractor;
 import core.Page;
 import core.ValidateExtractor;
 
-@ExtractBy("//*div[@id='OSC_Content']/div[@class='ProjectPage']/div[@class='ProjectMain']/div[@class='Project']")
+@ExtractBy("//div[@id='OSC_Content']/div[@class='ProjectPage']/div[@class='ProjectMain']/div[@class='Project']")
 public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 
 	private String projectUrl;
@@ -31,13 +31,13 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 
 	private String IncludedTime;
 
-	@ExtractBy("//h1[@class='PN']/a/u/text()")
+	@ExtractBy("//h1[@class='PN']/p[@class='name']/a/u/text()")
 	private String projectShortName;
 
-	@ExtractBy(value = "//*div[@id='OSC_Banner']/div[1]/dl/dt[2]/a[2]/text()", source = Source.RawHtml)
+	@ExtractBy(value = "//div[@id='OSC_Banner']/div[1]/dl/dt[2]/a[2]/text()", source = Source.RawHtml)
 	private String projectCategory;
 
-	@ExtractBy("//h1[@class='PN']/a/allText()")
+	@ExtractBy("//h1[@class='PN']/p[@class='name']/a/allText()")
 	private String projectTitle;
 
 	@ExtractBy("//div[@id='Body']/div[@id='p_fullcontent']/allText()")
@@ -49,7 +49,7 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 	@ExtractBy("//div[@id='toolbar_wrapper']/div[@class='toolbar']/div[@class='options']/div[@class='soft_used']/span/text()")
 	private String usedNum;
 
-	@ExtractBy(value = "//*div[@class='ProjectPage']/div[@class='ProjectRight']/div[@class='TopUsers']/div[@class='RightTitle']/em[@id='attentent_count']/text()", source = Source.RawHtml)
+	@ExtractBy(value = "//div[@class='ProjectPage']/div[@class='ProjectRight']/div[@class='TopUsers']/div[@class='RightTitle']/em[@id='attentent_count']/text()", source = Source.RawHtml)
 	private String housedNum;
 
 	@ExtractBy("//div[@id='Body']/ul[@class='attrs']/li/html()")
@@ -70,7 +70,7 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 		// 处理projectDesc
 		if (this.advert != null)
 			this.projectDesc = StringHandler.subString(this.projectDesc,
-					this.advert);
+					this.advert).trim();
 
 		// 处理usedNum
 		this.usedNum = StringHandler.matchRightString(this.usedNum, "\\d+");
@@ -85,7 +85,7 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 				this.projectLicenses = StringHandler.extractHtml(s,
 						"//allText()");
 				this.projectLicenses = StringHandler.subString(projectLicenses,
-						"授权协议：");
+						"授权协议：").trim();
 			}
 
 			else if (s.contains("开发语言")) {
@@ -115,6 +115,12 @@ public class OSChinaProject_Model implements AfterExtractor, ValidateExtractor {
 	@Override
 	public void validate(Page page) {
 		if (StringHandler.isAtLeastOneBlank(this.projectTitle,
+				this.projectCategory)) {
+			page.setResultSkip(this, true);
+			return;
+		}
+		
+		if (StringHandler.isAtLeastOneBlank(this.projectShortName,
 				this.projectCategory)) {
 			page.setResultSkip(this, true);
 			return;
